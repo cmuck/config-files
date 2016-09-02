@@ -1,6 +1,8 @@
 packages: [
+  "atom-beautify"
   "build"
   "busy"
+  "docker"
   "file-icons"
   "git-blame"
   "git-log"
@@ -10,7 +12,9 @@ packages: [
   "highlight-line"
   "highlight-selected"
   "keyboard-localization"
+  "language-docker"
   "linter"
+  "linter-docker"
   "linter-gcc"
   "linter-js-yaml"
   "merge-conflicts"
@@ -23,4 +27,5 @@ packages: [
   "tool-bar"
   "tool-bar-main"
   "toolbar-iconshortcuts"
+  "vim-mode"
 ]
