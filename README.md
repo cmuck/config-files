@@ -1,3 +1,7 @@
 # config-files
 
-Some useful configration files
+Some useful configuration files
+
+## Installation
+
+Run `setup.bash`
