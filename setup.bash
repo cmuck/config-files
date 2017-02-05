@@ -36,6 +36,7 @@ echo "Install independent OS files"
 
 ln -sf "$(pwd)/atom/packages.cson" ~/.atom/packages.cson
 ln -sf "$(pwd)/git/.gitconfig-common" ~/.gitconfig-common
+ln -sf "$(pwd)/git/.git_commit_message.txt" ~/.git_commit_message.txt
 
 
 # OS depdenent dotfiles
