@@ -1,12 +1,12 @@
 [alias]
-    ad = add --all
-    adi = add --all --interactive
-    adp = add --all --patch
+    ada = add --all
+    adai = add --all --interactive
+    adap = add --all --patch
     aliases = config --get-regexp alias
     cl = clone
+    coa = commit --amend
     cof = commit --fixup
     com = commit --message
-    coa = commit --amend
     cp = cherry-pick
     cu = checkout
     cub = checkout --branch
@@ -18,13 +18,13 @@
     lg = log --date=relative --color --graph --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit
     lg2 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
     ln = !git lg --name-status
-    rb = rebase
-    ps = push --atomic
     pl = pull --recurse-submodules
-    rbi = rebase --interactive
+    ps = push --atomic
     r = reset
     r1 = reset HEAD^
     r2 = reset HEAD^^
+    rb = rebase
+    rbi = rebase --interactive
     rh = reset --hard
     rh1 = reset HEAD^ --hard
     rh2 = reset HEAD^^ --hard
@@ -37,10 +37,11 @@
 [color]
     ui = true
 [core]
+    attributesfile = ~/.gitattributes
+    editor = atom --wait
+    excludesfile = ~/.gitignore
     fscache = true
     safecrlf = false
-    attributesfile = ~/.gitattributes
-    excludesfile = ~/.gitignore
     whitespace = blank-at-eol,blank-at-eof,space-before-tab,trailing-space,tab-indent
 [diff]
     compactionHeuristic = true
