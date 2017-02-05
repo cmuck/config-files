@@ -1,6 +1,5 @@
 packages: [
   "atom-beautify"
-  "busy"
   "docker"
   "file-icons"
   "git-blame"
@@ -11,6 +10,7 @@ packages: [
   "highlight-line"
   "highlight-selected"
   "language-docker"
+  "language-ini"
   "linter"
   "linter-docker"
   "linter-gcc"
