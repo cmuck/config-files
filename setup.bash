@@ -91,6 +91,10 @@ fi
 ln -sf "$(pwd)/git/.gitconfig-common" ~/.gitconfig-common
 ln -sf "$(pwd)/git/.git_commit_message.txt" ~/.git_commit_message.txt
 
+# oh-my-zsh
+ln -sf "$(pwd)/oh-my-zsh/.zshrc" ~/.zshrc
+ln -sf "$(pwd)/oh-my-zsh/.oh-my-zsh" ~/.oh-my-zsh
+
 
 # OS depdenent dotfiles
 echo "Install depdendent OS files for: $OS"
