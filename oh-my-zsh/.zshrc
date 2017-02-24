@@ -7,14 +7,19 @@ export ZSH="${HOME}/.oh-my-zsh"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="baboom" #robbyrussell"
+ZSH_THEME="bureau"
+#af-magic
+#aussiegeek
+#baboom
+#bureau
+#robbyrussell
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -51,7 +56,7 @@ ZSH_THEME="baboom" #robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases autopep8 brew colored-man-pages chucknorris colorize docker git git-extras history lol osx pip pep8 sudo svn xcode)
+plugins=(aliases autopep8 brew colored-man-pages chucknorris colorize docker git git-extras history jira lol osx pip pep8 sudo svn web-search xcode)
 
 source $ZSH/oh-my-zsh.sh
 
