@@ -3,31 +3,17 @@
 set -euf -o pipefail
 
 ATOM_DIR=~/.atom
-ATOM_INSTALLED=
 ATOM_PROGRAM=atom
 EMAIL=
 GIT_CONFIG=.gitconfig
 GIT_DIR=~/.git
-GIT_INSTALLED=
 GIT_PROGRAM=git
 NAME=
 OS=$(uname -s)
 OVERWRITE=
-VSCODE_INSTALLED=
+SCRIPT=$0
 VSCODE_PROGRAM=code
-ZSH_INSTALLED=
 ZSH_PROGRAM=zsh
-
-echo "================================================="
-echo "Check programs"
-
-ATOM_INSTALLED=$(which $ATOM_PROGRAM) || true
-GIT_INSTALLED=$(which $GIT_PROGRAM) || true
-VSCODE_INSTALLED=$(which $VSCODE_PROGRAM) || true
-ZSH_INSTALLED=$(which $ZSH_PROGRAM) || true
-
-echo "Finished."
-
 
 function copyGitConfig
 {
@@ -133,11 +119,37 @@ function installZSH
     ln -sf "$(pwd)/oh-my-zsh/.oh-my-zsh" ~/.oh-my-zsh
 }
 
-while getopts ":yn:e:" opt; do
+function usage()
+{
+    echo "Usage: $SCRIPT [-n NAME] [-e EMAIL]"
+
+cat << EOF
+Usage: $0 options
+
+This script helps to setup config-files for development using
+- Atom
+- Git (OS dependant)
+- VSCode
+- Oh-my-zsh
+
+OPTIONS:
+   -h      Show usage message
+   -k      Git - keep existing files
+   -o      Git - overwrite existing files
+   -n      Git - user.name
+   -e      Git - user.email
+EOF
+}
+
+while getopts "kohn:e:" opt; do
   case ${opt} in
-    y )
+    o )
         # Will overwrite the git config
         OVERWRITE=Y
+      ;;
+    k )
+        # Will overwrite the git config
+        OVERWRITE=N
       ;;
     n )
         # Git user name
@@ -147,18 +159,38 @@ while getopts ":yn:e:" opt; do
         # Git user email
         EMAIL=$OPTARG
       ;;
+    h)
+        usage
+        exit 0
+      ;;
     \? )
         # Wrong option
-        echo "Usage: cmd [-n NAME] [-e EMAIL]"
-        exit -1
+        usage
+        exit 1
       ;;
     : )
         # Right option with invalid argument
         echo "Invalid option: $OPTARG requires an argument" 1>&2
-        exit -1
+        usage
+        exit 1
     ;;
   esac
 done
+
+echo "================================================="
+echo "Check programs"
+
+ATOM_INSTALLED=$(which $ATOM_PROGRAM) || true
+GIT_INSTALLED=$(which $GIT_PROGRAM) || true
+VSCODE_INSTALLED=$(which $VSCODE_PROGRAM) || true
+ZSH_INSTALLED=$(which $ZSH_PROGRAM) || true
+
+echo "$ATOM_PROGRAM: n$ATOM_INSTALLED"
+echo "$GIT_PROGRAM: $GIT_INSTALLED"
+echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
+echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
+
+echo "Finished."
 
 echo
 echo "================================================="
