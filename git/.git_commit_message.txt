@@ -1,8 +1,5 @@
 Topic
 
-Detailed explanation
-
-
 # Usage
 # * git config --global commit.template ~/.git_commit_message.txt
 # * git config --local commit.template ~/.git_commit_message.txt
