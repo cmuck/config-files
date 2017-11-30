@@ -1,4 +1,4 @@
-Topic
+
 
 # Usage
 # * git config --global commit.template ~/.git_commit_message.txt
