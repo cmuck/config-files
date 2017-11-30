@@ -1,5 +1,4 @@
 PeterJausovec.vscode-docker
-ajshort.msg
 akamud.vscode-theme-onedark
 akamud.vscode-theme-onelight
 alefragnani.project-manager
