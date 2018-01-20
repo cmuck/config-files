@@ -15,9 +15,8 @@ SCRIPT=$0
 VSCODE_PROGRAM=code
 ZSH_PROGRAM=zsh
 
-function copyGitConfig
+copyGitConfig ()
 {
-    OS=$1
     case $OS in
         Darwin)
             cp "$(pwd)/git/.gitconfig-osx" ~/$GIT_CONFIG
@@ -31,9 +30,11 @@ function copyGitConfig
         *)
             echo "Unsupported operating system. Skipping platform-specific dotfiles."
     esac
+
+    echo " git config copied"
 }
 
-function configureGlobalGitAccount
+configureGitUserAndMail ()
 {
     # If NAME is empty, request from user
     if [ -z "$NAME" ]
@@ -50,26 +51,32 @@ function configureGlobalGitAccount
     # Set global git config
     git config --global user.name "$NAME"
     git config --global user.email "$EMAIL"
+
+    echo " git user.name and user.email configured"
 }
 
-function installAtom
+installAtom ()
 {
     if [ ! -d "$ATOM_DIR" ]; then
         mkdir $ATOM_DIR
     fi
     ln -sf "$(pwd)/atom/packages.cson" $ATOM_DIR/packages.cson
+
+    echo " $ATOM_PROGRAM finished"
 }
 
-function installGitIndependentOS
+installGitIndependentOS ()
 {
     if [ ! -d "$GIT_DIR" ]; then
         mkdir $GIT_DIR
     fi
     ln -sf "$(pwd)/git/.gitconfig-common" ~/.gitconfig-common
     ln -sf "$(pwd)/git/.git_commit_message.txt" ~/.git_commit_message.txt
+
+    echo " $GIT_PROGRAM finished"
 }
 
-function installGitDependentOS
+installGitDependentOS ()
 {
     # Chech if git config is present
     if [ -f ~/$GIT_CONFIG ]; then
@@ -82,7 +89,7 @@ function installGitDependentOS
 
         case $OVERWRITE in
             "y"|"Y")
-                copyGitConfig $OS
+                copyGitConfig
                 ;;
             "n"|"N")
                 echo "$GIT_CONFIG not overwritten"
@@ -90,35 +97,41 @@ function installGitDependentOS
         esac
     else
         echo "$GIT_CONFIG does not exist, copy new Git config"
-        copyGitConfig $OS
+        copyGitConfig
     fi
 
     if grep "email" ~/$GIT_CONFIG &> /dev/null ; then
         echo "Git already configured with email"
     else
-        configureGlobalGitAccount
+        configureGitUserAndMail
     fi
+
+    echo " $GIT_PROGRAM finished"
 }
 
-function installVSCode
+installVSCode ()
 {
     for extension in $(cat vscode/extensions.txt)
     do
         echo " -- Installing $extension"
         code --install-extension $extension > /dev/null
     done
+
+    echo " $VSCODE_PROGRAM finished"
 }
 
-function installZSH
+installZSH ()
 {
     if [ -f ~/.zshrc ]; then
         rm ~/.zshrc
     fi
 
     ln -sf "$(pwd)/oh-my-zsh/.zshrc" ~/.zshrc
+
+    echo " $ZSH_PROGRAM finished"
 }
 
-function usage()
+usage ()
 {
 
 cat << EOF
@@ -175,8 +188,7 @@ while getopts "kohn:e:" opt; do
   esac
 done
 
-echo "================================================="
-echo "Check programs"
+echo "Check program installation..."
 
 ATOM_INSTALLED=$(which $ATOM_PROGRAM) || true
 GIT_INSTALLED=$(which $GIT_PROGRAM) || true
@@ -188,70 +200,43 @@ echo "$GIT_PROGRAM: $GIT_INSTALLED"
 echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
 echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
 
-echo "Finished."
+echo
+echo "Install OS independent files"
 
-echo
-echo "================================================="
-echo "Install independent OS files"
-echo
-echo "-------------------------------------------------"
 echo "$ATOM_PROGRAM"
-
 if [ -n "$ATOM_INSTALLED" ]; then
-    echo "Setup..."
     installAtom
-    echo "Finished."
 else
-    echo "$ATOM_PROGRAM is not installed, skipping setup."
+    echo " $ATOM_PROGRAM is not installed, skipping setup."
 fi
 
-echo
-echo "-------------------------------------------------"
 echo "$VSCODE_PROGRAM"
-
 if [ -n "$VSCODE_INSTALLED" ]; then
-    echo "Setup..."
     installVSCode
-    echo "Finished."
 else
-    echo "$VSCODE_PROGRAM is not installed, skipping setup."
+    echo " $VSCODE_PROGRAM is not installed, skipping setup."
 fi
 
-echo
-echo "-------------------------------------------------"
 echo "$GIT_PROGRAM"
-
 if [ -n "$GIT_INSTALLED" ]; then
-    echo "Setup..."
     installGitIndependentOS
-    echo "Finished."
 else
-    echo "$GIT_PROGRAM is not installed, skipping setup."
+    echo " $GIT_PROGRAM is not installed, skipping setup."
 fi
 
 
-echo
-echo "-------------------------------------------------"
 echo "$ZSH_PROGRAM"
 if [ -n "$ZSH_INSTALLED" ]; then
-    echo "Setup..."
     installZSH
-    echo "Finished."
 else
-    echo "$ZSH_PROGRAM is not installed, skipping setup."
+    echo " $ZSH_PROGRAM is not installed, skipping setup."
 fi
 
 echo
-echo "================================================="
-echo "Install depdendent OS files for: $OS"
-echo "================================================="
-echo
-echo "-------------------------------------------------"
+echo "Install OS depdendent files for: $OS"
 echo "$GIT_PROGRAM"
 if [ -n "$GIT_INSTALLED" ]; then
-    echo "Setup..."
     installGitDependentOS
-    echo "Finished."
 else
-    echo "$GIT_PROGRAM is not installed, skipping setup."
+    echo " $GIT_PROGRAM is not installed, skipping setup."
 fi

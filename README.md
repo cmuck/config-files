@@ -2,8 +2,29 @@
 
 # config-files
 
-Some useful configuration files
+Configuration files for
+* Atom
+* Git
+* VSCode
+* Oh-my-zsh
 
 ## Installation
 
-Run `./setup.bash`
+`./setup.bash`
+
+## Command line options
+```
+./setup.bash -h
+Usage: ./setup.bash options
+This script helps to setup config-files for development using
+- Atom
+- Git (OS dependant)
+- VSCode
+- Oh-my-zsh
+OPTIONS:
+   -h      Show usage message
+   -k      Git - keep existing files
+   -o      Git - overwrite existing files
+   -n      Git - user.name
+   -e      Git - user.email
+```
