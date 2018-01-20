@@ -61,7 +61,7 @@ function installAtom
 }
 
 function installGitIndependentOS
-{    
+{
     if [ ! -d "$GIT_DIR" ]; then
         mkdir $GIT_DIR
     fi
@@ -116,7 +116,6 @@ function installZSH
     fi
 
     ln -sf "$(pwd)/oh-my-zsh/.zshrc" ~/.zshrc
-    ln -sf "$(pwd)/oh-my-zsh/.oh-my-zsh" ~/.oh-my-zsh
 }
 
 function usage()
