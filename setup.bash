@@ -12,6 +12,7 @@ NAME=
 OS=$(uname -s)
 OVERWRITE=
 SCRIPT=$0
+VIM_PROGRAM=vim
 VSCODE_PROGRAM=code
 ZSH_PROGRAM=zsh
 
@@ -109,6 +110,13 @@ installGitDependentOS ()
     echo " $GIT_PROGRAM finished"
 }
 
+installVim ()
+{
+    ln -sf "$(pwd)/vim/.vimrc" ~/.vimrc
+
+    echo " $VIM_PROGRAM finished"
+}
+
 installVSCode ()
 {
     for extension in $(cat vscode/extensions.txt)
@@ -140,6 +148,7 @@ Usage: $0 options
 This script helps to setup config-files for development using
 - Atom
 - Git (OS dependant)
+- Vim
 - VSCode
 - Oh-my-zsh
 
@@ -192,11 +201,13 @@ echo "Check program installation..."
 
 ATOM_INSTALLED=$(which $ATOM_PROGRAM) || true
 GIT_INSTALLED=$(which $GIT_PROGRAM) || true
+VIM_INSTALLED=$(which $VIM_PROGRAM) || true
 VSCODE_INSTALLED=$(which $VSCODE_PROGRAM) || true
 ZSH_INSTALLED=$(which $ZSH_PROGRAM) || true
 
 echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
 echo "$GIT_PROGRAM: $GIT_INSTALLED"
+echo "$VIM_PROGRAM: $VIM_INSTALLED"
 echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
 echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
 
@@ -208,6 +219,14 @@ if [ -n "$ATOM_INSTALLED" ]; then
     installAtom
 else
     echo " $ATOM_PROGRAM is not installed, skipping setup."
+fi
+
+
+echo "$VIM_PROGRAM"
+if [ -n "$VIM_INSTALLED" ]; then
+    installVim
+else
+    echo " $VIM_PROGRAM is not installed, skipping setup."
 fi
 
 echo "$VSCODE_PROGRAM"
