@@ -15,7 +15,6 @@ NAME=
 OS=$(uname -s)
 OVERWRITE=
 SCRIPT=$0
-VSCODE_PROGRAM=code
 ZSH_PROGRAM=zsh
 
 copyGitConfig ()
@@ -122,17 +121,6 @@ installGitDependentOS ()
     echo " $GIT_PROGRAM finished"
 }
 
-installVSCode ()
-{
-    while IFS= read -r line
-    do
-        echo " -- Installing $line"
-        code --install-extension "$line" > /dev/null
-    done < <(grep -v '^ *#' < vscode/extensions.txt)
-
-    echo " $VSCODE_PROGRAM finished"
-}
-
 installZSH ()
 {
     if [ -f ~/.zshrc ]; then
@@ -153,7 +141,6 @@ Usage: $0 options
 $SCRIPT helps to setup config-files for development using
 - Atom
 - Git (OS dependant)
-- VSCode
 - Oh-my-zsh
 
 OPTIONS:
@@ -205,27 +192,17 @@ echo "Check program installation..."
 
 ATOM_INSTALLED=$(command -v $ATOM_PROGRAM) || true
 GIT_INSTALLED=$(command -v $GIT_PROGRAM) || true
-VSCODE_INSTALLED=$(command -v $VSCODE_PROGRAM) || true
 ZSH_INSTALLED=$(command -v $ZSH_PROGRAM) || true
 
 echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
 echo "$GIT_PROGRAM: $GIT_INSTALLED"
-echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
 echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
-
 
 echo "$ATOM_PROGRAM"
 if [ -n "$ATOM_INSTALLED" ]; then
     installAtom
 else
     echo " $ATOM_PROGRAM is not installed, skipping setup."
-fi
-
-echo "$VSCODE_PROGRAM"
-if [ -n "$VSCODE_INSTALLED" ]; then
-    installVSCode
-else
-    echo " $VSCODE_PROGRAM is not installed, skipping setup."
 fi
 
 echo "$ZSH_PROGRAM"
