@@ -124,11 +124,11 @@ installGitDependentOS ()
 
 installVSCode ()
 {
-    for extension in $(cat vscode/extensions.txt)
+    while IFS= read -r line
     do
-        echo " -- Installing $extension"
-        code --install-extension $extension > /dev/null
-    done
+        echo " -- Installing $line"
+        code --install-extension "$line" > /dev/null
+    done < <(grep -v '^ *#' < vscode/extensions.txt)
 
     echo " $VSCODE_PROGRAM finished"
 }
@@ -150,7 +150,7 @@ usage ()
 cat << EOF
 Usage: $0 options
 
-This script helps to setup config-files for development using
+$SCRIPT helps to setup config-files for development using
 - Atom
 - Git (OS dependant)
 - VSCode
@@ -203,10 +203,10 @@ done
 
 echo "Check program installation..."
 
-ATOM_INSTALLED=$(which $ATOM_PROGRAM) || true
-GIT_INSTALLED=$(which $GIT_PROGRAM) || true
-VSCODE_INSTALLED=$(which $VSCODE_PROGRAM) || true
-ZSH_INSTALLED=$(which $ZSH_PROGRAM) || true
+ATOM_INSTALLED=$(command -v $ATOM_PROGRAM) || true
+GIT_INSTALLED=$(command -v $GIT_PROGRAM) || true
+VSCODE_INSTALLED=$(command -v $VSCODE_PROGRAM) || true
+ZSH_INSTALLED=$(command -v $ZSH_PROGRAM) || true
 
 echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
 echo "$GIT_PROGRAM: $GIT_INSTALLED"
