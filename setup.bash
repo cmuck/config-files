@@ -71,7 +71,6 @@ installGitIndependentOS ()
         mkdir $GIT_DIR
     fi
     ln -sf "$(pwd)/git/.gitconfig-common" ~/.gitconfig-common
-    ln -sf "$(pwd)/git/.git_commit_message.txt" ~/.git_commit_message.txt
 
     echo " $GIT_PROGRAM finished"
 }

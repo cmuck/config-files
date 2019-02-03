@@ -56,8 +56,6 @@
     requireForce = false
 [submodule]
     fetchJobs = 4
-[commit]
-    template = ~/.git_commit_message.txt
 
 # git mergetool --tool-help
 [merge]
