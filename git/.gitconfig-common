@@ -1,7 +1,9 @@
 [alias]
     ada = add --all
+    adu = add --update
     adai = add --all --interactive
     adap = add --all --patch
+    adup = add --update --patch
     aliases = config --get-regexp alias
     cl = clone
     coa = commit --amend
