@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set -euf -o pipefail
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
 
 ATOM_DIR=~/.atom
 ATOM_PROGRAM=atom
@@ -29,6 +32,7 @@ copyGitConfig ()
             ;;
         *)
             echo "Unsupported operating system. Skipping platform-specific dotfiles."
+            ;;
     esac
 
     echo " git config copied"
@@ -36,23 +40,27 @@ copyGitConfig ()
 
 configureGitUserAndMail ()
 {
-    # If NAME is empty, request from user
-    if [ -z "$NAME" ]
-    then
-        read -r -p "Enter your name and press [ENTER]: " NAME
+    if grep "email" ~/$GIT_CONFIG &> /dev/null ; then
+        echo "Git already configured with email"
+    else
+        # If NAME is empty, request from user
+        if [ -z "$NAME" ]
+        then
+            read -r -p "Enter your name and press [ENTER]: " NAME
+        fi
+
+        # If EMAIL is empty, request from user
+        if [ -z "$EMAIL" ]
+        then
+            read -r -p "Enter your email and press [ENTER]: " EMAIL
+        fi
+
+        # Set global git config
+        git config --global user.name "$NAME"
+        git config --global user.email "$EMAIL"
+
+        echo " git user.name and user.email configured"
     fi
-
-    # If EMAIL is empty, request from user
-    if [ -z "$EMAIL" ]
-    then
-        read -r -p "Enter your email and press [ENTER]: " EMAIL
-    fi
-
-    # Set global git config
-    git config --global user.name "$NAME"
-    git config --global user.email "$EMAIL"
-
-    echo " git user.name and user.email configured"
 }
 
 installAtom ()
@@ -72,37 +80,43 @@ installGitIndependentOS ()
     fi
     ln -sf "$(pwd)/git/.gitconfig-common" ~/.gitconfig-common
 
-    echo " $GIT_PROGRAM finished"
+    echo " $GIT_PROGRAM common finished"
 }
 
 installGitDependentOS ()
 {
     # Chech if git config is present
     if [ -f ~/$GIT_CONFIG ]; then
-
         # If OVERWRITE is empty, request from user
         if [ -z "$OVERWRITE" ]
         then
-            read -r -p "$GIT_CONFIG already exists, do you want to overwrite it (y/n)?" OVERWRITE
+            while read -r -p "$GIT_CONFIG already exists, do you want to overwrite it (y/n)?" OVERWRITE; do
+                case "$OVERWRITE" in
+                    [Yy]*)
+                        echo "$GIT_CONFIG will be overwritten"
+                        break
+                    ;;
+                    [Nn]*)
+                        break
+                    ;;
+                    *)
+                        echo "Invalid option" >&2
+                    ;;
+                esac
+            done
         fi
 
         case $OVERWRITE in
-            "y"|"Y")
+            [Yy]*)
                 copyGitConfig
-                ;;
-            "n"|"N")
-                echo "$GIT_CONFIG not overwritten"
-                ;;
+            ;;
+            [YNn*)
+                echo "$GIT_CONFIG will be kept"
+            ;;
         esac
     else
         echo "$GIT_CONFIG does not exist, copy new Git config"
         copyGitConfig
-    fi
-
-    if grep "email" ~/$GIT_CONFIG &> /dev/null ; then
-        echo "Git already configured with email"
-    else
-        configureGitUserAndMail
     fi
 
     echo " $GIT_PROGRAM finished"
@@ -199,8 +213,6 @@ echo "$GIT_PROGRAM: $GIT_INSTALLED"
 echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
 echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
 
-echo
-echo "Install OS independent files"
 
 echo "$ATOM_PROGRAM"
 if [ -n "$ATOM_INSTALLED" ]; then
@@ -209,21 +221,12 @@ else
     echo " $ATOM_PROGRAM is not installed, skipping setup."
 fi
 
-
 echo "$VSCODE_PROGRAM"
 if [ -n "$VSCODE_INSTALLED" ]; then
     installVSCode
 else
     echo " $VSCODE_PROGRAM is not installed, skipping setup."
 fi
-
-echo "$GIT_PROGRAM"
-if [ -n "$GIT_INSTALLED" ]; then
-    installGitIndependentOS
-else
-    echo " $GIT_PROGRAM is not installed, skipping setup."
-fi
-
 
 echo "$ZSH_PROGRAM"
 if [ -n "$ZSH_INSTALLED" ]; then
@@ -232,11 +235,11 @@ else
     echo " $ZSH_PROGRAM is not installed, skipping setup."
 fi
 
-echo
-echo "Install OS depdendent files for: $OS"
 echo "$GIT_PROGRAM"
 if [ -n "$GIT_INSTALLED" ]; then
+    installGitIndependentOS
     installGitDependentOS
+    configureGitUserAndMail
 else
     echo " $GIT_PROGRAM is not installed, skipping setup."
 fi
