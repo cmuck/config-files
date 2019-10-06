@@ -11,3 +11,5 @@ vector-of-bool.cmake-tools
 waderyan.gitblame
 xaver.clang-format
 zhuangtongfa.Material-theme
+DevonDCarew.bazel-code
+BazelBuild.vscode-bazel

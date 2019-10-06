@@ -56,7 +56,7 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases autopep8 brew colored-man-pages chucknorris colorize docker git git-extras history jira lol osx pip pep8 sudo svn web-search xcode)
+plugins=(colored-man-pages common-aliases debian docker git git-extras history osx sudo web-search)
 
 source $ZSH/oh-my-zsh.sh
 
