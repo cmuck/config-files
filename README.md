@@ -28,3 +28,14 @@ OPTIONS:
    -n      Git - user.name
    -e      Git - user.email
 ```
+
+
+## Shellcheck
+```
+docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable setup.bash
+```
+
+## TODO
+* Switch to Ansible
+* Install applications git, atom, ... for different OS
+* Introduce shellcheck to Travis CI configuration
