@@ -1,40 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -o errexit
 set -o errtrace
 set -o nounset
 set -o pipefail
 
-ATOM_DIR=~/.atom
 ATOM_PROGRAM=atom
 EMAIL=
 GIT_CONFIG=.gitconfig
-GIT_DIR=~/.git
 GIT_PROGRAM=git
 NAME=
 OS=$(uname -s)
 OVERWRITE=
-SCRIPT=$0
+VSCODE_PROGRAM=code
 ZSH_PROGRAM=zsh
 
-copyGitConfig ()
+linkAtomPackages()
 {
-    case $OS in
-        Darwin)
-            cp "$(pwd)/git/.gitconfig-osx" ~/$GIT_CONFIG
-            ;;
-        Linux)
-            cp "$(pwd)/git/.gitconfig-linux" ~/$GIT_CONFIG
-            ;;
-        MINGW64*)
-            cp "$(pwd)/git/.gitconfig-windows" ~/$GIT_CONFIG
-            ;;
-        *)
-            echo "Unsupported operating system. Skipping platform-specific dotfiles."
-            ;;
-    esac
+    ATOM_DIR=~/.atom
+    if [ ! -d "$ATOM_DIR" ]; then
+        mkdir $ATOM_DIR
+    fi
+    ln -sf "$(pwd)/atom/packages.cson" $ATOM_DIR/packages.cson
 
-    echo " git config copied"
+    echo " $ATOM_PROGRAM finished"
 }
 
 configureGitUserAndMail ()
@@ -62,18 +51,9 @@ configureGitUserAndMail ()
     fi
 }
 
-installAtom ()
+copyGitIndependentOS ()
 {
-    if [ ! -d "$ATOM_DIR" ]; then
-        mkdir $ATOM_DIR
-    fi
-    ln -sf "$(pwd)/atom/packages.cson" $ATOM_DIR/packages.cson
-
-    echo " $ATOM_PROGRAM finished"
-}
-
-installGitIndependentOS ()
-{
+    GIT_DIR=~/.git
     if [ ! -d "$GIT_DIR" ]; then
         mkdir $GIT_DIR
     fi
@@ -82,7 +62,27 @@ installGitIndependentOS ()
     echo " $GIT_PROGRAM common finished"
 }
 
-installGitDependentOS ()
+copyGitConfig ()
+{
+    case $OS in
+        Darwin)
+            cp "$(pwd)/git/.gitconfig-osx" ~/$GIT_CONFIG
+            ;;
+        Linux)
+            cp "$(pwd)/git/.gitconfig-linux" ~/$GIT_CONFIG
+            ;;
+        MINGW64*)
+            cp "$(pwd)/git/.gitconfig-windows" ~/$GIT_CONFIG
+            ;;
+        *)
+            echo "Unsupported operating system. Skipping platform-specific dotfiles."
+            ;;
+    esac
+
+    echo " git config copied"
+}
+
+copyGitDependentOS ()
 {
     # Chech if git config is present
     if [ -f ~/$GIT_CONFIG ]; then
@@ -121,7 +121,25 @@ installGitDependentOS ()
     echo " $GIT_PROGRAM finished"
 }
 
-installZSH ()
+configureGit()
+{
+   copyGitIndependentOS
+   copyGitDependentOS
+   configureGitUserAndMail
+}
+
+installVSCodeExtensions ()
+{
+    while IFS= read -r extension
+    do
+        echo " -- Installing $extension"
+        code --install-extension "$extension" > /dev/null
+    done  < <(grep -v '^ *#' <  vscode/extensions.txt)
+
+    echo " $VSCODE_PROGRAM finished"
+}
+
+linkZshConfig ()
 {
     if [ -f ~/.zshrc ]; then
         rm ~/.zshrc
@@ -138,9 +156,10 @@ usage ()
 cat << EOF
 Usage: $0 options
 
-$SCRIPT helps to setup config-files for development using
+This script helps to setup config-files for development using
 - Atom
 - Git (OS dependant)
+- VSCode
 - Oh-my-zsh
 
 OPTIONS:
@@ -188,35 +207,34 @@ while getopts "kohn:e:" opt; do
   esac
 done
 
-echo "Check program installation..."
+checkForPrograms()
+{
+  echo ""
+  echo "Check program installation ..."
+  ATOM_INSTALLED=$(command -v $ATOM_PROGRAM) || true
+  GIT_INSTALLED=$(command -v $GIT_PROGRAM) || true
+  VSCODE_INSTALLED=$(command -v $VSCODE_PROGRAM) || true
+  ZSH_INSTALLED=$(command -v $ZSH_PROGRAM) || true
 
-ATOM_INSTALLED=$(command -v $ATOM_PROGRAM) || true
-GIT_INSTALLED=$(command -v $GIT_PROGRAM) || true
-ZSH_INSTALLED=$(command -v $ZSH_PROGRAM) || true
+  echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
+  echo "$GIT_PROGRAM: $GIT_INSTALLED"
+  echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
+  echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
+}
 
-echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
-echo "$GIT_PROGRAM: $GIT_INSTALLED"
-echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
+configureProgram()
+{
+  echo "Configure $1"
+  if [ -n "$2" ]; then
+      $3
+  else
+      echo " $1 is not installed, skipping setup ..."
+  fi
 
-echo "$ATOM_PROGRAM"
-if [ -n "$ATOM_INSTALLED" ]; then
-    installAtom
-else
-    echo " $ATOM_PROGRAM is not installed, skipping setup."
-fi
+}
 
-echo "$ZSH_PROGRAM"
-if [ -n "$ZSH_INSTALLED" ]; then
-    installZSH
-else
-    echo " $ZSH_PROGRAM is not installed, skipping setup."
-fi
-
-echo "$GIT_PROGRAM"
-if [ -n "$GIT_INSTALLED" ]; then
-    installGitIndependentOS
-    installGitDependentOS
-    configureGitUserAndMail
-else
-    echo " $GIT_PROGRAM is not installed, skipping setup."
-fi
+checkForPrograms
+configureProgram "$ATOM_PROGRAM" "$ATOM_INSTALLED" linkAtomPackages
+configureProgram "$VSCODE_PROGRAM" "$VSCODE_INSTALLED" installVSCodeExtensions
+configureProgram "$ZSH_PROGRAM" "$ZSH_INSTALLED" linkZshConfig
+configureProgram "$GIT_PROGRAM" "$GIT_INSTALLED" configureGit
