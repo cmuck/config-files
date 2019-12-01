@@ -1,7 +1,3 @@
-# shellcheck disable=SC2148
-# shellcheck disable=SC2034
-# shellcheck disable=SC1090
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
