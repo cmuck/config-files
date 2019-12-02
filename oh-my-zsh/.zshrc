@@ -77,31 +77,33 @@ plugins=(
     history
     sudo
     web-search
-    zsh-completions
-    zsh-autosuggestions
+    zsh-completions # https://github.com/zsh-users/zsh-completions
+    zsh-autosuggestions # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
 )
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=10000                #How many lines of history to keep in memory
-SAVEHIST=10000                #Number of history entries to save to disk
-HISTFILE=~/.zsh_history       #Where to save history to disk
-HISTDUP=erase                 #Erase duplicates in the history file
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt appendhistory          #Append history to the history file (no overwriting)
-setopt sharehistory           #Share history across terminals
-setopt incappendhistory       #Immediately append to the history file, not just when a term is killed
+# http://zsh.sourceforge.net/Doc/Release/Options.html#Options
+HISTFILE=~/.zsh_history       # Where to save history to disk
+HISTSIZE=10000                # How many lines of history to keep in memory
+SAVEHIST=10000                # Number of history entries to save to disk
+setopt appendhistory          # Append history to the history file (no overwriting)
+setopt auto_pushd             # cd foo; cd bar; popd --> in foo again
+setopt extended_history       # Save each command’s beginning timestamp (in seconds since the epoch) and the duration (in seconds) to the history file.
+setopt hist_expire_dups_first # Deletes duplicates first before unique commands in history
+setopt hist_ignore_space      # Space before command won't add command to history
+setopt hist_reduce_blanks     # `a  b` normalizes to `a b` in history
+setopt incappendhistory       # Immediately append to the history file, not just when a term is killed
+setopt no_beep                # No beep on error
+setopt no_rm_star_silent      # confirm on `rm *` (default, but let's be safe)
+setopt pipe_fail              # fail when the first command in a pipeline fails
+setopt rm_star_wait           # wait after confirmation on `rm *` to allow ^C
+setopt sharehistory           # Share history across terminals
 
 source "${ZSH}/oh-my-zsh.sh"
 
-# User configuration
-
-export MANPATH="/usr/local/man:$MANPATH"
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -110,8 +112,10 @@ export LANG=en_US.UTF-8
 #    export EDITOR='vim'
 # fi
 
+# https://github.com/wyntau/fzf-zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# https://github.com/zsh-users/zsh-completions
 autoload -U compinit && compinit
 
 # Compilation flags
@@ -128,6 +132,3 @@ autoload -U compinit && compinit
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias zshconfig="gedit ~/.zshrc"
-
-

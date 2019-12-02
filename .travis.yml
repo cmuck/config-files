@@ -6,6 +6,5 @@ os:
 install: true
 
 script:
-    - ./setup.bash -h
-    - ./setup.bash -o -n "bla bla" -e foo@bar.com
-
+    - ./setup.sh -h
+    - ./setup.sh -o -n "bla bla" -e foo@bar.com

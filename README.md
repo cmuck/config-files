@@ -3,19 +3,23 @@
 # config-files
 
 Configuration files for
-* Atom
-* Git
-* VSCode
-* Oh-my-zsh
+
+- Atom
+- Git
+- VSCode
+- Oh-my-zsh
 
 ## Installation
 
-`./setup.bash`
+```
+./setup.sh
+```
 
 ## Command line options
+
 ```
-./setup.bash -h
-Usage: ./setup.bash options
+./setup.sh -h
+Usage: ./setup.sh options
 This script helps to setup config-files for development using
 - Atom
 - Git (OS dependant)
@@ -29,13 +33,13 @@ OPTIONS:
    -e      Git - user.email
 ```
 
-
 ## Shellcheck
+
 ```
-docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable setup.bash
+docker run --rm -v "$PWD:/mnt" koalaman/shellcheck:stable setup.sh
 ```
 
 ## TODO
-* Switch to Ansible
-* Install applications git, atom, ... for different OS
-* Introduce shellcheck to Travis CI configuration
+
+- Switch to Ansible
+- Install applications git, atom, ... for different OS
