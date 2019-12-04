@@ -1,0 +1,23 @@
+---
+- name: "Hello world!"
+  hosts: all
+  debugger: on_failed
+  tasks:
+    - name: Print something
+      shell: echo "Hello world!"
+    - debug:
+    - debug:
+        msg:
+          - "Some more printing: {{ ansible_user_dir }}"
+          - "Some more printing: {{ ansible_user_id }}"
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html?highlight=debugger#examples
+# https://blog.codecentric.de/en/2017/06/debug-ansible-playbooks-like-pro/
+# p task.args
+# p task_vars
+# task_vars['pkg_name'] = 'bash'
+# update_task
+# redo
+#    - name: Execute failing module to start the debugger
+#      shell: 'cat {{ file }}'
+#      vars:
+#        file: /tmp/not_exist.txt

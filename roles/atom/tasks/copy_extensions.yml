@@ -1,0 +1,10 @@
+---
+- name: Ensure {{ atom_user_dir }} exists
+  file:
+    path: '{{ atom_user_dir }}'
+    state: directory
+
+- name: Copy atom plugins to {{ atom_user_dir }}
+  copy:
+    src: packages.cson
+    dest: '{{ atom_user_dir }}'

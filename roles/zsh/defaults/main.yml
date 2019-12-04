@@ -1,0 +1,8 @@
+---
+user_name: '{{ ansible_user_id }}'
+user_home: '{{ ansible_user_dir }}'
+
+oh_my_zsh_theme: robbyrussell
+oh_my_zsh_plugins:
+  - zsh-autosuggestions
+  - zsh-completions
