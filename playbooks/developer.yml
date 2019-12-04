@@ -1,0 +1,45 @@
+---
+- name: "Setup machine for developing"
+  hosts: all
+  vars:
+    default_git_user_name: 'Christian Muck'
+    default_git_user_email: 'cmuckmuck@gmail.com'
+  vars_prompt:
+    - name: "git_user_name"
+      prompt: "Enter your git user name"
+      default: '{{ default_git_user_name }}'
+    - name: "git_user_email"
+      prompt: "Enter your git user email"
+      default: '{{ default_git_user_email }}'
+  roles:
+    - name: Install CLion
+      role: jetbrains-ide
+      tags: [ clion ]
+    - name: Install pycharm
+      role: jetbrains-ide
+      jetbrains_language: 'python'
+      jetbrains_ide_name: 'pycharm-community'
+      jetbrains_ide_version: '2019.3'
+      tags: [ pycharm ]
+    - name: Install atom
+      role: atom
+      tags: [ atom ]
+    - name: Install vscode
+      role: vscode
+      tags: [ vscode ]
+    - name: Install zsh
+      role: zsh
+      tags: [ zsh ]
+    - name: Install git
+      role: git
+      tags: [ git ]
+    - name: Install keepassxc
+      role: keepassxc
+      tags: [ keepassxc ]
+    - name: Ensure ssh
+      role: ssh
+      tags: [ ssh ]
+    - name: Ensure apps
+      role: ensure-apps
+      tags: [ apps ]
+  environment: '{{ proxy_environment }}'

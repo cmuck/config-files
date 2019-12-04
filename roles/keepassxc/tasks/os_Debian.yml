@@ -1,0 +1,13 @@
+---
+- name: Add keepassxc ppa
+  apt_repository:
+    repo: ppa:phoerious/keepassxc
+  become: true
+  # TODO Find another way to use trusted.gpg.d
+  # Warning: apt-key output should not be parsed (stdout is not a terminal)
+  ignore_errors: true
+
+- name: Install keepassxc
+  apt:
+    name: keepassxc
+  become: true

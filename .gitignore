@@ -1,1 +1,28 @@
+# Ignore IDE environment
+.idea/
+
+# Ignore vagrant environment
+.vagrant/
+
+# Ignore virtual environment
+.venv/
+
+# Ignore python chache
+.cache
+__pycache__
+
+# Ignore generated files.
+*.pyc
+*.retry
+
+# Ignore temporary and backup files.
 .DS_Store
+*.bak
+*.dot
+*.png
+*.swo
+*.swp
+*.tmp
+*.log
+*~
+inventory.yml

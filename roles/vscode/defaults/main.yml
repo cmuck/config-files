@@ -1,0 +1,37 @@
+---
+vscode_extension:
+  - aaron-bond.better-comments
+  - alefragnani.project-manager
+  - BazelBuild.vscode-bazel
+  - bmewburn.vscode-intelephense-client
+  - CoenraadS.bracket-pair-colorizer
+  - DavidAnson.vscode-markdownlint
+  - DevonDCarew.bazel-code
+  - donjayamanne.githistory
+  - DotJoshJohnson.xml
+  - eamodio.gitlens
+  - Equinusocio.vsc-material-theme
+  - esbenp.prettier-vscode
+  - formulahendry.code-runner
+  - foxundermoon.shell-format
+  - hnw.vscode-auto-open-markdown-preview
+  - humao.rest-client
+  - mads-hartmann.bash-ide-vscode
+  - ms-azuretools.vscode-docker
+  - ms-python.python
+  - ms-vscode-remote.remote-containers
+  - ms-vscode-remote.remote-ssh
+  - ms-vscode-remote.remote-ssh-edit
+  - ms-vscode-remote.remote-wsl
+  - ms-vscode-remote.vscode-remote-extensionpack
+  - ms-vscode.cmake-tools
+  - ms-vscode.cpptools
+  - ms-vscode.Go
+  - PKief.material-icon-theme
+  - pranaygp.vscode-css-peek
+  - redhat.vscode-yaml
+  - ritwickdey.LiveServer
+  - timonwong.shellcheck
+  - vscode-icons-team.vscode-icons
+  - vscoss.vscode-ansible
+  - wholroyd.jinja

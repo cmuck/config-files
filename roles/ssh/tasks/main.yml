@@ -1,0 +1,42 @@
+---
+# yamllint disable rule:line-length
+- name: Ensure ssh direcotory exists
+  file:
+    path: '{{ ansible_user_dir }}/.ssh'
+    state: directory
+
+- name: Ensure ssh config file exists
+  file:
+    path: '{{ ansible_user_dir }}/.ssh/config'
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+
+- name: Write SSH config common block
+  blockinfile:
+    path: '~/.ssh/config'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK common"
+    block: |
+      Host *
+        AddKeysToAgent yes
+        IgnoreUnknown UseKeychain
+        UseKeychain yes
+        IdentityFile ~/.ssh/id_rsa
+
+- name: Write SSH config GitHub via corkscrew block
+  blockinfile:
+    path: '~/.ssh/config'
+    backup: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK corkscrew"
+    block: |
+      {% if environment[0].http_proxy is defined and environment[0].http_proxy | length %}
+      Host github.com
+        Hostname github.com
+        User git
+        IdentityFile ~/.ssh/id_rsa
+        ProxyCommand /usr/bin/corkscrew proxy.muc 8080 %h %p
+      {% else %}
+        # No proxy set for GitHub
+      {% endif %}
+    # Use proxy_environment.http_proxy instead of environment[0].http_proxy but environment is the default in Ansible
+    # and proxy_environment depends on the name of the var used in group_vars
