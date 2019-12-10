@@ -1,13 +1,15 @@
 ---
+dist: bionic
+
 language: python
 
+#python:
+#  - 3.6
+#  - 3.7
+
+cache: pip
+
 services: docker
-
-before_install:
-  - sudo apt-get -qq update
-
-install:
-  - pip install molecule docker
 
 env:
   matrix:
@@ -20,34 +22,11 @@ env:
     - ANSIBLE_ROLE: vscode
     - ANSIBLE_ROLE: zsh
 
+before_script:
+  - uname -a
+  - ansible --version
+  - molecule --version
+
 script:
-  - ansible --version && molecule --version
   - cd "./roles/${ANSIBLE_ROLE}"
   - molecule test
-
-#jobs:
-#  fast_finish: true
-#  include:
-#    - script:
-#      - ansible --version && molecule --version
-#      - cd ./roles/git
-#      - molecule test
-#    - script:
-#      - ansible --version && molecule --version
-#      - cd ./roles/ssh
-#      - molecule test
-
-
-
-#jobs:
-#  fast_finish: true
-#  include:
-#    - stage: "Molecule"
-#      script: molecule --version && - ansible --version && cd roles/atom && molecule test
-#      script: molecule --version && - ansible --version && cd roles/git && molecule test
-#      script: molecule --version && - ansible --version && cd roles/jetbrains-ide && molecule test
-#      script: molecule --version && - ansible --version && cd roles/keepassxc && molecule test
-#      script: molecule --version && - ansible --version && cd roles/proxy && molecule test
-#      script: molecule --version && - ansible --version && cd roles/ssh && molecule test
-#      script: molecule --version && - ansible --version && cd roles/vscode && molecule test
-#      script: molecule --version && - ansible --version && cd roles/zsh && molecule test
