@@ -14,10 +14,12 @@ services: docker
 env:
   matrix:
     - ANSIBLE_ROLE: atom
+    - ANSIBLE_ROLE: debug
     - ANSIBLE_ROLE: ensure-apps
     - ANSIBLE_ROLE: git
     - ANSIBLE_ROLE: jetbrains-ide
     - ANSIBLE_ROLE: keepassxc
+    - ANSIBLE_ROLE: proxy
     - ANSIBLE_ROLE: ssh
     - ANSIBLE_ROLE: vscode
     - ANSIBLE_ROLE: zsh
