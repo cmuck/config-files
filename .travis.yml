@@ -15,6 +15,7 @@ env:
   matrix:
     - ANSIBLE_ROLE: atom
     - ANSIBLE_ROLE: debug
+    #- ANSIBLE_ROLE: docker
     - ANSIBLE_ROLE: ensure-apps
     - ANSIBLE_ROLE: git
     - ANSIBLE_ROLE: jetbrains-ide

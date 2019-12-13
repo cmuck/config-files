@@ -79,6 +79,7 @@
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
+      - terminator
       - vim
       - zsh
 

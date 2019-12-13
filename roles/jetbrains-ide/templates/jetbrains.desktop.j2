@@ -2,8 +2,13 @@
 Version=1.0
 Type=Application
 Name={{ jetbrains_ide_name }}
-Icon={{ jetbrains_absolute_directory }}/bin/clion.svg
-Exec="{{ jetbrains_absolute_directory }}/bin/clion.sh" %f
+{% if jetbrains_ide_name.endswith('-community') %}
+Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.svg
+Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.sh" %f
+{% else %}
+Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name }}
+Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name }}.sh" %f
+{% endif %}
 Comment=A cross-platform IDE
 Categories=Development;IDE;
 Terminal=false

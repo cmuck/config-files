@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o errtrace
-set -o nounset
-set -o pipefail
+#set -o errexit
+#set -o errtrace
+#set -o nounset
+#set -o pipefail
 
 chmod 700 ~/.ssh
 chmod 644 ~/.ssh/authorized_keys

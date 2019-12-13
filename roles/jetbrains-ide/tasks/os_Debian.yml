@@ -46,6 +46,7 @@
   with_items: "{{ jetbrains_plugins_downloaded.results }}"
 
 - name: Ensure jetbrains desktop entry direcotory exists
+  when: not jetbrains_ide_info_stat.stat.exists
   file:
     path: '{{ jetbrains_desktop_entry_dir }}'
     state: directory

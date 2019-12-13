@@ -8,13 +8,13 @@
 #    #use_proxy: true
 #  become: true
 
-- name: Install apt-transport-https
+- name: Install atom dependencies
   apt:
     name: apt-transport-https
     state: present
   become: true
 
-- name: Install apt key
+- name: Install atom apt key
   apt_key:
     url: 'https://packagecloud.io/AtomEditor/atom/gpgkey'
     state: present
