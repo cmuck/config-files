@@ -42,4 +42,7 @@
     - name: Ensure apps
       role: ensure-apps
       tags: [ apps ]
+    - name: Install docker
+      role: docker
+      tags: [ docker ]
   environment: '{{ proxy_environment }}'

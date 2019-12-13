@@ -1,12 +1,15 @@
 ---
 # yamllint disable rule:line-length
-- name: Install dependencies
-  package:
-    name:
-      - git
-      - zsh
+- name: Install zsh dependencies
+  apt:
+    name: "{{ packages }}"
     state: present
   become: true
+  vars:
+    packages:
+      - curl
+      - git
+      - zsh
 
 - name: Clone oh-my-zsh for users
   git:
@@ -14,8 +17,6 @@
     version: 903a3e9
     dest: '{{ user_home }}/.oh-my-zsh'
     depth: 1
-  become: true
-  become_user: '{{ user_name }}'
 
 - name: Set default shell for users
   user:
@@ -36,6 +37,7 @@
         - common-aliases
         - debian
         - docker
+        - fzf-zsh
         - git
         - git-extras
         - history
@@ -43,3 +45,42 @@
         - web-search
         - zsh-completions  # https://github.com/zsh-users/zsh-completions
         - zsh-autosuggestions  # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+
+- name: Clone zsh-completions plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-completions.git
+    version: '0.31.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-completions'
+    depth: 1
+
+- name: Clone zsh-autosuggestions plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    version: 'v0.6.3'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+    depth: 1
+
+- name: Clone zsh-syntax-highlighting plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    version: '0.6.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+    depth: 1
+
+- name: Clone fzf
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    version: '0.19.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf'
+    depth: 1
+
+- name: Install fzf
+  command: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf/install --bin'
+  changed_when: false
+
+- name: Clone fzf-zsh
+  git:
+    repo: https://github.com/Treri/fzf-zsh.git
+    version: 829d7e40
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf-zsh'
+    depth: 1
