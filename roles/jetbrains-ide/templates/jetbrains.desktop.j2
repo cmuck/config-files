@@ -6,8 +6,8 @@ Name={{ jetbrains_ide_name }}
 Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.svg
 Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.sh" %f
 {% else %}
-Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name }}
-Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name }}.sh" %f
+Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | lower }}.svg
+Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | lower }}.sh" %f
 {% endif %}
 Comment=A cross-platform IDE
 Categories=Development;IDE;

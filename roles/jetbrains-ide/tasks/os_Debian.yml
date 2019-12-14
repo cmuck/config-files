@@ -57,3 +57,4 @@
     src: jetbrains.desktop.j2
     dest: "{{ jetbrains_desktop_file_location }}"
     backup: true
+  become: true
