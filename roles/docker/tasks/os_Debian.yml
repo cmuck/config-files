@@ -30,6 +30,7 @@
 - name: Install docker
   apt:
     name: docker-ce
+    state: present
   become: true
 
 - name: Ensure group docker exists
