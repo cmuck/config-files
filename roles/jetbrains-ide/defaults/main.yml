@@ -17,7 +17,6 @@ jetbrains_download_dest: '{{ jetbrains_download_directory}}/{{ jetbrains_ide_nam
 
 jetbrains_desktop_entry_dir: '/usr/share/applications'
 jetbrains_desktop_file: 'jetbrains-{{ jetbrains_directory }}.desktop'
-jetbrains_desktop_file_location: '{{ jetbrains_desktop_entry_dir }}/{{ jetbrains_desktop_file }}'
 
 jetbrains_plugin_download_mirror: "https://plugins.jetbrains.com/plugin/download?updateId="
 jetbrains_plugins:

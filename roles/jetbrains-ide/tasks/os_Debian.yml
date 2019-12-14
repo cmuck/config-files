@@ -55,6 +55,27 @@
   when: not jetbrains_ide_info_stat.stat.exists
   template:
     src: jetbrains.desktop.j2
-    dest: "{{ jetbrains_desktop_file_location }}"
+    dest: "{{ jetbrains_desktop_entry_dir }}/{{ jetbrains_desktop_file }}"
     backup: true
+
+- name: Ensure gsettings is present
+  apt:
+    name: libglib2.0-bin
+    state: present
   become: true
+
+- name: Get gsettings favorite-apps
+  command: gsettings get org.gnome.shell favorite-apps
+  register: gsettings_favorite_apps
+  changed_when: false
+  ignore_errors: true
+
+- name: 'Add {{ jetbrains_ide_name }} to favorites'
+  shell: |
+    set -o pipefail
+    gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed "s/]/,'{{ jetbrains_desktop_file }}']/")"
+  when:
+    - gsettings_favorite_apps.rc == 0
+    - gsettings_favorite_apps.stdout is not search("{{ jetbrains_desktop_file }}")
+  args:
+    executable: /bin/bash
