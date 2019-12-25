@@ -1,5 +1,5 @@
 [include]
-    path = .gitconfig-common
+    path = .git/gitconfig-common
 [credential]
     helper = osxkeychain
 [core]

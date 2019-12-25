@@ -2,3 +2,7 @@
 - name: 'Install jetbrains-ide for OS {{ ansible_os_family }}'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
+
+- name: 'Install jetbrains-ide for OS {{ ansible_os_family }}'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Darwin"

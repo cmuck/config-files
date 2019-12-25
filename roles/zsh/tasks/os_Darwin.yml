@@ -1,0 +1,102 @@
+---
+# yamllint disable rule:line-length
+- name: Check if xcode-select is installed
+  stat:
+    path: /Library/Developer/CommandLineTools/
+  register: xcodeselect
+
+- name: Install xcode-select if missing
+  command: xcode-select --install
+  when: not xcodeselect.stat.exists
+
+- name: Check if brew is installed
+  stat:
+    path: /usr/local/bin/brew
+  register: brew
+
+- name: Install brew if missing
+  command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  when: not brew.stat.exists
+
+- name: Install zsh dependencies
+  homebrew:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - curl
+    - git
+    - zsh
+
+- name: Clone oh-my-zsh for users
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    version: 903a3e9
+    dest: '{{ user_home }}/.oh-my-zsh'
+    depth: 1
+
+- name: Set default shell for users
+  user:
+    name: '{{ user_name }}'
+    shell: /usr/local/bin/zsh
+  become: true
+
+- name: Write .zshrc for users
+  template:
+    src: zshrc.j2
+    dest: '{{ user_home }}/.zshrc'
+    backup: true
+  vars:
+    oh_my_zsh:
+      theme: bira
+      plugins:
+        - colored-man-pages
+        - common-aliases
+        - debian
+        - docker
+        - fzf-zsh
+        - git
+        - git-extras
+        - history
+        - sudo
+        - web-search
+        - zsh-completions  # https://github.com/zsh-users/zsh-completions
+        - zsh-autosuggestions  # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+
+- name: Clone zsh-completions plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-completions.git
+    version: '0.31.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-completions'
+    depth: 1
+
+- name: Clone zsh-autosuggestions plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    version: 'v0.6.3'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+    depth: 1
+
+- name: Clone zsh-syntax-highlighting plugin to users oh-my-zsh directory
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    version: '0.6.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+    depth: 1
+
+- name: Clone fzf
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    version: '0.19.0'
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf'
+    depth: 1
+
+- name: Install fzf
+  command: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf/install --bin'
+  changed_when: false
+
+- name: Clone fzf-zsh
+  git:
+    repo: https://github.com/Treri/fzf-zsh.git
+    version: 829d7e40
+    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf-zsh'
+    depth: 1

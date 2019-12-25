@@ -1,0 +1,52 @@
+---
+# yamllint disable rule:line-length
+- name: Check if xcode-select is installed
+  stat:
+    path: /Library/Developer/CommandLineTools/
+  register: xcodeselect
+
+- name: Install xcode-select if missing
+  command: xcode-select --install
+  when: not xcodeselect.stat.exists
+
+- name: Check if brew is installed
+  stat:
+    path: /usr/local/bin/brew
+  register: brew
+
+- name: Install brew if missing
+  command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  when: not brew.stat.exists
+
+- name: Install zsh dependencies
+  homebrew:
+    name: git
+    state: "present"
+
+- name: Ensure {{ git_user_dir }} exists
+  file:
+    path: '{{ git_user_dir }}'
+    state: directory
+
+- name: Copy OS independent git common config to {{ git_user_dir }}
+  copy:
+    src: 'gitconfig-common'
+    dest: '{{ git_user_dir }}'
+
+- name: Copy OS dependent git config
+  copy:
+    src: 'gitconfig-{{ ansible_os_family }}'
+    dest: '{{ ansible_user_dir }}/.gitconfig'
+    force: false
+
+- name: Configure user.name in ~/.gitconfig
+  git_config:
+    scope: global
+    name: 'user.name'
+    value: '{{ git_user_name }}'
+
+- name: Configure user.email in ~/.gitconfig
+  git_config:
+    scope: global
+    name: 'user.email'
+    value: '{{ git_user_email }}'
