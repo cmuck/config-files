@@ -1,34 +1,8 @@
 ---
-- name: Ensure git is installed
-  apt:
-    name: git
-    state: present
-  become: true
+- name: 'Install and configure git for OS {{ ansible_os_family }}'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Debian"
 
-- name: Ensure {{ git_user_dir }} exists
-  file:
-    path: '{{ git_user_dir }}'
-    state: directory
-
-- name: Copy OS independent git common config to {{ git_user_dir }}
-  copy:
-    src: 'gitconfig-common'
-    dest: '{{ git_user_dir }}'
-
-- name: Copy OS dependent git config
-  copy:
-    src: 'gitconfig-{{ ansible_os_family }}'
-    dest: '{{ ansible_user_dir }}/.gitconfig'
-    force: false
-
-- name: Configure user.name in ~/.gitconfig
-  git_config:
-    scope: global
-    name: 'user.name'
-    value: '{{ git_user_name }}'
-
-- name: Configure user.email in ~/.gitconfig
-  git_config:
-    scope: global
-    name: 'user.email'
-    value: '{{ git_user_email }}'
+- name: 'Install and configure git for OS {{ ansible_os_family }}'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Darwin"
