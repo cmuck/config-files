@@ -80,6 +80,7 @@
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
+      - silversearcher-ag
       - terminator
       - vim
       - zsh
