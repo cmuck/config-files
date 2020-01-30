@@ -48,8 +48,9 @@
 [diff]
     compactionHeuristic = true
 [push]
-    default = simple
+    default = current
 [user]
+    #signingkey = 20BC5291D5B3C267
     useconfigonly = true
 [rebase]
     autosqash = true
@@ -73,3 +74,7 @@
     #prompt = false
 [difftool "mymeld"]
     cmd = meld $LOCAL $REMOTE
+[remote "origin"]
+	  prune = true
+#[commit]
+#    gpgsign = true
