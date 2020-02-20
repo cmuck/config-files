@@ -12,11 +12,11 @@ Follow the instructions at [INSTALL.md](./INSTALL.md)
 
 ### Command line options
 
-Run `./setup.py --help` to see the available options.
+Run `./run-ansible.py --help` to see the available options.
 
 ```sh
-./setup.py --help
-usage: setup.py [-h] [-t TAG] [-v] [-d] [-c] playbook
+./run-ansible.py --help
+usage: run-ansible.py [-h] [-t TAG] [-v] [-d] [-c] playbook
 
 positional arguments:
   playbook           Playbook from playbooks directory, e.g. "helloworld"
@@ -35,23 +35,23 @@ optional arguments:
 
 * Default usage
     ```sh
-    ./setup.py developer
+    ./run-ansible.py developer
     ```
 * Syntax-check of the playbook
     ```sh
-    ./setup.py -c developer
+    ./run-ansible.py -c developer
     ```
 * Dry-run of the playbook
     ```sh
-    ./setup.py -d developer
+    ./run-ansible.py -d developer
     ```
 * Execute specific tags of the playbook
     ```sh
-    ./setup.py -t zsh -t git developer
+    ./run-ansible.py -t zsh -t git developer
     ```
 * Increase verbosity
     ```sh
-    ./setup.py -v developer
+    ./run-ansible.py -v developer
     ```
 
 ### Playbook helloworld
@@ -59,10 +59,10 @@ optional arguments:
 Can be used to check e.g. if config-files and Ansible works properly
 
 ```sh
-./setup.py helloworld
-./setup.py -v helloworld
-./setup.py -d helloworld
-./setup.py -c helloworld
+./run-ansible.py helloworld
+./run-ansible.py -v helloworld
+./run-ansible.py -d helloworld
+./run-ansible.py -c helloworld
 ```
 
 ## Testing
