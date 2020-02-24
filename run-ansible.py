@@ -32,6 +32,25 @@ class AnsibleFacade:
         shutil.copy(str(requirements), str(venv_requirements))
         print("Created venv and installed requirements")
 
+    @staticmethod
+    def _print_tree(directory):
+        file_marker = "f"
+        directory_marker = "d"
+        print (f'Temporary directory created: {directory}')
+        print(f'{directory_marker} {directory}')
+        for path in sorted(directory.rglob('*')):
+            depth = len(path.relative_to(directory).parts)
+            spacer = '    ' * depth
+            file = path.name
+            if path.is_symlink():
+                file += " (symlink to " + str(path.resolve()) + ")"
+
+            marker = file_marker
+            if path.is_dir():
+                marker = directory_marker
+
+            print(f'{spacer}{marker} {file}')
+
     def _symlink_ansible_files(self, tempdir):
         if tempdir.exists():
             (tempdir / "roles").symlink_to(self.base_path / "roles")
@@ -55,8 +74,6 @@ class AnsibleFacade:
 
             ansible_args += ["--ask-become-pass"]
 
-            if self.args.verbose:
-                ansible_args += ["-v"]
             if self.args.dry_run:
                 ansible_args += ["--check"]
             if self.args.check:
@@ -64,6 +81,10 @@ class AnsibleFacade:
             if self.args.tag:
                 ansible_args += ["--tag"]
                 ansible_args += [','.join(self.args.tag)]
+            if self.args.verbose:
+                ansible_args += ["-v"]
+                self._print_tree(tempdir)
+                print(f'Ansible is called with: {ansible_args}')
 
             res = subprocess.run(ansible_args, cwd=str(tempdir))
             if res.returncode != 0:
