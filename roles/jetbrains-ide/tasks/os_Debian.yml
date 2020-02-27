@@ -57,6 +57,7 @@
     src: jetbrains.desktop.j2
     dest: "{{ jetbrains_desktop_entry_dir }}/{{ jetbrains_desktop_file }}"
     backup: true
+  become: true
 
 - name: Ensure gsettings is present
   apt:
