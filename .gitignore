@@ -25,4 +25,4 @@ __pycache__
 *.tmp
 *.log
 *~
-inventory.yml
+inventory.json
