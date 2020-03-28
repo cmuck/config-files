@@ -11,7 +11,7 @@ import argparse
 class AnsibleFacade:
     def __init__(self, args):
         self.base_path = pathlib.Path(__file__).resolve().parent
-        self.venv_path = self.base_path / ".venv"
+        self.venv_path = self.base_path / "venv"
         self.args = args
 
         self._setup_venv()
