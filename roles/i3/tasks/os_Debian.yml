@@ -1,0 +1,106 @@
+---
+- name: Install dependencies
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - build-essential
+      - git
+      - libx11-dev
+      - rofi
+
+- name: Ensure i3 present
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - i3
+
+- name: Create local dir
+  file:
+    path: '{{ ansible_user_dir }}/.local/bin'
+    state: directory
+
+- name: Copy i3-exit
+  copy:
+    src: local/bin/i3-exit
+    dest: '{{ ansible_user_dir }}/.local/bin'
+    mode: preserve
+
+- name: Create config dir
+  file:
+    path: '{{ ansible_user_dir }}/.config'
+    state: directory
+
+- name: Copy i3 config
+  copy:
+    src: config/i3
+    dest: '{{ ansible_user_dir }}/.config'
+    mode: preserve
+
+- name: Copy i3 status
+  copy:
+    src: config/i3status
+    dest: '{{ ansible_user_dir }}/.config'
+    mode: preserve
+
+- name: Copy .xinitrc
+  copy:
+    src: xinitrc
+    dest: '{{ ansible_user_dir }}/.xinitrc'
+    mode: preserve
+
+- name: Copy xprofile
+  copy:
+    src: config/xprofile
+    dest: '{{ ansible_user_dir }}/.config/xprofile'
+    mode: preserve
+
+- name: Create symbolic link .zprofile
+  file:
+    src: '{{ ansible_user_dir }}/.profile'
+    dest: '{{ ansible_user_dir }}/.zprofile'
+    state: link
+
+# - name: Create symbolic link .xprofile
+#  file:
+#    src: '{{ ansible_user_dir }}/.config/xprofile'
+#    dest: '{{ ansible_user_dir }}/.xprofile'
+#    state: link
+
+- name: Create bin
+  file:
+    path: '/usr/local/bin'
+    state: directory
+
+- name: Check xcwb is installed
+  stat:
+    path: '/usr/local/bin/xcwd'
+  register: xcwd_installed
+
+- name: Install xcbw
+  block:
+    - name: Clone xcwd
+      git:
+        repo: https://github.com/schischi/xcwd.git
+        dest: '/tmp/xcwd'
+        version: HEAD
+        depth: 1  # noqa 401
+
+    - name: Make xcwd
+      command: 'make'
+      args:
+        chdir: '/tmp/xcwd'
+
+    - name: Copy xcwd to bin
+      copy:
+        src: /tmp/xcwd/xcwd
+        dest: '/usr/local/bin'
+        mode: preserve
+        remote_src: true
+      become: true
+  when: not xcwd_installed.stat.exists
