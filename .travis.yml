@@ -22,6 +22,7 @@ env:
     - ANSIBLE_ROLE: jetbrains-ide
     - ANSIBLE_ROLE: keepassxc
     - ANSIBLE_ROLE: proxy
+    - ANSIBLE_ROLE: ranger
     - ANSIBLE_ROLE: ssh
     - ANSIBLE_ROLE: vscode
     - ANSIBLE_ROLE: zsh

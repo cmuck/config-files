@@ -1,0 +1,20 @@
+[ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
+[ -d "$HOME/bin" ] && export PATH="${HOME}/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && export PATH="${HOME}/.local/bin:$PATH"
+
+# Default programs:
+#export EDITOR=""
+#export TERMINAL=""
+#export BROWSER=""
+#export READER=""
+
+# https://developer.gnome.org/basedir-spec/
+# https://wiki.archlinux.org/index.php/XDG_Base_Directory
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+export XDG_CURRENT_DESKTOP=GNOME
+
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+export ATOM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/atom"
