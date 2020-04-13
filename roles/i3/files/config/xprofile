@@ -1,4 +1,4 @@
- #!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # This file runs when a DM logs you into a graphical session.
 # If you use startx/xinit like a Chad, this file will also be sourced.
@@ -23,11 +23,6 @@ export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
 # Fix Gnome Apps Slow  Start due to failing services
 # Add this when you include flatpak in your system
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
-
-# Set wallpaper but switching to gnome does not work with .xprofile, therefore moved feh to i3 config
-feh --bg-fill /usr/share/backgrounds/warty-final-ubuntu.png
-
-nm-applet --sm-disable &
 
 exec i3
 
