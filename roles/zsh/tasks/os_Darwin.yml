@@ -27,23 +27,16 @@
     - git
     - zsh
 
-- name: Clone oh-my-zsh for users
-  git:
-    repo: https://github.com/robbyrussell/oh-my-zsh.git
-    version: 903a3e9
-    dest: '{{ user_home }}/.oh-my-zsh'
-    depth: 1
-
 - name: Set default shell for users
   user:
-    name: '{{ user_name }}'
+    name: '{{ ansible_user_id }}'
     shell: /usr/local/bin/zsh
   become: true
 
 - name: Write .zshrc for users
   template:
     src: zshrc.j2
-    dest: '{{ user_home }}/.zshrc'
+    dest: '{{ ansible_user_dir }}/.zshrc'
     backup: true
   vars:
     oh_my_zsh:
@@ -51,52 +44,106 @@
       plugins:
         - colored-man-pages
         - common-aliases
-        - debian
         - docker
-        - fzf-zsh
-        - git
-        - git-extras
-        - history
+        - fzf
         - sudo
         - web-search
-        - zsh-completions  # https://github.com/zsh-users/zsh-completions
-        - zsh-autosuggestions  # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+        - zsh-completions
+        - zsh-autosuggestions
+        - zsh-syntax-highlighting
+
+- name: Clone oh-my-zsh for users
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    version: 903a3e9
+    dest: '{{ oh_my_zsh_dir }}'
+    depth: 1
+
+- name: Check oh-my-zsh exist in home directory
+  stat:
+    path: '{{ ansible_user_dir }}/.oh-my-zsh'
+  register: oh_my_zsh_home_dir
+
+- name: Delete oh-my-zsh in home directory
+  file:
+    path: '{{ ansible_user_dir }}/.oh-my-zsh'
+    state: absent
+  when: oh_my_zsh_home_dir.stat.exists and oh_my_zsh_home_dir.stat.isdir
+
+- name: Check oh-my-zsh exist
+  stat:
+    path: '{{ oh_my_zsh_dir }}'
+  register: oh_my_zsh
+
+- name: Delete oh-my-zsh
+  file:
+    path: '{{ oh_my_zsh_dir }}'
+    state: absent
+  when: oh_my_zsh.stat.exists and oh_my_zsh.stat.isdir
+
+- name: Clone oh-my-zsh for users
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: '{{ oh_my_zsh_dir }}'  # noqa 401
 
 - name: Clone zsh-completions plugin to users oh-my-zsh directory
   git:
     repo: https://github.com/zsh-users/zsh-completions.git
     version: '0.31.0'
-    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-completions'
+    dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-completions'
     depth: 1
 
 - name: Clone zsh-autosuggestions plugin to users oh-my-zsh directory
   git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
-    version: 'v0.6.3'
-    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions'
+    version: 'v0.6.4'
+    dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-autosuggestions'
     depth: 1
 
 - name: Clone zsh-syntax-highlighting plugin to users oh-my-zsh directory
   git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-    version: '0.6.0'
-    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting'
+    version: '0.7.1'
+    dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-syntax-highlighting'
     depth: 1
 
 - name: Clone fzf
   git:
     repo: https://github.com/junegunn/fzf.git
-    version: '0.19.0'
-    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf'
-    depth: 1
+    dest: '{{ fzf_dir }}'
+    depth: 1  # noqa 401
+
+- name: Check fzf is installed
+  stat:
+    path: '{{ ansible_user_dir }}/.config/fzf'
+  register: fzf_installed
 
 - name: Install fzf
-  command: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf/install --bin'
-  changed_when: false
+  command: "./install --all --xdg"
+  args:
+    chdir: "{{ fzf_dir }}"
+  when: not fzf_installed.stat.exists
 
-- name: Clone fzf-zsh
-  git:
-    repo: https://github.com/Treri/fzf-zsh.git
-    version: 829d7e40
-    dest: '{{ user_home }}/.oh-my-zsh/custom/plugins/fzf-zsh'
-    depth: 1
+# Clean up old installations
+
+- name: Check fzf exist in home directory
+  stat:
+    path: '{{ ansible_user_dir }}/.fzf'
+  register: fzf_home_dir
+
+- name: Delete fzf in home directory
+  file:
+    path: '{{ ansible_user_dir }}/.fzf'
+    state: absent
+  when: fzf_home_dir.stat.exists and fzf_home_dir.stat.isdir
+
+- name: Check oh-my-zsh exist in home directory
+  stat:
+    path: '{{ ansible_user_dir }}/.oh-my-zsh'
+  register: oh_my_zsh_home_dir
+
+- name: Delete oh-my-zsh in home directory
+  file:
+    path: '{{ ansible_user_dir }}/.oh-my-zsh'
+    state: absent
+  when: oh_my_zsh_home_dir.stat.exists and oh_my_zsh_home_dir.stat.isdir
