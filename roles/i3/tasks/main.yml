@@ -1,0 +1,4 @@
+---
+- name: 'Install i3 OS Debian'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Debian"

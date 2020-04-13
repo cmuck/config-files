@@ -18,6 +18,7 @@ env:
     - ANSIBLE_ROLE: docker
     - ANSIBLE_ROLE: ensure-apps
     - ANSIBLE_ROLE: git
+    - ANSIBLE_ROLE: i3
     - ANSIBLE_ROLE: jetbrains-ide
     - ANSIBLE_ROLE: keepassxc
     - ANSIBLE_ROLE: proxy
