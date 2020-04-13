@@ -1,8 +1,8 @@
 ---
-- name: 'Install zsh for OS {{ ansible_os_family }}'
+- name: 'Install zsh for Debian'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
 
-- name: 'Install zsh for OS {{ ansible_os_family }}'
+- name: 'Install zsh for Darwin'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Darwin"
