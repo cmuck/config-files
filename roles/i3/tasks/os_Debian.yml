@@ -1,7 +1,14 @@
 ---
+- name: Add i3 apt-key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: bda0e4ba891b327bb00df1e076458020c35556dc
+  become: true
+
 - name: Add repository for i3-gaps
   apt_repository:
-    repo: 'ppa:kgilmer/speed-ricer'
+    repo: 'deb http://ppa.launchpad.net/kgilmer/speed-ricer/ubuntu bionic main'
+    filename: i3-gaps
   become: true
 
 - name: Ensure i3-gaps (fork of i3) and other useful tools are present
