@@ -13,6 +13,7 @@
     packages:
       # - i3
       - i3-gaps
+      - i3blocks
       - arandr
       - compton
       - feh
@@ -44,6 +45,12 @@
 - name: Copy i3 status
   copy:
     src: config/i3status
+    dest: '{{ ansible_user_dir }}/.config'
+    mode: preserve
+
+- name: Copy i3 blocks
+  copy:
+    src: config/i3blocks
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
 
