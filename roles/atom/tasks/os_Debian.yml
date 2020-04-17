@@ -24,8 +24,6 @@
   apt_repository:
     repo: 'deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main'
     filename: atom
-    state: present
-    update_cache: true
   become: true
 
 - name: Install atom

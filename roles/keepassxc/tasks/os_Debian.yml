@@ -1,12 +1,22 @@
 ---
 # yamllint disable rule:line-length
-- name: Add keepassxc ppa
-  apt_repository:
-    repo: ppa:phoerious/keepassxc
+- name: Install gnupg to add pub key
+  apt:
+    name: gnupg
+    state: present
   become: true
-  # TODO Find another way to use trusted.gpg.d
-  # Warning: apt-key output should not be parsed (stdout is not a terminal)
-  ignore_errors: true
+
+- name: Add keepass apt-key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: d89c66d0e31fea2874ebd20561922ab60068fcd6
+  become: true
+
+- name: Add repository for keepass
+  apt_repository:
+    repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu bionic main'
+    filename: keepass
+  become: true
 
 - name: Install keepassxc
   apt:
