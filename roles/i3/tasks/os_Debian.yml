@@ -54,30 +54,35 @@
     src: config/i3
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
+    backup: true
 
 - name: Copy i3 status
   copy:
     src: config/i3status
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
+    backup: true
 
 - name: Copy i3 blocks
   copy:
     src: config/i3blocks
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
+    backup: true
 
 - name: Copy rofi
   copy:
     src: config/rofi
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
+    backup: true
 
 - name: Copy terminator
   copy:
     src: config/terminator
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
+    backup: true
 
 - name: Copy .xinitrc
   copy:
@@ -90,6 +95,7 @@
     src: config/xprofile
     dest: '{{ ansible_user_dir }}/.config/xprofile'
     mode: preserve
+    backup: true
 
 - name: Create symbolic link .zprofile
   file:

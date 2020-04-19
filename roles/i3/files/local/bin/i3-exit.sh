@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 lock() {
-    i3-lock-with-screenshot
+    i3-lock-with-screenshot.sh
 }
 
 case "$1" in
