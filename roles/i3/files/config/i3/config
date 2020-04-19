@@ -35,7 +35,7 @@ smart_borders on
 # finds out, if available)
 bar {
         status_command i3blocks
-        font pango: mono 8
+        font pango: mono 10
         position top
 }
 
@@ -170,12 +170,12 @@ bindsym $mod+Ctrl+r restart;exec notify-send 'i3 restarted'
 set $mode_system (l) system lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 bindsym $mod+Pause mode "$mode_system"
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3-exit lock
-    bindsym e exec --no-startup-id i3-exit logout
-    bindsym s exec --no-startup-id i3-exit suspend
-    bindsym h exec --no-startup-id i3-exit hibernate
-    bindsym r exec --no-startup-id i3-exit reboot
-    bindsym Shift+s exec --no-startup-id i3-exit shutdown
+    bindsym l exec --no-startup-id i3-exit.sh lock
+    bindsym e exec --no-startup-id i3-exit.sh logout
+    bindsym s exec --no-startup-id i3-exit.sh suspend
+    bindsym h exec --no-startup-id i3-exit.sh hibernate
+    bindsym r exec --no-startup-id i3-exit.sh reboot
+    bindsym Shift+s exec --no-startup-id i3-exit.sh shutdown
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
