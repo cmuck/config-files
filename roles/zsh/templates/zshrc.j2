@@ -152,3 +152,6 @@ source "${ZSH}/oh-my-zsh.sh"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias zshconfig="mate ~/.zshrc"
 alias r="ranger"
+
+# Use neovim for vim if present
+command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"

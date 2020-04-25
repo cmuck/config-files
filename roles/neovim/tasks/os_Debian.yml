@@ -1,20 +1,20 @@
 ---
-# yamllint disable rule:line-length
-- name: Install ranger
+- name: Install neovim
   apt:
     name: "{{ packages }}"
     state: present
   become: true
   vars:
     packages:
-      - ranger
+      - neovim
+      - vim
 
 - name: Create some dirs
   file:
     path: '{{ config_dir }}'
     state: directory
 
-- name: Copy ranger config
+- name: Copy neovim config
   copy:
-    src: 'rc.conf'
+    src: 'init.vim'
     dest: '{{ config_dir }}'
