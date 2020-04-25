@@ -37,6 +37,9 @@
     - name: Install ranger
       role: ranger
       tags: [ ranger ]
+    - name: Install neovim
+      role: neovim
+      tags: [ neovim ]
     - name: Install git
       role: git
       tags: [ git ]
