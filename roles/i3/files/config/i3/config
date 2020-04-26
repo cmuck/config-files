@@ -124,6 +124,9 @@ bindsym $mod+p focus parent
 # focus the child container
 bindsym $mod+c focus child
 
+# for screenshots
+bindsym Print exec --no-startup-id flameshot gui
+
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
