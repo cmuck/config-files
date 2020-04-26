@@ -257,3 +257,12 @@ exec --no-startup-id compton -f --fade-in-step=0.1 --fade-out-step=0.1
 exec --no-startup-id nm-applet
 
 
+# Dropdown windows, order can matter.
+for_window [title="dropdown_*"] floating enable
+for_window [title="dropdown_*"] move scratchpad
+for_window [title="dropdown_*"] sticky enable
+for_window [title="dropdown_*"] scratchpad show
+for_window [title="dropdown_*"] resize set 800 300
+for_window [title="dropdown_*"] border pixel 5
+for_window [title="dropdown_*"] move position center
+bindsym $mod+u exec --no-startup-id ddspawn scratch
