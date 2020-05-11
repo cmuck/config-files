@@ -163,29 +163,7 @@ bindsym $mod+Ctrl+r restart;exec notify-send 'i3 restarted'
 
 # exit i3 (logs you out of your X session)
 #bindsym $mod+Ctrl+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-set $mode_system (l) system lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
-bindsym $mod+Pause mode "$mode_system"
-mode "$mode_system" {
-    bindsym l exec --no-startup-id i3-exit.sh lock
-    bindsym e exec --no-startup-id i3-exit.sh logout
-    bindsym s exec --no-startup-id i3-exit.sh suspend
-    bindsym h exec --no-startup-id i3-exit.sh hibernate
-    bindsym r exec --no-startup-id i3-exit.sh reboot
-    bindsym Shift+s exec --no-startup-id i3-exit.sh shutdown
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-
-# class                 border  backgr. text    indicator child_border
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-#client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-#client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-#client.urgent           #2f343a #900000 #ffffff #900000   #900000
-#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
+bindsym $mod+Pause exec --no-startup-id i3-exit
 
 # resize window (you can also use the mouse for that)
 bindsym $mod+Ctrl+l resize shrink width 10 px or 10 ppt
@@ -230,7 +208,7 @@ bindsym $mod+F11 exec --no-startup-id rofi -show window
 bindsym $mod+F10 exec --no-startup-id rofi -show run
 bindsym $mod+F9 exec --no-startup-id rofi -show ssh
 
-# Define some workspaces
+# Switch to next workspace
 bindsym $mod+Tab workspace next
 # move the whole workspace to the next output
 bindsym $mod+x move workspace to output right
@@ -239,24 +217,8 @@ bindsym $mod+x move workspace to output right
 # move firefox to current workspace
 #bindsym $mod+F1 [class="Firefox"] move workspace current
 
-#set $WS1   "1: Main "
-#set $WS2   "2: Web "
-#set $WS3   "3: Code "
-#set $WS4   "4: Mail "
-#set $WS6   "5: Chat "
-#set $WS7   "6: Notes "
-#set $WS0  "7: Other "
-# Assign applications to workspaces
-#assign [class="(?i)firefox"] → $WS2
-#assign [class="(?i)charm"] → $WS3
-#assign [class="(?i)thunderbird"] → $WS4
-#assign [class="(?i)mattermost"] → $WS5
-#assign [class="(?i)teams"] → $WS5
-#assign [class="(?i)gedit"] → $WS6
-
 exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/warty-final-ubuntu.png
 exec --no-startup-id nm-applet
-
 
 # Dropdown windows, order can matter.
 for_window [title="dropdown_*"] floating enable

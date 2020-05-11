@@ -17,7 +17,6 @@ case "$choice" in
     man -k . | awk '{ print $1 }' | dmenu -i -l 20 -p "Search Manpages:" | xargs $TERMINAL --execute man
     ;;
   *)
-
     exit 1
     ;;
 esac
