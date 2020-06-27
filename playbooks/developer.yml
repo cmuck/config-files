@@ -20,8 +20,8 @@
       role: jetbrains-ide
       jetbrains_language: 'python'
       jetbrains_ide_name: 'pycharm-community'
-      jetbrains_ide_version: '2020.1'
-      tags: [ pycharm20201 ]
+      jetbrains_ide_version: '2020.1.2'
+      tags: [ pycharm202012 ]
     - name: Install atom
       role: atom
       tags: [ atom ]

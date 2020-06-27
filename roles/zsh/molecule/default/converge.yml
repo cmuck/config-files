@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include zsh role"
+      include_role:
+        name: "zsh"
+  environment: '{{ proxy_environment }}'
