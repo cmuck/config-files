@@ -14,7 +14,8 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 
-export XDG_CURRENT_DESKTOP=GNOME
+# Set for gnome-control-center using i3
+export XDG_CURRENT_DESKTOP=ubuntu:GNOME
 
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export ATOM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/atom"
