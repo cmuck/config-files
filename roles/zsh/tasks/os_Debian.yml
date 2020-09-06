@@ -11,13 +11,7 @@
       - git
       - zsh
 
-- name: Set default shell for users
-  user:
-    name: '{{ ansible_user_id }}'
-    shell: /bin/zsh
-  become: true
-
-- name: Create some dirs
+- name: Create required directories
   file:
     path: '{{ ansible_user_dir }}/{{ item }}'
     state: directory
@@ -25,10 +19,10 @@
     - .config/zsh
     - .local/share/zsh
 
-- name: Write .zshrc for users
+- name: Write {{ config_zhsrc }} based on template
   template:
     src: zshrc.j2
-    dest: '{{ ansible_user_dir }}/.config/zsh/.zshrc'
+    dest: '{{ config_zhsrc }}'
     backup: true
   vars:
     oh_my_zsh:
@@ -92,7 +86,7 @@
     src: profile
     dest: '{{ ansible_user_dir }}/.config/profile'
 
-- name: Write to .profile
+- name: Write block in file to .profile
   blockinfile:
     path: '{{ ansible_user_dir }}/.profile'
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile sourcing"
@@ -105,7 +99,30 @@
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
 
+- name: Set default shell for users
+  user:
+    name: '{{ ansible_user_id }}'
+    shell: /bin/zsh
+  become: true
+
 # Clean up old installations
+
+- name: Check {{ users_zshrc }} already exists
+  stat:
+    path: '{{ users_zshrc }}'
+  register: result
+
+- name: Copy {{ users_zshrc }} to {{ config_zhsrc_dir }}
+  copy:
+    remote_src: true
+    src: '{{ users_zshrc }}'
+    dest: '{{ config_zhsrc_dir }}/{{ zshrc }}.backup.from.home.dir'
+  when: result.stat.exists
+
+- name: Remove backuped {{ users_zshrc }} so that generated once will be used
+  file:
+    path: '{{ users_zshrc }}'
+    state: absent
 
 - name: Check fzf exist in home directory
   stat:

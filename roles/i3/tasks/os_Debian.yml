@@ -29,8 +29,6 @@
       - i3blocks
       - arandr
       - feh
-      - flameshot
-      - rofi
       - scrot
 
 - name: Create local dir
@@ -70,20 +68,6 @@
     mode: preserve
     backup: true
 
-- name: Copy rofi
-  copy:
-    src: config/rofi
-    dest: '{{ ansible_user_dir }}/.config'
-    mode: preserve
-    backup: true
-
-- name: Copy terminator
-  copy:
-    src: config/terminator
-    dest: '{{ ansible_user_dir }}/.config'
-    mode: preserve
-    backup: true
-
 - name: Copy .xinitrc
   copy:
     src: xinitrc
@@ -102,17 +86,6 @@
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
-
-- name: Create config dir for flameshot
-  file:
-    path: '{{ ansible_user_dir }}/.config/Dharkael'
-    state: directory
-
-- name: Write flameshot configuration
-  template:
-    src: flameshot.ini.j2
-    dest: '{{ ansible_user_dir }}/.config/Dharkael/flameshot.ini'
-    backup: true
 
 # - name: Create symbolic link .xprofile
 #  file:

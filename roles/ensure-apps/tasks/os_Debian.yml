@@ -66,24 +66,18 @@
       - curl
       - dconf-editor
       - doxygen
-      - git
-      - git-lfs
-      - gitk
       - htop
       # - hub
       - iftop
       - influxdb
       - iotop
       - kazam
-      - meld
       - network-manager-openconnect
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
       - silversearcher-ag
-      - terminator
       - vim
-      - zsh
 
 - name: Ensure up to date system
   apt:
