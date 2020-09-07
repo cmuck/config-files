@@ -1,9 +1,15 @@
 ---
 - name: Ensure git is installed
   apt:
-    name: git
+    name: "{{ packages }}"
     state: present
   become: true
+  vars:
+    packages:
+      - git
+      - git-lfs
+      - gitk
+      - meld
 
 - name: Ensure {{ git_user_dir }} exists
   file:

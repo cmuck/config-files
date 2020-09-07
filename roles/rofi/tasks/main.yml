@@ -1,0 +1,4 @@
+---
+- name: 'Install rofi for Debian'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Debian"

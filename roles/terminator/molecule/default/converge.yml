@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include terminator"
+      include_role:
+        name: "terminator"

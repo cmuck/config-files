@@ -6,3 +6,8 @@ oh_my_zsh_theme: robbyrussell
 oh_my_zsh_plugins:
   - zsh-autosuggestions
   - zsh-completions
+
+zshrc: '.zshrc'
+users_zshrc: '{{ ansible_user_dir }}/{{ zshrc }}'
+config_zhsrc_dir: '{{ ansible_user_dir }}/.config/zsh'
+config_zhsrc: '{{ config_zhsrc_dir }}/{{ zshrc }}'

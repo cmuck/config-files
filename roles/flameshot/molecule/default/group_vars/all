@@ -1,0 +1,23 @@
+proxy_environment:
+  http_proxy: '{{ lookup("env","http_proxy") }}'
+  https_proxy: '{{ lookup("env","https_proxy")  }}'
+  no_proxy: '{{ lookup("env","no_proxy")  }}'
+
+# proxy_environment:
+#  http_proxy: '{{ ansible_env.http_proxy | default("foobar") }}'
+#  https_proxy: '{{ ansible_env.https_proxy | default("foobar") }}'
+#  no_proxy: '{{ ansible_env.no_proxy | default("foobar") }}'
+#
+# Using ansible_env as above is possible but this requires a dummy play
+# Reason: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-can-i-set-the-path-or-any-other-environment-variable-for-a-task-or-entire-playbook
+# Starting in 2.0.1 the setup task from gather_facts also inherits the environment directive from the play, you might
+# need to use the |default filter to avoid errors if setting this at play level.
+#
+# Add below play as a dummy to use ansible_env in host_vars or group_vars:
+#- name: Test
+#  hosts: all
+#  become: true
+#  tasks:
+#    - name: Debug proxy_environment
+#      debug:
+#        var: proxy_environment

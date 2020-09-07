@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include scripts"
+      include_role:
+        name: "scripts"
