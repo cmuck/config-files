@@ -11,25 +11,8 @@ cache: pip
 
 services: docker
 
-env:
-  matrix:
-    - ANSIBLE_ROLE: atom
-    - ANSIBLE_ROLE: debug
-    - ANSIBLE_ROLE: docker
-    - ANSIBLE_ROLE: ensure-apps
-    - ANSIBLE_ROLE: flameshot
-    - ANSIBLE_ROLE: git
-    - ANSIBLE_ROLE: i3
-    - ANSIBLE_ROLE: jetbrains-ide
-    - ANSIBLE_ROLE: keepassxc
-    - ANSIBLE_ROLE: proxy
-    - ANSIBLE_ROLE: ranger
-    - ANSIBLE_ROLE: rofi
-    - ANSIBLE_ROLE: scripts
-    - ANSIBLE_ROLE: ssh
-    - ANSIBLE_ROLE: terminator
-    - ANSIBLE_ROLE: vscode
-    - ANSIBLE_ROLE: zsh
+matrix:
+  fast_finish: true
 
 before_script:
   - uname -a
@@ -37,5 +20,21 @@ before_script:
   - molecule --version
 
 script:
-  - cd "./roles/${ANSIBLE_ROLE}"
-  - molecule test
+  # get list of changed files
+  - CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+  - echo $CHANGED_FILES
+  - touch changed_roles.txt
+  - for file in $CHANGED_FILES; do
+      echo $file | cut -d'/' -f-3 >> changed_roles.txt
+    done
+  - cat changed_roles.txt
+  - touch uniq_changed_roles.txt
+  - sort changed_roles.txt | uniq > uniq_changed_roles.txt
+  - cat uniq_changed_roles.txt
+  - readarray -t roles < uniq_changed_roles.txt
+  - for role in "${roles[@]}"; do
+      pushd "${role}"
+      molecule test
+      popd
+    done
+
