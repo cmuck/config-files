@@ -59,17 +59,6 @@
     dest: '{{ oh_my_zsh_dir }}'
     depth: 1
 
-- name: Check oh-my-zsh exist in home directory
-  stat:
-    path: '{{ ansible_user_dir }}/.oh-my-zsh'
-  register: oh_my_zsh_home_dir
-
-- name: Delete oh-my-zsh in home directory
-  file:
-    path: '{{ ansible_user_dir }}/.oh-my-zsh'
-    state: absent
-  when: oh_my_zsh_home_dir.stat.exists and oh_my_zsh_home_dir.stat.isdir
-
 - name: Check oh-my-zsh exist
   stat:
     path: '{{ oh_my_zsh_dir }}'

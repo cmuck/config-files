@@ -84,14 +84,19 @@
 - name: Copy .profile
   copy:
     src: profile
-    dest: '{{ ansible_user_dir }}/.config/profile'
+    dest: '/tmp/profile'
+
+- name: Reading profile file and register it into profile variable
+  command: cat /tmp/profile
+  register: profile
+  changed_when: false
 
 - name: Write block in file to .profile
   blockinfile:
     path: '{{ ansible_user_dir }}/.profile'
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile sourcing"
     block: |
-      source {{ ansible_user_dir }}/.config/profile
+      {{ profile.stdout }}
 
 - name: Create symbolic link .zprofile
   file:
@@ -106,23 +111,6 @@
   become: true
 
 # Clean up old installations
-
-- name: Check {{ users_zshrc }} already exists
-  stat:
-    path: '{{ users_zshrc }}'
-  register: result
-
-- name: Copy {{ users_zshrc }} to {{ config_zhsrc_dir }}
-  copy:
-    remote_src: true
-    src: '{{ users_zshrc }}'
-    dest: '{{ config_zhsrc_dir }}/{{ zshrc }}.backup.from.home.dir'
-  when: result.stat.exists
-
-- name: Remove backuped {{ users_zshrc }} so that generated once will be used
-  file:
-    path: '{{ users_zshrc }}'
-    state: absent
 
 - name: Check fzf exist in home directory
   stat:
