@@ -8,6 +8,9 @@
     packages:
       - libx11-xcb-dev
       - libasound2
+      - libxcb-dri3-0
+      - libdrm2
+      - libgbm1
   become: true
   when: ansible_os_family == "Debian"
 
