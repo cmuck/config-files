@@ -1,3 +1,4 @@
+# yamllint disable rule:line-length
 ---
 - name: Install gnupg to add pub key
   apt:
@@ -13,7 +14,7 @@
 
 - name: Add repository for i3-gaps
   apt_repository:
-    repo: 'deb http://ppa.launchpad.net/kgilmer/speed-ricer/ubuntu bionic main'
+    repo: 'deb http://ppa.launchpad.net/kgilmer/speed-ricer/ubuntu {{ ansible_lsb.codename }} main'
     filename: i3-gaps
   become: true
 
