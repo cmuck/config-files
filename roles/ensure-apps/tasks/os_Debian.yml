@@ -59,24 +59,22 @@
       # - bazelisk
       - build-essential
       - cifs-utils
-      - clang-6.0
-      - clang-format-6.0
-      - clang-tidy-6.0
       - corkscrew
       - curl
       - dconf-editor
-      - doxygen
       - htop
       # - hub
       - iftop
-      - influxdb
       - iotop
       - kazam
       - network-manager-openconnect
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
+      #- safe-rm
       - silversearcher-ag
+      - suckless-tools
+      - trash-cli
       - vim
 
 - name: Ensure up to date system

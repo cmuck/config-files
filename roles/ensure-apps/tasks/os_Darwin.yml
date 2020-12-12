@@ -25,6 +25,7 @@
   with_items:
     - curl
     - git
+    - trash
     - zsh
 
 - name: Ensure up to date system - update homebrew and upgrade all packages
