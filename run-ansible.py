@@ -95,8 +95,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("playbook",
                         help='Playbook from playbooks directory, e.g. "helloworld"')
-    parser.add_argument("-t", "--tag", action='append',
-                        help='Only tag from playbook is executed, e.g. --tag zsh --tag git')
+    parser.add_argument("-t", "--tag", nargs="+",
+                        help='Only tag from playbook is executed, e.g. --tag zsh git')
     parser.add_argument("-v", "--verbose", action="store_true",
                         help='Increase verbosity of ansible to level 1')
     parser.add_argument("-d", "--dry-run", action="store_true",
