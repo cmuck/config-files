@@ -152,8 +152,13 @@ source "${ZSH}/oh-my-zsh.sh"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias zshconfig="mate ~/.zshrc"
 alias r="ranger"
+alias rm='rm -i'
+#alias cd="cl"
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias ccopy='xclip -selection clipboard'
+alias cpaste='xclip -selection clipboard -o'
 
-ex ()
+function ex
 {
   if [ -f $1 ] ; then
     case $1 in
@@ -177,6 +182,21 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
+
+function cl
+{
+    if [ "$#" -eq 0 ]; then
+        "cd" || return
+    else
+        "cd" "$1" || return
+    fi
+    ls -lah --color=auto
+}
+
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+autoload -U select-word-style
+select-word-style bash
 
 # Use neovim for vim if present
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
