@@ -71,11 +71,23 @@
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
-      #- safe-rm
+      - pitivi
+      - preload
+      # - safe-rm
       - silversearcher-ag
       - suckless-tools
       - trash-cli
       - vim
+
+- name: Ensure apps present for 20.04 specific
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - timeshift
+  when: ansible_distribution_version == "20.04"
 
 - name: Ensure up to date system
   apt:
