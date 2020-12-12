@@ -158,6 +158,22 @@ alias rm='rm -i'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias ccopy='xclip -selection clipboard'
 alias cpaste='xclip -selection clipboard -o'
+alias grep='grep --color=auto'
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+# confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
+if [ command -v exa >/dev/null ]; then
+# Changing "ls" to "exa"
+    alias ls='exa -al --color=always --group-directories-first' # my preferred listing
+    alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+    alias ll='exa -l --color=always --group-directories-first'  # long format
+    alias lt='exa -aT --color=always --group-directories-first' # tree listing
+    alias l.='exa -a | egrep "^\."'
+fi
 
 function ex
 {
@@ -201,3 +217,4 @@ select-word-style bash
 
 # Use neovim for vim if present
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
+

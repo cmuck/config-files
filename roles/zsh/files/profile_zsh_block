@@ -9,6 +9,8 @@ if command -v terminator &>/dev/null; then
 fi
 #export BROWSER=""
 #export READER=""
+export TERM="xterm-256color"              # getting proper colors
+
 
 # https://developer.gnome.org/basedir-spec/
 # https://wiki.archlinux.org/index.php/XDG_Base_Directory

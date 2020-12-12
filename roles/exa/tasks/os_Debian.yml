@@ -1,0 +1,5 @@
+---
+# yamllint disable rule:line-length
+- name: Install exa from groovy but works...
+  apt:
+    deb: http://de.archive.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.9.0-4_amd64.deb
