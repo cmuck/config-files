@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include delta role"
+      include_role:
+        name: "delta"
+  environment: '{{ proxy_environment }}'
