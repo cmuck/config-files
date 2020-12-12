@@ -17,6 +17,7 @@ env:
     - ANSIBLE_ROLE: debug
     - ANSIBLE_ROLE: docker
     - ANSIBLE_ROLE: ensure-apps
+    - ANSIBLE_ROLE: exa
     - ANSIBLE_ROLE: flameshot
     - ANSIBLE_ROLE: git
     - ANSIBLE_ROLE: i3

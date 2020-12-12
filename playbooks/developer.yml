@@ -31,6 +31,9 @@
     - name: Install zsh
       role: zsh
       tags: [ zsh ]
+    - name: Install exa
+      role: exa
+      tags: [ exa ]
     - name: Install i3
       role: i3
       tags: [ i3 ]
