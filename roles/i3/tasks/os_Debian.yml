@@ -69,30 +69,28 @@
     mode: preserve
     backup: true
 
-- name: Copy .xinitrc
-  copy:
-    src: xinitrc
-    dest: '{{ ansible_user_dir }}/.xinitrc'
-    mode: preserve
-
-- name: Copy xprofile
-  copy:
-    src: config/xprofile
-    dest: '{{ ansible_user_dir }}/.config/xprofile'
-    mode: preserve
-    backup: true
-
 - name: Create symbolic link .zprofile
   file:
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
 
-# - name: Create symbolic link .xprofile
-#  file:
-#    src: '{{ ansible_user_dir }}/.config/xprofile'
-#    dest: '{{ ansible_user_dir }}/.xprofile'
-#    state: link
+- name: Copy profile_i3_block
+  copy:
+    src: profile_i3_block
+    dest: '/tmp/profile_i3_block'
+
+- name: Reading profile_i3_block file and register it into profile_i3_block variable
+  command: cat /tmp/profile_i3_block
+  register: profile_i3_block
+  changed_when: false
+
+- name: Write block in file to .profile
+  blockinfile:
+    path: '{{ ansible_user_dir }}/.profile'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK profile_i3_block sourcing"
+    block: |
+      {{ profile_i3_block.stdout }}
 
 - name: Create bin
   file:
