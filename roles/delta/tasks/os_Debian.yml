@@ -1,0 +1,36 @@
+---
+# yamllint disable rule:line-length
+- name: Ensure git is installed
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - git
+
+- name: Esnure .gitconfig exists
+  file:
+    path: '{{ ansible_user_dir }}/.gitconfig'
+    state: touch
+
+- name: Install exa from github release page but works...
+  apt:
+    deb: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
+
+- name: Copy delta_gitconfig_block
+  copy:
+    src: delta_gitconfig_block
+    dest: '/tmp/delta_gitconfig_block'
+
+- name: Reading delta_gitconfig_block file and register it into delta_gitconfig_block variable
+  command: cat /tmp/delta_gitconfig_block
+  register: delta_gitconfig_block
+  changed_when: false
+
+- name: Write block in file to .gitconfig
+  blockinfile:
+    path: '{{ ansible_user_dir }}/.gitconfig'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"
+    block: |
+      {{ delta_gitconfig_block.stdout }}

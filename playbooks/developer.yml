@@ -67,4 +67,7 @@
     - name: Install scripts
       role: scripts
       tags: [ scripts ]
+    - name: Install delta
+      role: delta
+      tags: [ delta ]
   environment: '{{ proxy_environment }}'
