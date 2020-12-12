@@ -1,0 +1,10 @@
+---
+# yamllint disable rule:line-length
+- name: Ensure git is installed
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - bat
