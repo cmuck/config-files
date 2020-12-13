@@ -21,7 +21,7 @@
 - name: Install zsh dependencies
   homebrew:
     name: git
-    state: "present"
+    state: present
 
 - name: Ensure {{ git_user_dir }} exists
   file:
