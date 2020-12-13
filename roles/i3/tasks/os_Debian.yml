@@ -1,9 +1,11 @@
 # yamllint disable rule:line-length
 ---
-- name: Install gnupg to add pub key
+- name: Install gnupg2 to add pub key
   apt:
-    name: gnupg
     state: present
+    update_cache: true
+    pkg:
+      - gnupg2
   become: true
 
 - name: Add i3 apt-key
@@ -20,22 +22,22 @@
 
 - name: Ensure i3-gaps (fork of i3) and other useful tools are present
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       # - i3
       - i3-gaps
       - i3blocks
       - arandr
       - feh
       - scrot
+  become: true
 
 - name: Create local dir
   file:
     path: '{{ ansible_user_dir }}/.local/bin'
     state: directory
+    mode: '0700'
 
 - name: Copy bin scripts
   copy:
@@ -47,6 +49,7 @@
   file:
     path: '{{ ansible_user_dir }}/.config'
     state: directory
+    mode: '0700'
 
 - name: Copy i3 config
   copy:
@@ -74,11 +77,13 @@
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
+    mode: '0600'
 
 - name: Copy profile_i3_block
   copy:
     src: profile_i3_block
     dest: '/tmp/profile_i3_block'
+    mode: '0600'
 
 - name: Reading profile_i3_block file and register it into profile_i3_block variable
   command: cat /tmp/profile_i3_block
@@ -96,6 +101,7 @@
   file:
     path: '/usr/local/bin'
     state: directory
+    mode: '0755'
 
 - name: Check xcwb is installed
   stat:
@@ -106,14 +112,13 @@
   block:
     - name: Install xcwd dependencies
       apt:
-        name: "{{ packages }}"
         state: present
-      become: true
-      vars:
-        packages:
+        update_cache: true
+        pkg:
           - build-essential
           - git
           - libx11-dev
+      become: true
 
     - name: Clone xcwd
       git:

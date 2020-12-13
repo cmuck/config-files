@@ -2,19 +2,19 @@
 # yamllint disable rule:line-length
 - name: Install zsh dependencies
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - curl
       - git
       - zsh
+  become: true
 
 - name: Create required directories
   file:
     path: '{{ ansible_user_dir }}/{{ item }}'
     state: directory
+    mode: '0700'
   loop:
     - .config/zsh
     - .local/share/zsh
@@ -24,6 +24,7 @@
     src: zshrc.j2
     dest: '{{ config_zhsrc }}'
     backup: true
+    mode: '0600'
   vars:
     oh_my_zsh:
       theme: bira
@@ -85,6 +86,7 @@
   copy:
     src: profile_zsh_block
     dest: '/tmp/profile_zsh_block'
+    mode: '0600'
 
 - name: Reading profile_zsh_block file and register it into profile_zsh_block variable
   command: cat /tmp/profile_zsh_block
