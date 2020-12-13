@@ -6,6 +6,14 @@
 #     url: "https://packages.microsoft.com/keys/microsoft.asc"
 #     state: present
 
+- name: Install gnupg2 to add pub key
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - gnupg2
+  become: true
+
 - name: Fetch vscode public key
   get_url:
     url: 'https://packages.microsoft.com/keys/microsoft.asc'

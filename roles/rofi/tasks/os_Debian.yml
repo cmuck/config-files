@@ -1,21 +1,21 @@
 ---
 - name: Install rofi
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - rofi
+  become: true
 
 - name: Create config dir for rofi
   file:
     path: '{{ ansible_user_dir }}/.config/rofi'
     state: directory
+    mode: '0700'
 
 - name: Copy rofi config
   copy:
     src: config/rofi/config
     dest: '{{ ansible_user_dir }}/.config/rofi'
-    mode: preserve
+    mode: '0600'
     backup: true

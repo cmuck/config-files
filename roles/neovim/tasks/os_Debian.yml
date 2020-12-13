@@ -1,20 +1,21 @@
 ---
 - name: Install neovim
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - neovim
       - vim
+  become: true
 
 - name: Create some dirs
   file:
     path: '{{ config_dir }}'
     state: directory
+    mode: '0700'
 
 - name: Copy neovim config
   copy:
     src: 'init.vim'
     dest: '{{ config_dir }}'
+    mode: '0600'

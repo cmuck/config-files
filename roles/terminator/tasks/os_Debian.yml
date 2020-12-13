@@ -1,17 +1,17 @@
 ---
 - name: Install terminator
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - terminator
+  become: true
 
 - name: Create config dir for terminator
   file:
     path: '{{ ansible_user_dir }}/.config/terminator'
     state: directory
+    mode: '0700'
 
 - name: Copy terminator config
   copy:

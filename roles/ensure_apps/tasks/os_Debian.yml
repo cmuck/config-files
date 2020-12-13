@@ -1,0 +1,95 @@
+---
+- name: Ensure apps absent
+  apt:
+    state: absent
+    pkg:
+      - account-plugin-aim
+      - account-plugin-facebook
+      - account-plugin-flickr
+      - account-plugin-google
+      - account-plugin-jabber
+      - account-plugin-salut
+      - account-plugin-yahoo
+      - aisleriot
+      - cheese
+      - evolution
+      - evolution-ews
+      - evolution-help
+      - gfbgraph
+      - gnome-boxes
+      - gnome-calendar
+      - gnome-contacts
+      - gnome-dictionary
+      - gnome-documents
+      - gnome-getting-started-docs
+      - gnome-initial-setup
+      - gnome-mahjongg
+      - gnome-maps
+      - gnome-mines
+      - gnome-online-miners
+      - gnome-photos
+      - gnome-software
+      - gnome-sudoku
+      - gnome-user-docs
+      - gnome-user-share
+      - gnome-video-effects
+      - gnome-weather
+      - landscape-client-ui-install
+      - rhythmbox
+      - shotwell
+      - simple-scan
+      - thunderbird
+      - totem
+      - tracker-miners
+      - transmission-gtk
+      - ubuntu-web-launchers
+      - webbrowser-app
+      - yelp
+  become: true
+
+- name: Ensure apps present
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      # - bazelisk
+      - build-essential
+      - cifs-utils
+      - corkscrew
+      - curl
+      - dconf-editor
+      - htop
+      # - hub
+      - iftop
+      - iotop
+      - kazam
+      - network-manager-openconnect
+      - network-manager-openconnect-gnome
+      - nmap
+      - openconnect
+      - pitivi
+      - preload
+      # - safe-rm
+      - silversearcher-ag
+      - suckless-tools
+      - trash-cli
+      - vim
+
+  become: true
+
+- name: Ensure apps present for 20.04 specific
+  apt:
+    state: present
+    pkg:
+      - timeshift
+  become: true
+  when: ansible_distribution_version == "20.04"
+
+- name: Ensure up to date system
+  apt:
+    update_cache: true
+    cache_valid_time: 3600  # Seconds
+    upgrade: "dist"
+    autoclean: true
+    autoremove: true
+  become: true

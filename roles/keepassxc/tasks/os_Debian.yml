@@ -1,9 +1,11 @@
 ---
 # yamllint disable rule:line-length
-- name: Install gnupg to add pub key
+- name: Install gnupg2 to add pub key
   apt:
-    name: gnupg
     state: present
+    update_cache: true
+    pkg:
+      - gnupg2
   become: true
 
 - name: Add keepass apt-key

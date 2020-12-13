@@ -2,17 +2,16 @@
 # yamllint disable rule:line-length
 - name: Ensure git is installed
   apt:
-    name: "{{ packages }}"
+    name: git
     state: present
+    update_cache: true
   become: true
-  vars:
-    packages:
-      - git
 
 - name: Esnure .gitconfig exists
   file:
     path: '{{ ansible_user_dir }}/.gitconfig'
     state: touch
+    mode: '0600'
 
 - name: Install exa from github release page but works...
   apt:
@@ -22,6 +21,7 @@
   copy:
     src: delta_gitconfig_block
     dest: '/tmp/delta_gitconfig_block'
+    mode: '0600'
 
 - name: Reading delta_gitconfig_block file and register it into delta_gitconfig_block variable
   command: cat /tmp/delta_gitconfig_block

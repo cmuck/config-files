@@ -1,0 +1,8 @@
+---
+- name: 'Install jetbrains for Debian'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Debian"
+
+- name: 'Install jetbrains for Darwin'
+  include_tasks: 'os_{{ ansible_os_family }}.yml'
+  when: ansible_os_family == "Darwin"

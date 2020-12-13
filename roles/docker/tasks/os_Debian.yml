@@ -3,16 +3,15 @@
 
 - name: Install docker dependencies
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - apt-transport-https
       - ca-certificates
       - curl
-      - gnupg
+      - gnupg2
       - software-properties-common
+  become: true
 
 - name: Install docker apt key
   apt_key:

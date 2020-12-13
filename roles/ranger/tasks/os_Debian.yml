@@ -2,19 +2,20 @@
 # yamllint disable rule:line-length
 - name: Install ranger
   apt:
-    name: "{{ packages }}"
     state: present
-  become: true
-  vars:
-    packages:
+    update_cache: true
+    pkg:
       - ranger
+  become: true
 
 - name: Create some dirs
   file:
     path: '{{ config_dir }}'
     state: directory
+    mode: '0700'
 
 - name: Copy ranger config
   copy:
     src: 'rc.conf'
     dest: '{{ config_dir }}'
+    mode: '0600'
