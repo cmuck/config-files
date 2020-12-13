@@ -18,7 +18,13 @@
   command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   when: not brew.stat.exists
 
+- name: Check if keepassxc is installed
+  stat:
+    path: /Applications/KeePassXC.app
+  register: keepassxc
+
 - name: Install keepassxc
-  homebrew_cask:
+  homebrew:
     name: keepassxc
     state: present
+  when: not keepassxc.stat.exists

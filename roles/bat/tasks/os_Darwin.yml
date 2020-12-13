@@ -18,25 +18,9 @@
   command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   when: not brew.stat.exists
 
-- name: Ensure apps present
+- name: Install bat
   homebrew:
-    name: "{{ item }}"
-    state: "present"
-  with_items:
-    - curl
-    - git
-    - trash
-    - zsh
+    name: bat
+    state: present
+    update_homebrew: yes
 
-- name: Ensure up to date system - update homebrew and upgrade all packages
-  homebrew:
-    update_homebrew: true
-    upgrade_all: true
-
-- include: brew_install.yml
-  with_items:
-    - {name: 'spotify', app: 'Spotify.app'}
-    - {name: 'iterm2', app: 'iTerm.app'}
-    - {name: 'firefox', app: 'Firefox.app'}
-    - {name: 'dropbox', app: 'Dropbox.app'}
-    - {name: 'discord', app: 'Discord.app'}
