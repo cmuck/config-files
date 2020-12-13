@@ -166,6 +166,10 @@ alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
+command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
+command -v bat >/dev/null && alias cat="bat"
+command -v batcat >/dev/null && alias cat="batcat"
+
 if command -v exa >/dev/null; then
   # Changing "ls" to "exa"
   alias ls='exa -al --color=always --group-directories-first' # my preferred listing
@@ -214,7 +218,3 @@ bindkey "^[[1;2C" forward-word
 bindkey "^[[1;2D" backward-word
 autoload -U select-word-style
 select-word-style bash
-
-# Use neovim for vim if present
-command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
-
