@@ -24,7 +24,7 @@
   register: docker
 
 - name: Install docker
-  homebrew_cask:
+  homebrew:
     name: docker
     state: present
   when: not docker.stat.exists

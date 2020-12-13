@@ -2,8 +2,3 @@
 - name: 'Ensure apps are present and not present for Debian'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
-
-# TODO
-# - name: 'Ensure apps are present and not present for Darwin'
-#  include_tasks: 'os_{{ ansible_os_family }}.yml'
-#  when: ansible_os_family == "Darwin"
