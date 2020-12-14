@@ -22,5 +22,4 @@
   homebrew:
     name: bat
     state: present
-    update_homebrew: yes
-
+    update_homebrew: true

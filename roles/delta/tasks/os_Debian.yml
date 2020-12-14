@@ -13,9 +13,10 @@
     state: touch
     mode: '0600'
 
-- name: Install exa from github release page but works...
+- name: Install delta from github release page but works...
   apt:
     deb: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
+  become: true
 
 - name: Copy delta_gitconfig_block
   copy:

@@ -77,7 +77,6 @@
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
-    mode: '0600'
 
 - name: Copy profile_i3_block
   copy:
