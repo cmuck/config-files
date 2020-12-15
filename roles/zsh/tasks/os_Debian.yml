@@ -33,6 +33,7 @@
         - common-aliases
         - docker
         - fzf
+        - rsync
         - sudo
         - web-search
         - zsh-completions
