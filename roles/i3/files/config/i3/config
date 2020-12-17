@@ -218,6 +218,7 @@ bindsym $mod+x move workspace to output right
 #bindsym $mod+F1 [class="Firefox"] move workspace current
 
 exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/warty-final-ubuntu.png
+exec --no-startup-id numlockx on
 exec --no-startup-id nm-applet
 
 # Dropdown windows, order can matter.
