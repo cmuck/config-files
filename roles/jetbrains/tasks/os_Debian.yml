@@ -51,7 +51,8 @@
   file:
     path: '{{ jetbrains_desktop_entry_dir }}'
     state: directory
-    mode: '0700'
+    mode: '0744'
+  become: true
 
 - name: 'Create {{ jetbrains_ide_name }} desktop entry'
   when: not jetbrains_ide_info_stat.stat.exists
@@ -59,5 +60,5 @@
     src: jetbrains.desktop.j2
     dest: "{{ jetbrains_desktop_entry_dir }}/{{ jetbrains_desktop_file }}"
     backup: true
-    mode: '0600'
+    mode: '0644'
   become: true
