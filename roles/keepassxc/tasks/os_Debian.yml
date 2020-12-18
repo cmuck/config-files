@@ -10,8 +10,8 @@
 
 - name: Add keepass apt-key
   apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: d89c66d0e31fea2874ebd20561922ab60068fcd6
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd89c66d0e31fea2874ebd20561922ab60068fcd6
+    state: present
   become: true
 
 - name: Add repository for keepass

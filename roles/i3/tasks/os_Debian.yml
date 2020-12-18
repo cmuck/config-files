@@ -10,8 +10,8 @@
 
 - name: Add i3 apt-key
   apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: bda0e4ba891b327bb00df1e076458020c35556dc
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbda0e4ba891b327bb00df1e076458020c35556dc
+    state: present
   become: true
 
 - name: Add repository for i3-gaps
