@@ -55,9 +55,9 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec i3-sensible-terminal --working-directory="$(xcwd)"
+#bindsym $mod+Return exec i3-sensible-terminal --working-directory="$(xcwd)"
 #bindsym $mod+Return exec terminator --working-directory="$(xcwd)"
-#bindsym $mod+Return exec gnome-terminal  --working-directory="$(xcwd)"
+bindsym $mod+Return exec gnome-terminal  --working-directory="$(xcwd)"
 
 # kill focused window
 #bindsym $mod+Shift+q kill
