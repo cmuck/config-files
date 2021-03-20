@@ -22,12 +22,12 @@ positional arguments:
   playbook           Playbook from playbooks directory, e.g. "helloworld"
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -t TAG, --tag TAG  Only tag from playbook is executed, e.g. --tag git --tag
-                     ssh
-  -v, --verbose      Increase verbosity of ansible to level 1
-  -d, --dry-run      Execution with --check option
-  -c, --check        Executes only a syntax-check of the playbook
+  -h, --help            show this help message and exit
+  -t TAG [TAG ...], --tag TAG [TAG ...]
+                        Only tag from playbook is executed, e.g. --tag zsh git
+  -v, --verbose         Increase verbosity of ansible to level 1
+  -d, --dry-run         Execution with --check option
+  -c, --check           Executes only a syntax-check of the playbook
 
 ```
 
@@ -47,7 +47,7 @@ optional arguments:
     ```
 * Execute specific tags of the playbook
     ```sh
-    ./run-ansible.py -t zsh -t git developer
+    ./run-ansible.py -t zsh git developer
     ```
 * Increase verbosity
     ```sh
