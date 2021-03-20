@@ -1,5 +1,6 @@
-# Ignore IDE environment
+# IDEs
 .idea/
+.vscode/
 
 # Ignore vagrant environment
 .vagrant/
