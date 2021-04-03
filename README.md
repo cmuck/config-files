@@ -126,3 +126,4 @@ molecule init role -r <role> -d docker
 * [Ansible FAQ](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html)
 * [Rapidly Build & Test Ansible Roles with Molecule + Docker](https://www.youtube.com/watch?v=DAnMyBZ8-Qs)
 * [Testing Ansible Roles with Molecule Behind a Proxy ](https://renaudmarti.net/posts/molecule-proxy-support/)
+test trigger
