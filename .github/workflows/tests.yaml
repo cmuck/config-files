@@ -5,11 +5,7 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - "**.md"
   pull_request:
-    paths-ignore:
-      - "**.md"
 
 jobs:
   molecule:
@@ -40,7 +36,6 @@ jobs:
           ansible --version
           molecule --version
           # export
-        shell: bash
       - id: files
         uses: jitterbit/get-changed-files@v1
       - name: List all changed files
@@ -77,4 +72,3 @@ jobs:
               popd >/dev/null
             }
           done
-        shell: bash
