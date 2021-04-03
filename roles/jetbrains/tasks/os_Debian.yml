@@ -51,7 +51,7 @@
   file:
     path: '{{ jetbrains_desktop_entry_dir }}'
     state: directory
-    mode: '0744'
+    mode: '0755'
   become: true
 
 - name: 'Create {{ jetbrains_ide_name }} desktop entry'
