@@ -1,0 +1,80 @@
+---
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  molecule:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        run: |
+          # python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Some debug output
+        run: |
+          uname -a
+          ansible --version
+          molecule --version
+          # export
+        shell: bash
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: List all changed files
+        run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            echo "Do something with this ${changed_file}."
+          done
+      - name: Testing changed roles using molecule
+        run: |
+          roles=( )
+          echo "###############################################################"
+          for file in ${{ steps.files.outputs.all }}; do
+            echo "Changed file: $file"
+            role_path=$(echo "${file}" | cut -f1,2 -d'/')
+            if [[ $role_path = roles* ]]; then
+              roles+=("$role_path")
+            fi
+          done
+          echo
+          echo "###############################################################"
+          echo "All roles: ${roles[*]}"
+          unique_roles=($(echo "${roles[*]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+          echo "Unique roles: ${unique_roles[*]}"
+          echo "###############################################################"
+          for role in "${unique_roles[@]}"
+          do
+            echo
+            echo
+            echo "###############################################################"
+            echo "Testing role: $role"
+            {
+              pushd "$role" >/dev/null
+              molecule test
+              popd >/dev/null
+            }
+          done
+        shell: bash
