@@ -26,6 +26,9 @@ class AnsibleFacade:
 
         shutil.rmtree(self.venv_path, ignore_errors=True)
         subprocess.run([sys.executable, "-m", "venv", str(self.venv_path)], check=True)
+        # Module wheel needs to be installed as a dependency before other requirements to avoid bdist_wheel errors
+        subprocess.run([
+            str(self.venv_path / "bin" / "pip"), "install", "wheel"], check=True)
         subprocess.run([
             str(self.venv_path / "bin" / "pip"), "install", "-r", str(requirements),
         ], check=True)

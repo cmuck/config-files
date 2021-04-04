@@ -4,5 +4,4 @@ docker==4.4.0
 molecule==3.2.0
 molecule-docker==0.3.3
 yamllint==1.25.0
-wheel==0.36.1
 flake8==3.8.4
