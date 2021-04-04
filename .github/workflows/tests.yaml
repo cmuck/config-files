@@ -49,10 +49,19 @@ jobs:
           roles=( )
           echo "###############################################################"
           for file in ${{ steps.files.outputs.all }}; do
-            echo "Changed file: $file"
+            echo "Changed file: ${file}"
             role_path=$(echo "${file}" | cut -f1,2 -d'/')
-            if [[ $role_path = roles* ]]; then
-              roles+=("$role_path")
+            if [[ "${role_path}" =~ roles/.* ]]; then
+              roles+=("${role_path}")
+              echo "Adding ${role_path}"
+            fi
+            if [[ "${file}" == requirements.txt ]]; then
+              echo "requirements.txt changed, testing all roles..."
+              all_roles=( $( ls roles ) )
+              for role in "${all_roles[@]}"
+              do
+                roles+=("roles/${role}")
+              done
             fi
           done
           echo
@@ -66,9 +75,9 @@ jobs:
             echo
             echo
             echo "###############################################################"
-            echo "Testing role: $role"
+            echo "Testing role: ${role}"
             {
-              pushd "$role" >/dev/null
+              pushd "${role}" >/dev/null
               molecule test
               popd >/dev/null
             }
