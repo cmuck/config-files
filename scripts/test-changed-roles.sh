@@ -17,12 +17,20 @@ roles=( )
 echo
 echo
 echo "###############################################################"
-for file in "${changed_fies[@]}"
-do
-  echo "Changed file: $file"
+for file in "${changed_fies[@]}"; do
+  echo "Changed file: ${file}"
   role_path=$(echo "${file}" | cut -f1,2 -d'/')
-  if [[ $role_path = roles* ]]; then
-    roles+=("$role_path")
+  if [[ "${role_path}" =~ roles/.* ]]; then
+    roles+=("${role_path}")
+    echo "Adding ${role_path}"
+  fi
+  if [[ "${file}" == requirements.txt ]]; then
+    echo "requirements.txt changed, testing all roles..."
+    all_roles=( $( ls roles ) )
+    for role in "${all_roles[@]}"
+    do
+      roles+=("roles/${role}")
+    done
   fi
 done
 
@@ -40,9 +48,9 @@ do
   echo
   echo
   echo "###############################################################"
-  echo "Testing role: $role"
+  echo "Testing role: ${role}"
   {
-    pushd "$role" >/dev/null
+    pushd "${role}" >/dev/null
     molecule test
     popd >/dev/null
   }
