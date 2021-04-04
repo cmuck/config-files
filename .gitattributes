@@ -1,0 +1,4 @@
+*.yml linguist-detectable=true
+*.yml linguist-language=YAML
+*.j2 linguist-detectable=true
+*.j2 linguist-language=JINJA
