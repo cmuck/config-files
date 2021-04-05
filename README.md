@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.com/cmuck/config-files.svg?branch=master)](https://travis-ci.com/cmuck/config-files)
+[![CI](https://github.com/cmuck/config-files/actions/workflows/main.yml/badge.svg)](https://github.com/cmuck/config-files/actions/workflows/main.yml) 
+
 
 # config-files
 
