@@ -1,4 +1,4 @@
-[![CI](https://github.com/cmuck/config-files/actions/workflows/main.yml/badge.svg)](https://github.com/cmuck/config-files/actions/workflows/main.yml) 
+[![CI](https://github.com/cmuck/config-files/actions/workflows/tests.yml/badge.svg)](https://github.com/cmuck/config-files/actions/workflows/tests.yml) 
 
 
 # config-files
