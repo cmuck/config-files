@@ -2,9 +2,8 @@
 name: Tests
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: '*/30 * * * *'
   pull_request:
 
 jobs:
@@ -36,7 +35,7 @@ jobs:
           uname -a
           ansible --version
           molecule --version
-          # export
+          #export
       - id: files
         uses: jitterbit/get-changed-files@v1
       - name: List all changed files
@@ -44,7 +43,7 @@ jobs:
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
           done
-      - name: Testing changed roles using molecule
+      - name: Testing roles using molecule
         run: |
           roles=( )
           echo "###############################################################"
@@ -57,6 +56,14 @@ jobs:
             fi
             if [[ "${file}" == requirements.txt ]]; then
               echo "requirements.txt changed, testing all roles..."
+              all_roles=( $( ls roles ) )
+              for role in "${all_roles[@]}"
+              do
+                roles+=("roles/${role}")
+              done
+            fi
+            if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
+              echo "Scheduled run, testing all roles..."
               all_roles=( $( ls roles ) )
               for role in "${all_roles[@]}"
               do
