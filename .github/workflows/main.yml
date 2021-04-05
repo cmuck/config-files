@@ -1,5 +1,5 @@
 ---
-name: Tests
+name: CI
 
 on:
   schedule:
@@ -37,40 +37,48 @@ jobs:
           molecule --version
           #export
       - id: files
+        name: Get changed files
         uses: jitterbit/get-changed-files@v1
-      - name: List all changed files
+        if: ${{ github.event_name == 'pull_request' }}
+      - name: List changed files
         run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
           done
+        if: ${{ github.event_name == 'pull_request' }}
       - name: Testing roles using molecule
         run: |
           roles=( )
           echo "###############################################################"
-          for file in ${{ steps.files.outputs.all }}; do
-            echo "Changed file: ${file}"
-            role_path=$(echo "${file}" | cut -f1,2 -d'/')
-            if [[ "${role_path}" =~ roles/.* ]]; then
-              roles+=("${role_path}")
-              echo "Adding ${role_path}"
-            fi
-            if [[ "${file}" == requirements.txt ]]; then
-              echo "requirements.txt changed, testing all roles..."
-              all_roles=( $( ls roles ) )
-              for role in "${all_roles[@]}"
-              do
-                roles+=("roles/${role}")
-              done
-            fi
-            if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
-              echo "Scheduled run, testing all roles..."
-              all_roles=( $( ls roles ) )
-              for role in "${all_roles[@]}"
-              do
-                roles+=("roles/${role}")
-              done
-            fi
-          done
+          if [[ "${GITHUB_EVENT_NAME}" == pull_request ]]; then
+            echo "Pull request run, testing roles ..."
+            for file in ${{ steps.files.outputs.all }}; do
+              echo "Changed file: ${file}"
+              role_path=$(echo "${file}" | cut -f1,2 -d'/')
+              if [[ "${role_path}" =~ roles/.* ]]; then
+                roles+=("${role_path}")
+                echo "Added role ${role_path}"
+              fi
+              if [[ "${file}" == requirements.txt ]]; then
+                echo "requirements.txt changed, testing all roles..."
+                all_roles=( $( ls roles ) )
+                for role in "${all_roles[@]}"
+                do
+                  roles+=("roles/${role}")
+                  echo "Added role ${role}"
+                done
+              fi
+            done
+          fi
+          if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
+            echo "Scheduled run, testing all roles..."
+            all_roles=( $( ls roles ) )
+            for role in "${all_roles[@]}"
+            do
+              roles+=("roles/${role}")
+              echo "Added role ${role}"
+            done
+          fi
           echo
           echo "###############################################################"
           echo "All roles: ${roles[*]}"

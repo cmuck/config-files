@@ -17,7 +17,7 @@ sudo apt install python3 python3-pip python3-venv
 
 Ansible changes a lot between releases or deprecates a lot, therefore I use a pinned version of Ansible.
 
-The first run of `run-ansible.py` creates automatically a virtual environment at `.venv` based on the `requirements.txt`.
+The first run of `run-ansible.py` creates automatically a virtual environment at `venv` based on the `requirements.txt`.
 All further calls to `./run-ansible.py` will us the Ansible version installed into this virtual environment.
 
 ## SSH
