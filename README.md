@@ -3,7 +3,7 @@
 
 # config-files
 
-Software provisioning, configuration management, and application-deployment for developers based on Ansible.
+Setup your development environment based on Ansible routines for software provisioning, configuration management, and application-deployment as infrastructure as code, tested with molecule. 
 
 ## Prerequisites
 
