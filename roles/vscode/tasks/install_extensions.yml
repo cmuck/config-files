@@ -11,6 +11,7 @@
       - libxcb-dri3-0
       - libdrm2
       - libgbm1
+      - libxshmfence1
   become: true
   when: ansible_os_family == "Debian"
 
