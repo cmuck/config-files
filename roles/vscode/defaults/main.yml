@@ -23,3 +23,6 @@ vscode_extension:
   - redhat.vscode-yaml
   - timonwong.shellcheck
   - wholroyd.jinja
+  - vscode-icons-team.vscode-icons
+  - akamud.vscode-theme-onedark
+  - coolbear.systemd-unit-file
