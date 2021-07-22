@@ -1,65 +1,17 @@
 ---
-- name: Ensure apps absent
-  apt:
-    state: absent
-    pkg:
-      - account-plugin-aim
-      - account-plugin-facebook
-      - account-plugin-flickr
-      - account-plugin-google
-      - account-plugin-jabber
-      - account-plugin-salut
-      - account-plugin-yahoo
-      - aisleriot
-      - cheese
-      - evolution
-      - evolution-ews
-      - evolution-help
-      - gfbgraph
-      - gnome-boxes
-      - gnome-calendar
-      - gnome-contacts
-      - gnome-dictionary
-      - gnome-documents
-      - gnome-getting-started-docs
-      - gnome-initial-setup
-      - gnome-mahjongg
-      - gnome-maps
-      - gnome-mines
-      - gnome-online-miners
-      - gnome-photos
-      - gnome-software
-      - gnome-sudoku
-      - gnome-user-docs
-      - gnome-user-share
-      - gnome-video-effects
-      - gnome-weather
-      - landscape-client-ui-install
-      - rhythmbox
-      - shotwell
-      - simple-scan
-      - thunderbird
-      - totem
-      - tracker-miners
-      - transmission-gtk
-      - ubuntu-web-launchers
-      - webbrowser-app
-      - yelp
-  become: true
-
 - name: Ensure apps present
   apt:
     state: present
     update_cache: true
     pkg:
-      # - bazelisk
+      - autofs
       - build-essential
       - cifs-utils
       - corkscrew
       - curl
       - dconf-editor
+      - flameshot
       - htop
-      # - hub
       - iftop
       - iotop
       - kazam
@@ -69,9 +21,9 @@
       - openconnect
       - pitivi
       - preload
-      # - safe-rm
+      - safe-rm
       - silversearcher-ag
-      - suckless-tools
+      - terminator
       - trash-cli
       - vim
 
