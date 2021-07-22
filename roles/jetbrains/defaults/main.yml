@@ -3,7 +3,7 @@
 jetbrains_ide_prefix: '/opt'
 jetbrains_language: 'cpp'
 jetbrains_ide_name: 'CLion'
-jetbrains_ide_version: '2020.1.3'
+jetbrains_ide_version: '2020.3.4'
 
 jetbrains_url: 'https://download.jetbrains.com'
 jetbrains_download_directory: '/tmp'
@@ -17,22 +17,3 @@ jetbrains_download_dest: '{{ jetbrains_download_directory}}/{{ jetbrains_ide_nam
 
 jetbrains_desktop_entry_dir: '/usr/share/applications'
 jetbrains_desktop_file: 'jetbrains-{{ jetbrains_directory }}.desktop'
-
-jetbrains_plugin_download_mirror: "https://plugins.jetbrains.com/plugin/download?updateId="
-jetbrains_plugins:
-  # ignore
-  - 83042
-  # bazel
-  - 98587
-  # cmake simple highlighter
-  - 79791
-  # file watchers
-  - 89866
-  # git tool box
-  - 90039
-  # markdown
-  - 85222
-  # string manipulation
-  - 94772
-  # yaml ansible support
-  - 92285
