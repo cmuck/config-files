@@ -44,19 +44,21 @@ export FZF_BASE="{{ fzf_dir }}"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=({{ oh_my_zsh.plugins | default(oh_my_zsh_plugins) | join(' ') }})
 
+# bazel https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/bazel
 # colored-man-pages https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
 # common-aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases
+# copybuffer https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copybuffer
+# copydir https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copydir
+# copyfile https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile
+# dirhistory https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dirhistory
 # docker https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
 # fzf https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
-# fzf-zsh https://github.com/wyntau/fzf-zsh
 # history https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/history
+# pass https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pass
 # sudo https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo
 # web-search https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search
 # zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
 # zsh-completions https://github.com/zsh-users/zsh-completions
-
-# https://github.com/zsh-users/zsh-completions
-autoload -U compinit && compinit
 
 # https://github.com/junegunn/fzf#using-git
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
@@ -218,3 +220,7 @@ bindkey "^[[1;2C" forward-word
 bindkey "^[[1;2D" backward-word
 autoload -U select-word-style
 select-word-style bash
+
+# https://github.com/zsh-users/zsh-completions
+autoload -U compinit
+compinit
