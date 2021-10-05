@@ -1,19 +1,11 @@
 ---
 # yamllint disable rule:line-length
-jetbrains_ide_prefix: '/opt'
-jetbrains_language: 'cpp'
-jetbrains_ide_name: 'CLion'
-jetbrains_ide_version: '2020.3.4'
+toolbox_version: 1.21.9712
+toolbox_sha256: fd35d02a14b28cb328e096cf6e4135b89adac11eb362ff807e28b7542ec14f98
+toolbox_install_file: "jetbrains-toolbox"
+toolbox_install_dir: "{{ ansible_user_dir }}/.local/share/JetBrains/Toolbox/bin"
 
-jetbrains_url: 'https://download.jetbrains.com'
-jetbrains_download_directory: '/tmp'
-
-jetbrains_directory: '{{ jetbrains_ide_name | lower }}-{{ jetbrains_ide_version }}'
-jetbrains_absolute_directory: '{{ jetbrains_ide_prefix }}/{{jetbrains_directory }}'
-
-jetbrains_product_info: '{{ jetbrains_absolute_directory }}/product-info.json'
-jetbrains_download_url: '{{ jetbrains_url }}/{{ jetbrains_language }}/{{ jetbrains_ide_name }}-{{ jetbrains_ide_version }}.tar.gz'
-jetbrains_download_dest: '{{ jetbrains_download_directory}}/{{ jetbrains_ide_name }}-{{ jetbrains_ide_version }}.tar.gz'
-
-jetbrains_desktop_entry_dir: '/usr/share/applications'
-jetbrains_desktop_file: 'jetbrains-{{ jetbrains_directory }}.desktop'
+archive_file_name: "{{ toolbox_install_file }}-{{ toolbox_version }}.tar.gz"
+download_url: "https://download.jetbrains.com/toolbox/{{ archive_file_name }}"
+temporary_install_dir: "/tmp"
+temporary_file_name: "{{ temporary_install_dir }}/{{ archive_file_name }}"
