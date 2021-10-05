@@ -1,8 +1,21 @@
 ---
-- name: 'Install ranger for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+# yamllint disable rule:line-length
+- name: Install ranger
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - ranger
+  become: true
 
-- name: 'Ensure apps are present and not present for Darwin'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Darwin"
+- name: Create some dirs
+  file:
+    path: '{{ config_dir }}'
+    state: directory
+    mode: '0700'
+
+- name: Copy ranger config
+  copy:
+    src: 'rc.conf'
+    dest: '{{ config_dir }}'
+    mode: '0600'

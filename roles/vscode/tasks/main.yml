@@ -1,11 +1,59 @@
 ---
-- name: 'Install vscode for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+# yamllint disable rule:line-length
+# https://github.com/ansible/ansible/issues/55590
+# - name: Set vscode gpg key
+#   apt_key:
+#     url: "https://packages.microsoft.com/keys/microsoft.asc"
+#     state: present
 
-- name: 'Install vscode for Darwin'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Darwin"
+- name: Install gnupg2 to add pub key
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - gnupg2
+  become: true
+
+- name: Fetch vscode public key
+  get_url:
+    url: 'https://packages.microsoft.com/keys/microsoft.asc'
+    dest: '/etc/apt/trusted.gpg.d'
+  become: true
+
+- name: Add vscode apt repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'
+    filename: vscode
+  become: true
+
+- name: Install vscode
+  apt:
+    name: code
+    state: present
+  become: true
+
+- name: Install dependencies for vscode
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - libx11-xcb-dev
+      - libasound2
+      - libxcb-dri3-0
+      - libdrm2
+      - libgbm1
+      - libxshmfence1
+  become: true
+
+- name: Get list of installed extensions
+  command: 'code --list-extensions --user-data-dir={{ ansible_user_dir }}/.config/Code'
+  # https://www.middlewareinventory.com/blog/ansible-changed_when-and-failed_when-examples/
+  changed_when: false
+  register: installed_extensions
 
 - name: Install vscode extensions
-  include_tasks: 'install_extensions.yml'
+  command: 'code --install-extension {{ item }} --user-data-dir={{ ansible_user_dir }}/.config/Code'
+  loop: '{{ vscode_extension }}'
+  when: item not in installed_extensions.stdout
+  changed_when: false

@@ -1,8 +1,0 @@
----
-# yamllint disable rule:line-length
-- name: Install bat
-  apt:
-    name: bat
-    state: present
-    update_cache: true
-  become: true
