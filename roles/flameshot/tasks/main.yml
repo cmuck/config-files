@@ -1,4 +1,21 @@
 ---
-- name: 'Install flameshot for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+- name: Install flameshot
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - flameshot
+  become: true
+
+- name: Create config dir for flameshot
+  file:
+    path: '{{ ansible_user_dir }}/.config/Dharkael'
+    state: directory
+    mode: '0700'
+
+- name: Write flameshot configuration
+  template:
+    src: flameshot.ini.j2
+    dest: '{{ ansible_user_dir }}/.config/Dharkael/flameshot.ini'
+    backup: true
+    mode: '0600'

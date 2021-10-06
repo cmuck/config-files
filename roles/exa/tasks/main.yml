@@ -1,8 +1,6 @@
 ---
-- name: 'Ensure apps are present and not present for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
-
-- name: 'Ensure apps are present and not present for Darwin'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Darwin"
+# yamllint disable rule:line-length
+- name: Install exa from Ubuntu 20.10 but works...
+  apt:
+    deb: http://de.archive.ubuntu.com/ubuntu/pool/universe/r/rust-exa/exa_0.9.0-4_amd64.deb
+  become: true
