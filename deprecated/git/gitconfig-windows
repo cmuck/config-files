@@ -1,7 +1,0 @@
-[include]
-    path = .gitconfig-common
-[credential]
-    helper = wincred
-[core]
-    autocrlf = true
-    ignorecase = true
