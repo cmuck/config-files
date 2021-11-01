@@ -33,7 +33,9 @@
         mode: '0700'
         remote_src: true
 
-    - name: Install Toolbox
-      command: "{{ toolbox_install_dir }}/{{ toolbox_install_file }} --install"
-      when: false
+    - name: Reminder how to launch
+      debug:
+        msg: |
+          Please run {{ toolbox_install_dir }}/{{ toolbox_install_file }} manually for the first time
+          to finish installation
   when: not jetbrains_toolbox_bin.stat.exists
