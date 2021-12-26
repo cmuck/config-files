@@ -1,9 +1,9 @@
 ---
 vscode_extension:
+  - Anan.jetbrains-darcula-theme
   - aaron-bond.better-comments
   - alefragnani.project-manager
   - BazelBuild.vscode-bazel
-  - CoenraadS.bracket-pair-colorizer
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
   - DotJoshJohnson.xml
@@ -21,6 +21,7 @@ vscode_extension:
   - ms-vscode.cpptools
   - PKief.material-icon-theme
   - redhat.vscode-yaml
+  - ritwickdey.LiveServer
   - timonwong.shellcheck
   - wholroyd.jinja
   - vscode-icons-team.vscode-icons
