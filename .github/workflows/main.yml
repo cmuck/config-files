@@ -93,6 +93,11 @@ jobs:
             echo "###############################################################"
             echo "Testing role: ${role}"
             {
+              if [[ ! -d "${role}" ]]; then
+                echo "Directory ${role} does not exists anymore, continue..."
+                continue
+              fi
+
               pushd "${role}" >/dev/null
               molecule test
               popd >/dev/null
