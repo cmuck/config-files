@@ -20,9 +20,14 @@
     dest: '/etc/apt/trusted.gpg.d'
   become: true
 
+- name: Get DEB architecture
+  command: dpkg --print-architecture
+  register: deb_architecture
+  changed_when: deb_architecture.rc != 0
+
 - name: Add vscode apt repository
   apt_repository:
-    repo: 'deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main'
+    repo: 'deb [arch={{ deb_architecture.stdout }}] https://packages.microsoft.com/repos/vscode stable main'
     filename: vscode
   become: true
 
