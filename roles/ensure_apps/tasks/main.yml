@@ -5,6 +5,7 @@
     update_cache: true
     pkg:
       - autofs
+      - baobab
       - build-essential
       - cifs-utils
       - corkscrew
@@ -14,7 +15,9 @@
       - htop
       - iftop
       - iotop
+      - iperf3
       - kazam
+      - ncdu
       - network-manager-openconnect
       - network-manager-openconnect-gnome
       - nmap
