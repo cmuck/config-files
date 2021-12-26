@@ -1,8 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include exa role"
-      include_role:
-        name: "exa"
-  environment: '{{ proxy_environment }}'
