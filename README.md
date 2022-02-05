@@ -1,9 +1,9 @@
 [![CI](https://github.com/cmuck/config-files/actions/workflows/main.yml/badge.svg?event=schedule)](https://github.com/cmuck/config-files/actions/workflows/main.yml)
 
-
 # config-files
 
-Setup your development environment based on Ansible routines for software provisioning, configuration management, and application-deployment as infrastructure as code, tested with molecule. 
+Setup your development environment based on Ansible routines for software provisioning,
+configuration management, and application-deployment as infrastructure as code, tested with molecule.
 
 ## Prerequisites
 
@@ -35,22 +35,31 @@ optional arguments:
 ### Playbook development
 
 * Default usage
+
     ```sh
     ./run-ansible.py developer
     ```
+
 * Syntax-check of the playbook
+
     ```sh
     ./run-ansible.py -c developer
     ```
+
 * Dry-run of the playbook
+
     ```sh
     ./run-ansible.py -d developer
     ```
+
 * Execute specific tags of the playbook
+
     ```sh
     ./run-ansible.py -t zsh git developer
     ```
+
 * Increase verbosity
+
     ```sh
     ./run-ansible.py -v developer
     ```
@@ -110,15 +119,15 @@ molecule init role -r <role> -d docker
 ## Proxy
 
 * `config-files` should be capable of a proxy and non-proxy environment
-    * Ansible
-        * The `group_vars` for `all` sets `proxy_environment` using e.g. `lookup("env","http_proxy")`
-        * The `group_vars` directory is linked to the molecule default scenario for all roles
-        * `proxy_environment` is used by all playbooks (`development` and molecule playbooks) as `environment: '{{ proxy_environment }}'`
-        * If `lookup` does not find any proxy vars e.g. `http_proxy`, playbook(s) and roles should run either way
-        * Proxy affected roles check for the proxy e.g. `{% if environment[0].http_proxy is defined and environment[0].http_proxy | length %}`
-    * Molecule
-        * All `molecule.yml` files are extended with env for proxies, so that the docker images can be build
-        * They are disabled by default due to GitHub Travis CI, so please enable them if a proxy is used
+  * Ansible
+    * The `group_vars` for `all` sets `proxy_environment` using e.g. `lookup("env","http_proxy")`
+    * The `group_vars` directory is linked to the molecule default scenario for all roles
+    * `proxy_environment` is used by all playbooks (`development` and molecule playbooks) as `environment: '{{ proxy_environment }}'`
+    * If `lookup` does not find any proxy vars e.g. `http_proxy`, playbook(s) and roles should run either way
+    * Proxy affected roles check for the proxy e.g. `{% if environment[0].http_proxy is defined and environment[0].http_proxy | length %}`
+  * Molecule
+    * All `molecule.yml` files are extended with env for proxies, so that the docker images can be build
+    * They are disabled by default due to GitHub Travis CI, so please enable them if a proxy is used
 
 ## Links
 
@@ -126,4 +135,4 @@ molecule init role -r <role> -d docker
 * [Ansible configuration settings](https://docs.ansible.com/ansible/2.8/reference_appendices/config.html)
 * [Ansible FAQ](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html)
 * [Rapidly Build & Test Ansible Roles with Molecule + Docker](https://www.youtube.com/watch?v=DAnMyBZ8-Qs)
-* [Testing Ansible Roles with Molecule Behind a Proxy ](https://renaudmarti.net/posts/molecule-proxy-support/)
+* [Testing Ansible Roles with Molecule Behind a Proxy](https://renaudmarti.net/posts/molecule-proxy-support/)

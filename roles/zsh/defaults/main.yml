@@ -2,9 +2,5 @@
 fzf_dir: '{{ ansible_user_dir }}/.local/share/fzf'
 
 oh_my_zsh_dir: '{{ ansible_user_dir }}/.local/share/oh-my-zsh'
-oh_my_zsh_theme: robbyrussell
-oh_my_zsh_plugins:
-  - zsh-autosuggestions
-  - zsh-completions
 
 config_zhsrc: '{{ ansible_user_dir }}/.zshrc'

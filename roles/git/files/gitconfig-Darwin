@@ -1,6 +1,0 @@
-[include]
-    path = .git/gitconfig-common
-[credential]
-    helper = osxkeychain
-[core]
-    autocrlf = input
