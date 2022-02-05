@@ -1,6 +1,7 @@
 # Installation
 
 Before starting, ensure to have an up-to-date system
+
 ```sh
 sudo apt update && sudo apt dist-upgrade
 ```
@@ -23,7 +24,7 @@ All further calls to `./run-ansible.py` will us the Ansible version installed in
 ## SSH
 
 A default installation of Ubuntu does not have installed `openssh-server`.
-Therefore install `openssh-server` so that the system can be used by Ansible. 
+Therefore install `openssh-server` so that the system can be used by Ansible.
 
 ```sh
 sudo apt install openssh-server

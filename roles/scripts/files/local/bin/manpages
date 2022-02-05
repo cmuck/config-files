@@ -11,10 +11,10 @@ case "$choice" in
     echo "Program terminated." && exit 1
     ;;
   random)
-    find /usr/share/man/man1 -type f | shuf | awk -F '/' '/1/ {print $6}' | sed 's/.gz//g' | head -1 | dmenu -i -p "Random Manpage:" | xargs $TERMINAL --execute man
+    find /usr/share/man/man1 -type f | shuf | awk -F '/' '/1/ {print $6}' | sed 's/.gz//g' | head -1 | dmenu -i -p "Random Manpage:" | xargs "${TERMINAL}" --execute man
     ;;
   search)
-    man -k . | awk '{ print $1 }' | dmenu -i -l 20 -p "Search Manpages:" | xargs $TERMINAL --execute man
+    man -k . | awk '{ print $1 }' | dmenu -i -l 20 -p "Search Manpages:" | xargs "${TERMINAL}" --execute man
     ;;
   *)
     exit 1

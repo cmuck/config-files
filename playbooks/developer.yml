@@ -15,18 +15,12 @@
     - name: Install Jetbrains Toolbox
       role: jetbrains
       tags: [ jetbrains ]
-    - name: Install atom
-      role: atom
-      tags: [ atom ]
     - name: Install vscode
       role: vscode
       tags: [ vscode ]
     - name: Install zsh
       role: zsh
       tags: [ zsh ]
-    - name: Install i3
-      role: i3
-      tags: [ i3 ]
     - name: Install ranger
       role: ranger
       tags: [ ranger ]
@@ -57,9 +51,6 @@
     - name: Install terminator
       role: terminator
       tags: [ terminator ]
-    - name: Install rofi
-      role: rofi
-      tags: [ rofi ]
     - name: Install scripts
       role: scripts
       tags: [ scripts ]
