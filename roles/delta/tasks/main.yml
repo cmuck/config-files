@@ -7,12 +7,6 @@
     update_cache: true
   become: true
 
-- name: Esnure .gitconfig exists
-  file:
-    path: '{{ ansible_user_dir }}/.gitconfig'
-    state: touch
-    mode: '0600'
-
 - name: Install delta from github release page but works...
   apt:
     deb: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
@@ -31,6 +25,8 @@
 
 - name: Write block in file to .gitconfig
   blockinfile:
+    create: true
+    mode: '0600'
     path: '{{ ansible_user_dir }}/.gitconfig'
     marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"
     block: |
