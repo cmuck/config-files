@@ -22,6 +22,7 @@
       - network-manager-openconnect-gnome
       - nmap
       - openconnect
+      - peek
       - pitivi
       - preload
       - safe-rm
