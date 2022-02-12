@@ -10,8 +10,6 @@ lint: |
   ansible-lint
   flake8
 platforms:
-  - name: ubuntu_18_04
-    image: ubuntu:18.04
   - name: ubuntu_20_04
     image: ubuntu:20.04
 #    env:

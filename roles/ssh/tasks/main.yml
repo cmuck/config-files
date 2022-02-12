@@ -6,16 +6,10 @@
     state: directory
     mode: '0700'
 
-- name: Ensure ssh config file exists
-  file:
-    path: '{{ ansible_user_dir }}/.ssh/config'
-    state: touch
-    modification_time: preserve
-    access_time: preserve
-    mode: '0600'
-
 - name: Write SSH config common block
   blockinfile:
+    create: true
+    mode: '0600'
     path: '{{ ansible_user_dir }}/.ssh/config'
     marker: "# {mark} ANSIBLE MANAGED BLOCK common"
     block: |
@@ -27,6 +21,8 @@
 
 - name: Write SSH config GitHub via corkscrew block
   blockinfile:
+    create: true
+    mode: '0600'
     path: '{{ ansible_user_dir }}/.ssh/config'
     backup: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK corkscrew"
