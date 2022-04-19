@@ -1,18 +1,18 @@
 ---
 - name: Debug proxy_environment
-  debug:
+  ansible.builtin.debug:
     var: proxy_environment
 
 - name: Debug ansible_env
-  debug:
+  ansible.builtin.debug:
     var: ansible_env
 
 - name: Debug lookup
-  debug:
+  ansible.builtin.debug:
     var: tmp
   vars:
     tmp: "{{ lookup('env','http_proxy') }}"
 
 - name: Debug environment
-  debug:
+  ansible.builtin.debug:
     var: environment

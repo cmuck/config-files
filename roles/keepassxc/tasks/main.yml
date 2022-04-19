@@ -1,7 +1,7 @@
 ---
 # yamllint disable rule:line-length
 - name: Install gnupg2 to add pub key
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -9,19 +9,19 @@
   become: true
 
 - name: Add keepass apt-key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd89c66d0e31fea2874ebd20561922ab60068fcd6
     state: present
   become: true
 
 - name: Add repository for keepass
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main'
     filename: keepass
   become: true
 
 - name: Install keepassxc
-  apt:
+  ansible.builtin.apt:
     name: keepassxc
     state: present
   become: true

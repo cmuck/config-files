@@ -1,7 +1,7 @@
 ---
 # yamllint disable rule:line-length
 - name: Install zsh dependencies
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -11,20 +11,20 @@
   become: true
 
 - name: Create required directories
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/{{ item }}'
     state: directory
-    mode: '0700'
+    mode: '0755'
   loop:
     - .config/zsh
     - .local/share/zsh
 
 - name: Write {{ config_zhsrc }} based on template
-  template:
+  ansible.builtin.template:
     src: zshrc.j2
     dest: '{{ config_zhsrc }}'
     backup: true
-    mode: '0600'
+    mode: '0644'
   vars:
     oh_my_zsh:
       theme: bira
@@ -47,74 +47,74 @@
         - zsh-syntax-highlighting
 
 - name: Clone oh-my-zsh for users
-  git:
+  ansible.builtin.git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     dest: '{{ oh_my_zsh_dir }}'  # noqa 401
 
 - name: Clone zsh-completions plugin to users oh-my-zsh directory
-  git:
+  ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-completions.git
     version: '0.33.0'
     dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-completions'
     depth: 1
 
 - name: Clone zsh-autosuggestions plugin to users oh-my-zsh directory
-  git:
+  ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
     version: 'v0.7.0'
     dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-autosuggestions'
     depth: 1
 
 - name: Clone zsh-syntax-highlighting plugin to users oh-my-zsh directory
-  git:
+  ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
     version: '0.7.1'
     dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-syntax-highlighting'
     depth: 1
 
 - name: Clone fzf
-  git:
+  ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
     dest: '{{ fzf_dir }}'
     depth: 1  # noqa 401
 
 - name: Check fzf is installed
-  stat:
+  ansible.builtin.stat:
     path: '{{ ansible_user_dir }}/.config/fzf'
   register: fzf_installed
 
 - name: Install fzf
-  command: "./install --all --xdg"
+  ansible.builtin.command: "./install --all --xdg"
   args:
     chdir: "{{ fzf_dir }}"
   when: not fzf_installed.stat.exists
 
 - name: Copy .profile_zsh_block
-  copy:
+  ansible.builtin.copy:
     src: profile_zsh_block
     dest: '/tmp/profile_zsh_block'
-    mode: '0600'
+    mode: '0644'
 
 - name: Reading profile_zsh_block file and register it into profile_zsh_block variable
-  command: cat /tmp/profile_zsh_block
+  ansible.builtin.command: cat /tmp/profile_zsh_block
   register: profile_zsh_block
   changed_when: false
 
 - name: Write block in file to .profile
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: '{{ ansible_user_dir }}/.profile'
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
     block: |
       {{ profile_zsh_block.stdout }}
 
 - name: Create symbolic link .zprofile
-  file:
+  ansible.builtin.file:
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
 
 - name: Set default shell for users
-  user:
+  ansible.builtin.user:
     name: '{{ ansible_user_id }}'
     shell: /bin/zsh
   become: true
@@ -122,23 +122,23 @@
 # Clean up old installations
 
 - name: Check fzf exist in home directory
-  stat:
+  ansible.builtin.stat:
     path: '{{ ansible_user_dir }}/.fzf'
   register: fzf_home_dir
 
 - name: Delete fzf in home directory
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/.fzf'
     state: absent
   when: fzf_home_dir.stat.exists and fzf_home_dir.stat.isdir
 
 - name: Check oh-my-zsh exist in home directory
-  stat:
+  ansible.builtin.stat:
     path: '{{ ansible_user_dir }}/.oh-my-zsh'
   register: oh_my_zsh_home_dir
 
 - name: Delete oh-my-zsh in home directory
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/.oh-my-zsh'
     state: absent
   when: oh_my_zsh_home_dir.stat.exists and oh_my_zsh_home_dir.stat.isdir

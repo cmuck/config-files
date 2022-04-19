@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include vscode role"
-      include_role:
+      ansible.builtin.include_role:
         name: "vscode"
   environment: '{{ proxy_environment }}'

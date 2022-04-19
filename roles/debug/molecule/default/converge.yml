@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include debug role"
-      include_role:
+      ansible.builtin.include_role:
         name: "debug"
   environment: '{{ proxy_environment }}'

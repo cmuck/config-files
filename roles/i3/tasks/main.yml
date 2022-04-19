@@ -1,7 +1,7 @@
 # yamllint disable rule:line-length
 ---
 - name: Install gnupg2 to add pub key
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -9,19 +9,19 @@
   become: true
 
 - name: Add i3 apt-key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbda0e4ba891b327bb00df1e076458020c35556dc
     state: present
   become: true
 
 - name: Add repository for i3-gaps
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/kgilmer/speed-ricer/ubuntu {{ ansible_lsb.codename }} main'
     filename: i3-gaps
   become: true
 
 - name: Ensure i3-gaps (fork of i3) and other useful tools are present
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -36,83 +36,83 @@
   become: true
 
 - name: Create local dir
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/.local/bin'
     state: directory
-    mode: '0700'
+    mode: '0755'
 
 - name: Copy bin scripts
-  copy:
+  ansible.builtin.copy:
     src: local/bin
     dest: '{{ ansible_user_dir }}/.local'
     mode: preserve
 
 - name: Create config dir
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/.config'
     state: directory
-    mode: '0700'
+    mode: '0755'
 
 - name: Copy i3 config
-  copy:
+  ansible.builtin.copy:
     src: config/i3
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
     backup: true
 
 - name: Copy i3 status
-  copy:
+  ansible.builtin.copy:
     src: config/i3status
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
     backup: true
 
 - name: Copy i3 blocks
-  copy:
+  ansible.builtin.copy:
     src: config/i3blocks
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
     backup: true
 
 - name: Create symbolic link .zprofile
-  file:
+  ansible.builtin.file:
     src: '{{ ansible_user_dir }}/.profile'
     dest: '{{ ansible_user_dir }}/.zprofile'
     state: link
 
 - name: Copy profile_i3_block
-  copy:
+  ansible.builtin.copy:
     src: profile_i3_block
     dest: '/tmp/profile_i3_block'
-    mode: '0600'
+    mode: '0644'
 
 - name: Reading profile_i3_block file and register it into profile_i3_block variable
-  command: cat /tmp/profile_i3_block
+  ansible.builtin.command: cat /tmp/profile_i3_block
   register: profile_i3_block
   changed_when: false
 
 - name: Write block in file to .profile
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: '{{ ansible_user_dir }}/.profile'
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_i3_block sourcing"
     block: |
       {{ profile_i3_block.stdout }}
 
 - name: Create bin
-  file:
+  ansible.builtin.file:
     path: '/usr/local/bin'
     state: directory
     mode: '0755'
 
 - name: Check xcwb is installed
-  stat:
+  ansible.builtin.stat:
     path: '/usr/local/bin/xcwd'
   register: xcwd_installed
 
 - name: Install xcbw
   block:
     - name: Install xcwd dependencies
-      apt:
+      ansible.builtin.apt:
         state: present
         update_cache: true
         pkg:
@@ -122,19 +122,20 @@
       become: true
 
     - name: Clone xcwd
-      git:
+      ansible.builtin.git:
         repo: https://github.com/schischi/xcwd.git
         dest: '/tmp/xcwd'
         version: HEAD
         depth: 1  # noqa 401
 
     - name: Make xcwd
-      command: 'make'
+      ansible.builtin.command: 'make'
       args:
         chdir: '/tmp/xcwd'
+      changed_when: false
 
     - name: Copy xcwd to bin
-      copy:
+      ansible.builtin.copy:
         src: /tmp/xcwd/xcwd
         dest: '/usr/local/bin'
         mode: preserve

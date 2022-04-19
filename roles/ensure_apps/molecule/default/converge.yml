@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include ensure_apps role"
-      include_role:
+      ansible.builtin.include_role:
         name: "ensure_apps"
   environment: '{{ proxy_environment }}'

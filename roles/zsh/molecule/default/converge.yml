@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include zsh role"
-      include_role:
+      ansible.builtin.include_role:
         name: "zsh"
   environment: '{{ proxy_environment }}'
