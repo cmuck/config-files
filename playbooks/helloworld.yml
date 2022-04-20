@@ -4,9 +4,10 @@
   debugger: on_failed
   tasks:
     - name: Print something
-      shell: echo "Hello world!"
-    - debug:
-    - debug:
+      ansible.builtin.command: echo "Hello world!"
+      changed_when: false
+    - name: Some debug output
+      ansible.builtin.debug:
         msg:
           - "Some more printing: {{ ansible_user_dir }}"
           - "Some more printing: {{ ansible_user_id }}"

@@ -1,6 +1,6 @@
 ---
 - name: Install bat
-  apt:
+  ansible.builtin.apt:
     name: bat
     state: present
     update_cache: true

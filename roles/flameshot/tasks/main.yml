@@ -1,6 +1,6 @@
 ---
 - name: Install flameshot
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -8,14 +8,14 @@
   become: true
 
 - name: Create config dir for flameshot
-  file:
+  ansible.builtin.file:
     path: '{{ ansible_user_dir }}/.config/Dharkael'
     state: directory
-    mode: '0700'
+    mode: '0755'
 
 - name: Write flameshot configuration
-  template:
+  ansible.builtin.template:
     src: flameshot.ini.j2
     dest: '{{ ansible_user_dir }}/.config/Dharkael/flameshot.ini'
     backup: true
-    mode: '0600'
+    mode: '0644'

@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include git role"
-      include_role:
+      ansible.builtin.include_role:
         name: "git"
   environment: '{{ proxy_environment }}'

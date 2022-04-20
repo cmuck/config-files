@@ -1,15 +1,15 @@
 ---
 - name: Setup fact for default proxy environment
-  set_fact:
+  ansible.builtin.set_fact:
     proxy_environment:
       proxy_used: '{{ proxy_used }}'
 
 - name: Debug proxy environment
-  debug:
+  ansible.builtin.debug:
     var: proxy_environment
 
 - name: Setup fact fro proxy environment
-  set_fact:
+  ansible.builtin.set_fact:
     proxy_environment:
       http_proxy: '{{ lookup("env","http_proxy") }}'
       https_proxy: '{{ lookup("env","https_proxy")  }}'
@@ -18,7 +18,7 @@
     - proxy_used | bool
 
 - name: Debug proxy environment
-  debug:
+  ansible.builtin.debug:
     var: proxy_environment
 #  when:
 #    - proxy_used | bool

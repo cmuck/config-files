@@ -1,6 +1,6 @@
 ---
 - name: Install ranger
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -8,13 +8,13 @@
   become: true
 
 - name: Create some dirs
-  file:
+  ansible.builtin.file:
     path: '{{ config_dir }}'
     state: directory
-    mode: '0700'
+    mode: '0755'
 
 - name: Copy ranger config
-  copy:
+  ansible.builtin.copy:
     src: 'rc.conf'
     dest: '{{ config_dir }}'
-    mode: '0600'
+    mode: '0644'

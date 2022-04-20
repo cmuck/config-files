@@ -1,32 +1,32 @@
 ---
 # yamllint disable rule:line-length
 - name: Ensure git is installed
-  apt:
+  ansible.builtin.apt:
     name: git
     state: present
     update_cache: true
   become: true
 
 - name: Install delta from github release page but works...
-  apt:
+  ansible.builtin.apt:
     deb: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
   become: true
 
 - name: Copy delta_gitconfig_block
-  copy:
+  ansible.builtin.copy:
     src: delta_gitconfig_block
     dest: '/tmp/delta_gitconfig_block'
-    mode: '0600'
+    mode: '0644'
 
 - name: Reading delta_gitconfig_block file and register it into delta_gitconfig_block variable
-  command: cat /tmp/delta_gitconfig_block
+  ansible.builtin.command: cat /tmp/delta_gitconfig_block
   register: delta_gitconfig_block
   changed_when: false
 
 - name: Write block in file to .gitconfig
-  blockinfile:
+  ansible.builtin.blockinfile:
     create: true
-    mode: '0600'
+    mode: '0644'
     path: '{{ ansible_user_dir }}/.gitconfig'
     marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"
     block: |
