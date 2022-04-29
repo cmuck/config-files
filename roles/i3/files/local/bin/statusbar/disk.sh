@@ -20,10 +20,10 @@ df_dump="$(df -h -P -l "${directory}" | tail -1)"
 
 total="$(echo "${df_dump}" | awk '{ print $2}' | grep -o '[.0-9]*' || true)"
 used="$(echo "${df_dump}" | awk '{ print $3}' | grep -o '[.0-9]*' || true)"
-free="$(echo "${df_dump}" | awk '{ print $4}' | grep -o '[.0-9]*' || true)"
+#free="$(echo "${df_dump}" | awk '{ print $4}' | grep -o '[.0-9]*' || true)"
 
 percent_used="$(echo "${df_dump}" | awk '{ print $5}' | sed 's/%//g')"
-percent_free="$((100 - percent_used))"
+#percent_free="$((100 - percent_used))"
 
 #echo "total: $total"
 #echo "used: $used"

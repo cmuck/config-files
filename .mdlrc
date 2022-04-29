@@ -1,0 +1,4 @@
+# markdownlint configuration file
+
+# Load custom style
+style "#{File.dirname(__FILE__)}/.mdlstyle.rb"
