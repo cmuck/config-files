@@ -14,47 +14,47 @@
   roles:
     - name: Install Jetbrains Toolbox
       role: jetbrains
-      tags: [ jetbrains ]
+      tags: [jetbrains]
     - name: Install vscode
       role: vscode
-      tags: [ vscode ]
+      tags: [vscode]
     - name: Install zsh
       role: zsh
-      tags: [ zsh ]
+      tags: [zsh]
     - name: Install ranger
       role: ranger
-      tags: [ ranger ]
+      tags: [ranger]
     - name: Install neovim
       role: neovim
-      tags: [ neovim ]
+      tags: [neovim]
     - name: Install git
       role: git
-      tags: [ git ]
+      tags: [git]
     - name: Install keepassxc
       role: keepassxc
-      tags: [ keepassxc ]
+      tags: [keepassxc]
     - name: Ensure ssh
       role: ssh
-      tags: [ ssh ]
+      tags: [ssh]
     - name: Ensure apps
       role: ensure_apps
-      tags: [ ensure-apps ]
+      tags: [ensure-apps]
     - name: Install docker
       role: docker
-      tags: [ docker ]
+      tags: [docker]
     - name: Install flameshot
       role: flameshot
-      tags: [ flameshot ]
+      tags: [flameshot]
     - name: Install bat
       role: bat
-      tags: [ bat ]
+      tags: [bat]
     - name: Install terminator
       role: terminator
-      tags: [ terminator ]
+      tags: [terminator]
     - name: Install scripts
       role: scripts
-      tags: [ scripts ]
+      tags: [scripts]
     - name: Install delta
       role: delta
-      tags: [ delta ]
+      tags: [delta]
   environment: '{{ proxy_environment }}'

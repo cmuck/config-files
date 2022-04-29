@@ -10,7 +10,7 @@ ERROR_MESSAGE="i3blocks default module missing"
 # 1 to 3 for left/middle/right mouse button
 case "${BLOCK_BUTTON}" in
   1) notify-send "🖥CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)\\n(100% per core)" ;;
-  2) setsid "$TERMINAL" -e htop &;;
+  2) setsid "$TERMINAL" -e htop & ;;
   3) notify-send "CPU status" "Shows CPU details
 - Left click to show intensive processes
 - Middle click to open htop
