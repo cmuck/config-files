@@ -12,7 +12,7 @@ cd "${root_dir}"
 
 target_branch="origin/master"
 mapfile -t changed_fies < <(git diff --name-only HEAD.."${target_branch}")
-roles=( )
+roles=()
 
 echo
 echo
@@ -26,17 +26,15 @@ for file in "${changed_fies[@]}"; do
   fi
   if [[ "${file}" == requirements.txt ]]; then
     echo "requirements.txt changed, testing all roles..."
-    all_roles=( $( ls roles ) )
-    for role in "${all_roles[@]}"
-    do
+    mapfile -t all_roles < <(roles)
+    for role in "${all_roles[@]}"; do
       roles+=("roles/${role}")
     done
   fi
   if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
     echo "Scheduled run, testing all roles..."
-    all_roles=( $( ls roles ) )
-    for role in "${all_roles[@]}"
-    do
+    mapfile -t all_roles < <(roles)
+    for role in "${all_roles[@]}"; do
       roles+=("roles/${role}")
     done
   fi
@@ -51,8 +49,7 @@ unique_roles=($(echo "${roles[*]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
 echo "Unique roles: ${unique_roles[*]}"
 echo "###############################################################"
 
-for role in "${unique_roles[@]}"
-do
+for role in "${unique_roles[@]}"; do
   echo
   echo
   echo "###############################################################"

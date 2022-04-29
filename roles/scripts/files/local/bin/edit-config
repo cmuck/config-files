@@ -20,53 +20,53 @@ quit")
 choice=$(echo -e "${options[@]}" | dmenu -i -l 20 -p "Edit config file:")
 
 case "$choice" in
-  quit)
-    echo "Program terminated." && exit 1
-    ;;
-  bashrc)
-    choice="$HOME/.bashrc"
-    ;;
-  flameshot)
-    choice="$HOME/.config/Dharkael/flameshot.ini"
-    ;;
-  git)
-    choice="$HOME/.gitconfig"
-    ;;
-  i3)
-    choice="$HOME/.config/i3/config"
-    ;;
-  i3blocks)
-    choice="$HOME/.config/i3blocks/config"
-    ;;
-  neovim)
-    choice="$HOME/.config/nvim/init.vim"
-    ;;
-  profile)
-    choice="$HOME/.profile"
-    ;;
-  ranger)
-    choice="$HOME/.config/ranger/rc.conf"
-    ;;
-  rofi)
-    choice="$HOME/.config/rofi/config"
-    ;;
-  terminator)
-    choice="$HOME/.config/terminator/config"
-    ;;
-  xinitrc)
-    choice="$HOME/.xinitrc"
-    ;;
-  xprofile)
-    choice="$HOME/.xprofile"
-    ;;
-  zprofile)
-    choice="$HOME/.zprofile"
-    ;;
-  zshrc)
-    choice="$HOME/.config/zsh/.zshrc"
-    ;;
-  *)
-    exit 1
-    ;;
+quit)
+	echo "Program terminated." && exit 1
+	;;
+bashrc)
+	choice="$HOME/.bashrc"
+	;;
+flameshot)
+	choice="$HOME/.config/Dharkael/flameshot.ini"
+	;;
+git)
+	choice="$HOME/.gitconfig"
+	;;
+i3)
+	choice="$HOME/.config/i3/config"
+	;;
+i3blocks)
+	choice="$HOME/.config/i3blocks/config"
+	;;
+neovim)
+	choice="$HOME/.config/nvim/init.vim"
+	;;
+profile)
+	choice="$HOME/.profile"
+	;;
+ranger)
+	choice="$HOME/.config/ranger/rc.conf"
+	;;
+rofi)
+	choice="$HOME/.config/rofi/config"
+	;;
+terminator)
+	choice="$HOME/.config/terminator/config"
+	;;
+xinitrc)
+	choice="$HOME/.xinitrc"
+	;;
+xprofile)
+	choice="$HOME/.xprofile"
+	;;
+zprofile)
+	choice="$HOME/.zprofile"
+	;;
+zshrc)
+	choice="$HOME/.config/zsh/.zshrc"
+	;;
+*)
+	exit 1
+	;;
 esac
 $TERMINAL --execute nvim "$choice"

@@ -4,11 +4,6 @@ dependency:
   enabled: false
 driver:
   name: docker
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
-  flake8
 platforms:
   - name: ubuntu_20_04
     image: ubuntu:20.04
