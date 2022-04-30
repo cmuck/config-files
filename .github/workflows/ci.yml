@@ -49,11 +49,11 @@ jobs:
         name: Get changed files
         uses: jitterbit/get-changed-files@v1
         if: ${{ github.event_name == 'pull_request' }}
-      - name: Testing roles
+      - name: Testing roles - pull-request
         run: |
           ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
         if: ${{ github.event_name == 'pull_request' }}
-      - name: Testing roles
+      - name: Testing roles - scheduled
         run: |
           ./scripts/test-roles.sh
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
