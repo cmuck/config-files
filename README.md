@@ -1,6 +1,7 @@
 # config-files
 
-[![CI](https://github.com/cmuck/config-files/actions/workflows/main.yml/badge.svg?event=schedule)](https://github.com/cmuck/config-files/actions/workflows/main.yml)
+[![CI](https://github.com/cmuck/config-files/actions/workflows/ci.yml/badge.svg?event=schedule)](https://github.com/cmuck/config-files/actions/workflows/ci.yml)
+
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 Setup your development environment based on Ansible routines for software
