@@ -29,7 +29,7 @@
 - name: Add vscode apt repository
   ansible.builtin.apt_repository:
     repo: 'deb [arch={{ deb_architecture.stdout }}] https://packages.microsoft.com/repos/vscode stable main'
-    filename: vscode
+    filename: config-files-vscode
   become: true
 
 - name: Install vscode

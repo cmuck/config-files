@@ -17,7 +17,7 @@
 - name: Add repository for keepass
   ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main'
-    filename: keepass
+    filename: config-files-keepass
   become: true
 
 - name: Install keepassxc

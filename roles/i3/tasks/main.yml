@@ -17,7 +17,7 @@
 - name: Add repository for i3-gaps
   ansible.builtin.apt_repository:
     repo: 'deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu {{ ansible_lsb.codename }} main'
-    filename: i3-gaps
+    filename: config-files-i3-gaps
   become: true
 
 - name: Ensure i3-gaps (fork of i3) and other useful tools are present
