@@ -41,65 +41,11 @@ jobs:
         name: Get changed files
         uses: jitterbit/get-changed-files@v1
         if: ${{ github.event_name == 'pull_request' }}
-      - name: List changed files
+      - name: Testing roles
         run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+          ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
         if: ${{ github.event_name == 'pull_request' }}
-      - name: Testing roles using molecule
+      - name: Testing roles
         run: |
-          roles=( )
-          echo "###############################################################"
-          if [[ "${GITHUB_EVENT_NAME}" == pull_request ]]; then
-            echo "Pull request run, testing roles ..."
-            for file in ${{ steps.files.outputs.all }}; do
-              echo "Changed file: ${file}"
-              role_path=$(echo "${file}" | cut -f1,2 -d'/')
-              if [[ "${role_path}" =~ roles/.* ]]; then
-                roles+=("${role_path}")
-                echo "Added role ${role_path}"
-              fi
-              if [[ "${file}" == requirements.txt ]]; then
-                echo "requirements.txt changed, testing all roles..."
-                all_roles=( $( ls roles ) )
-                for role in "${all_roles[@]}"
-                do
-                  roles+=("roles/${role}")
-                  echo "Added role ${role}"
-                done
-              fi
-            done
-          fi
-          if [[ "${GITHUB_EVENT_NAME}" =~ schedule|workflow_dispatch ]]; then
-            echo "Scheduled run, testing all roles..."
-            all_roles=( $( ls roles ) )
-            for role in "${all_roles[@]}"
-            do
-              roles+=("roles/${role}")
-              echo "Added role ${role}"
-            done
-          fi
-          echo
-          echo "###############################################################"
-          echo "All roles: ${roles[*]}"
-          unique_roles=($(echo "${roles[*]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-          echo "Unique roles: ${unique_roles[*]}"
-          echo "###############################################################"
-          for role in "${unique_roles[@]}"
-          do
-            echo
-            echo
-            echo "###############################################################"
-            echo "Testing role: ${role}"
-            {
-              if [[ ! -d "${role}" ]]; then
-                echo "Directory ${role} does not exists anymore, continue..."
-                continue
-              fi
-
-              pushd "${role}" >/dev/null
-              molecule test
-              popd >/dev/null
-            }
-          done
+          ./scripts/test-roles.sh
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}

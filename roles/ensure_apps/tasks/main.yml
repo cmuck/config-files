@@ -28,18 +28,10 @@
       - safe-rm
       - silversearcher-ag
       - terminator
+      - timeshift
       - trash-cli
       - vim
-
   become: true
-
-- name: Ensure apps present for 20.04 specific
-  ansible.builtin.apt:
-    state: present
-    pkg:
-      - timeshift
-  become: true
-  when: ansible_distribution_version == "20.04"
 
 - name: Ensure up to date system
   ansible.builtin.apt:
