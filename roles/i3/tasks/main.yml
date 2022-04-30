@@ -23,7 +23,6 @@
 - name: Ensure i3-gaps (fork of i3) and other useful tools are present
   ansible.builtin.apt:
     state: present
-    update_cache: true
     pkg:
       # - i3
       - i3-gaps
