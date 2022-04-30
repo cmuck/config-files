@@ -31,10 +31,10 @@
       plugins:
         - bazel
         - colored-man-pages
-        - copybuffer
-        - copydir
-        - copyfile
         - common-aliases
+        - copybuffer
+        - copyfile
+        - copypath
         - dirhistory
         - docker
         - fzf
