@@ -178,3 +178,8 @@ function cl
     fi
     ls -lah --color=auto
 }
+
+# Always last
+if command -v starship >/dev/null; then
+    eval "$(starship init zsh)"
+fi
