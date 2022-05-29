@@ -16,27 +16,24 @@
     state: directory
     mode: '0755'
 
-- name: Copy OS independent git common config to {{ git_user_dir }}
-  ansible.builtin.copy:
-    src: 'gitconfig-common'
-    dest: '{{ git_user_dir }}'
-    mode: '0644'
-
 - name: Copy OS dependent git config
   ansible.builtin.copy:
-    src: 'gitconfig-{{ ansible_os_family }}'
+    src: 'gitconfig'
     dest: '{{ ansible_user_dir }}/.gitconfig'
-    force: false
     mode: '0644'
+    backup: true
+  changed_when: false
 
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:
     scope: global
     name: 'user.name'
     value: '{{ git_user_name }}'
+  changed_when: false
 
 - name: Configure user.email in ~/.gitconfig
   community.general.git_config:
     scope: global
     name: 'user.email'
     value: '{{ git_user_email }}'
+  changed_when: false

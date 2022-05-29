@@ -10,62 +10,42 @@
       - zsh
   become: true
 
-- name: Create required directories
-  ansible.builtin.file:
-    path: '{{ ansible_user_dir }}/{{ item }}'
-    state: directory
-    mode: '0755'
-  loop:
-    - .config/zsh
-    - .local/share/zsh
-
-- name: Write {{ config_zhsrc }} based on template
+- name: Write .zshrc based on template
   ansible.builtin.template:
     src: zshrc.j2
-    dest: '{{ config_zhsrc }}'
+    dest: '{{ ansible_user_dir }}/.zshrc'
     backup: true
     mode: '0644'
   vars:
     oh_my_zsh:
       theme: bira
       plugins:
-        - bazel
+        - aliases
         - colored-man-pages
         - common-aliases
         - copybuffer
         - copyfile
-        - copypath
-        - dirhistory
-        - docker
+        - extract
         - fzf
-        - pass
+        - gh
+        - git
         - rsync
-        - sudo
-        - web-search
-        - zsh-completions
         - zsh-autosuggestions
         - zsh-syntax-highlighting
 
-- name: Clone oh-my-zsh for users
+- name: Clone oh-my-zsh
   ansible.builtin.git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     dest: '{{ oh_my_zsh_dir }}'  # noqa 401
 
-- name: Clone zsh-completions plugin to users oh-my-zsh directory
-  ansible.builtin.git:
-    repo: https://github.com/zsh-users/zsh-completions.git
-    version: '0.33.0'
-    dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-completions'
-    depth: 1
-
-- name: Clone zsh-autosuggestions plugin to users oh-my-zsh directory
+- name: Clone zsh-autosuggestions plugin to oh-my-zsh directory
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
     version: 'v0.7.0'
     dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-autosuggestions'
     depth: 1
 
-- name: Clone zsh-syntax-highlighting plugin to users oh-my-zsh directory
+- name: Clone zsh-syntax-highlighting plugin oh-my-zsh directory
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
     version: '0.7.1'
@@ -89,15 +69,15 @@
     chdir: "{{ fzf_dir }}"
   when: not fzf_installed.stat.exists
 
-- name: Copy .profile_zsh_block
+- name: Copy profile_block
   ansible.builtin.copy:
-    src: profile_zsh_block
-    dest: '/tmp/profile_zsh_block'
+    src: profile_block
+    dest: '/tmp/profile_block'
     mode: '0644'
 
-- name: Reading profile_zsh_block file and register it into profile_zsh_block variable
-  ansible.builtin.command: cat /tmp/profile_zsh_block
-  register: profile_zsh_block
+- name: Reading profile_block file and register it into profile_block variable
+  ansible.builtin.command: cat /tmp/profile_block
+  register: profile_block
   changed_when: false
 
 - name: Write block in file to .profile
@@ -105,7 +85,7 @@
     path: '{{ ansible_user_dir }}/.profile'
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
     block: |
-      {{ profile_zsh_block.stdout }}
+      {{ profile_block.stdout }}
 
 - name: Create symbolic link .zprofile
   ansible.builtin.file:
@@ -119,26 +99,10 @@
     shell: /bin/zsh
   become: true
 
-# Clean up old installations
-
-- name: Check fzf exist in home directory
-  ansible.builtin.stat:
-    path: '{{ ansible_user_dir }}/.fzf'
-  register: fzf_home_dir
-
-- name: Delete fzf in home directory
-  ansible.builtin.file:
-    path: '{{ ansible_user_dir }}/.fzf'
-    state: absent
-  when: fzf_home_dir.stat.exists and fzf_home_dir.stat.isdir
-
-- name: Check oh-my-zsh exist in home directory
-  ansible.builtin.stat:
-    path: '{{ ansible_user_dir }}/.oh-my-zsh'
-  register: oh_my_zsh_home_dir
-
-- name: Delete oh-my-zsh in home directory
-  ansible.builtin.file:
-    path: '{{ ansible_user_dir }}/.oh-my-zsh'
-    state: absent
-  when: oh_my_zsh_home_dir.stat.exists and oh_my_zsh_home_dir.stat.isdir
+- name: Clean up old installation paths
+  include_tasks: "delete_dir.yml"
+  with_items:
+    - '{{ ansible_user_dir }}/.fzf'
+    - '{{ ansible_user_dir }}/.oh-my-zsh'
+    - '{{ ansible_user_dir }}/.config/zsh'
+    - '{{ ansible_user_dir }}/.local/share/zsh'

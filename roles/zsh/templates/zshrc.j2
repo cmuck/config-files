@@ -1,11 +1,7 @@
-# shellcheck disable=SC2148
-# shellcheck disable=SC2034
-# shellcheck disable=SC1090
-
 ### Export
 
 # Path to your oh-my-zsh installation
-export ZSH="${HOME}/.local/share/oh-my-zsh"
+export ZSH="{{ oh_my_zsh_dir }}"
 
 # Set fzf installation directory path - needs to be exported before plugin is set
 export FZF_BASE="{{ fzf_dir }}"
@@ -43,25 +39,10 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=({{ oh_my_zsh.plugins | join(' ') }})
 
-# bazel https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/bazel
-# colored-man-pages https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
-# common-aliases https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases
-# copybuffer https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copybuffer
-# copyfile https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile
-# copypath https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath
-# dirhistory https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dirhistory
-# docker https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
-# fzf https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
-# pass https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pass
-# rsync https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rsync
-# sudo https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo
-# web-search https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search
-# zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
-# zsh-completions https://github.com/zsh-users/zsh-completions
+# More plugins at https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
 
-# https://github.com/junegunn/fzf#using-git
+# Required to keep since added by fzf install script
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
-
 
 ### History
 
@@ -89,13 +70,12 @@ setopt no_rm_star_silent      # confirm on `rm *` (default, but let's be safe)
 setopt pipe_fail              # fail when the first command in a pipeline fails
 setopt rm_star_wait           # wait after confirmation on `rm *` to allow ^C
 
-bindkey "^[[1;2C" forward-word
-bindkey "^[[1;2D" backward-word
-
+# Delete one word like bash
 autoload -U select-word-style
 select-word-style bash
 
-autoload -U compinit && compinit # https://github.com/zsh-users/zsh-completions
+# Tab-completion
+autoload -U compinit && compinit
 
 
 ### Source
@@ -114,20 +94,10 @@ source "${ZSH}/oh-my-zsh.sh"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias zshconfig="mate ~/.zshrc"
 
-alias g="google"
-alias r="ranger"
-alias rm='rm -i'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias ccopy='xclip -selection clipboard'
-alias cpaste='xclip -selection clipboard -o'
-alias grep='grep --color=auto'
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
-# confirm before overwriting something
-alias cp="cp -i"
-alias mv='mv -i'
-alias rm='rm -i'
-
+alias r="ranger"
 
 ### Commands
 
@@ -143,41 +113,6 @@ if command -v exa >/dev/null; then
   alias lt='exa -aT --color=always --group-directories-first' # tree listing
   alias l.='exa -a | egrep "^\."'
 fi
-
-function ex
-{
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *.deb)       ar x $1      ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.zst)   unzstd $1    ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
-function cl
-{
-    if [ "$#" -eq 0 ]; then
-        "cd" || return
-    else
-        "cd" "$1" || return
-    fi
-    ls -lah --color=auto
-}
 
 # Always last
 if command -v starship >/dev/null; then
