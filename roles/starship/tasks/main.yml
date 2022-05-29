@@ -1,17 +1,17 @@
 ---
-- name: Check for Starship command
+- name: Check if starship is installed
   ansible.builtin.shell: command -v starship >/dev/null 2>&1
   no_log: true
   ignore_errors: yes
   changed_when: false
-  register: installed
+  register: starship_installed
 
 - name: Download Starship installer
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship-installer.sh
     mode: '0744'
-  when: installed.rc != 0
+  when: starship_installed.rc != 0
   register: download
 
 - name: Install dependencies
@@ -21,7 +21,7 @@
     pkg:
       - wget
   become: true
-  when: installed.rc != 0
+  when: starship_installed.rc != 0
 
 - name: Run Starship install script
   ansible.builtin.shell: /tmp/starship-installer.sh --yes
