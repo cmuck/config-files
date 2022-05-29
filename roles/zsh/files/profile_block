@@ -1,0 +1,27 @@
+pathedit()
+{
+    [ -z "$2" ] && return 2
+    PATH=$(echo ":$PATH:" | sed "s:\:$2\::\::g")
+    case $1 in
+    -p ) PATH=$2$PATH ;;
+    -a ) PATH=$PATH$2 ;;
+    -r ) ;;
+    * ) return 2 ;;
+    esac
+    PATH=$(echo "$PATH" | tr -s :) PATH=${PATH#:} PATH=${PATH%:}
+}
+
+pathedit -p "/usr/local/bin"
+pathedit -p "$HOME/bin"
+pathedit -p "$HOME/.local/bin"
+pathedit -p "$HOME/.poetry/bin"
+
+# Default programs
+#if command -v terminator &>/dev/null; then
+#    export TERMINAL="terminator"
+#fi
+#export TERMINAL="gnome-terminal"
+if command -v nvim &>/dev/null; then
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+fi

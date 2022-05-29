@@ -2,5 +2,3 @@
 fzf_dir: '{{ ansible_user_dir }}/.local/share/fzf'
 
 oh_my_zsh_dir: '{{ ansible_user_dir }}/.local/share/oh-my-zsh'
-
-config_zhsrc: '{{ ansible_user_dir }}/.zshrc'
