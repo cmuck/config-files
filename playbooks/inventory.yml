@@ -9,7 +9,7 @@
       ansible.builtin.copy:
         content: '{{ ansible_facts | to_nice_json  }}'
         dest: '{{ ansible_user_dir }}/Desktop/inventory.json'
-        mode: 0600'
+        mode: '0600'
       delegate_to: localhost
 
 # Alternative: ansible localhost -m setup > inventory.yaml

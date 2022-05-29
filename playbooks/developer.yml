@@ -69,4 +69,7 @@
     - name: Install rust
       role: rust
       tags: [rust]
+    - name: Install rofi
+      role: rofi
+      tags: [rofi]
   environment: '{{ proxy_environment }}'

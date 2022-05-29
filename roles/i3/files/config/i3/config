@@ -204,9 +204,9 @@ bindsym $mod+r exec i3-sensible-terminal --working-directory="$(xcwd)" --command
 # installed.
 bindsym $mod+F12 exec --no-startup-id i3-dmenu-desktop
 # window switcher rofi
-bindsym $mod+F10 exec --no-startup-id rofi -show window
-bindsym $mod+F9 exec --no-startup-id rofi -show run
-bindsym $mod+F8 exec --no-startup-id rofi -show ssh
+bindsym $mod+F9 exec --no-startup-id rofi -show window
+bindsym $mod+F11 exec --no-startup-id rofi -show run
+bindsym $mod+F10 exec --no-startup-id rofi -show ssh
 
 # Switch to next workspace
 bindsym $mod+Tab workspace next
