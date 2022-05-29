@@ -19,3 +19,31 @@
     dest: '{{ ansible_user_dir }}/.config/rofi'
     mode: '0644'
     backup: true
+
+- name: Set dconf shortcut rofi window
+  include_role:
+    name: dconf
+  vars:
+    slot: 0
+    name: 'rofi window'
+    command: 'rofi -show window'
+    binding: '<Alt>F9'
+
+
+- name: Set dconf shortcut rofi ssh
+  include_role:
+    name: dconf
+  vars:
+    slot: 1
+    name: 'rofi ssh'
+    command: 'rofi -show ssh'
+    binding: '<Alt>F10'
+
+- name: Set dconf shortcut rofi run
+  include_role:
+    name: dconf
+  vars:
+    slot: 2
+    name: 'rofi run'
+    command: 'rofi -show run'
+    binding: '<Alt>F11'

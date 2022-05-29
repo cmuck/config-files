@@ -1,0 +1,29 @@
+---
+- name: Install dconf requirements
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - python3-psutil
+      - dconf-cli
+      - dbus
+  become: true
+  when: ansible_env.DBUS_SESSION_BUS_ADDRESS is defined
+
+- name: Set shortcut name "{{ name }}"
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ slot }}/name"
+    value: "'{{ name }}'"
+  when: ansible_env.DBUS_SESSION_BUS_ADDRESS is defined
+
+- name: Set shortcut command "{{ command }}"
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ slot }}/command"
+    value: "'{{ command }}'"
+  when: ansible_env.DBUS_SESSION_BUS_ADDRESS is defined
+
+- name: Set shortcut binding "{{ binding }}"
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ slot }}/binding"
+    value: "'{{ binding }}'"
+  when: ansible_env.DBUS_SESSION_BUS_ADDRESS is defined

@@ -2,11 +2,6 @@
 # dconf dump /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ > ./config/custom-keybindings.dconf
 # dconf load /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ < ./custom-keybindings.dconf
 
-[custom0]
-binding='<Alt>F12'
-command='i3-dmenu-desktop'
-name='dmenu-desktop'
-
 [custom1]
 binding='<Alt>F9'
 command='rofi -show ssh'
@@ -17,15 +12,20 @@ binding='<Alt>F11'
 command='rofi -show window'
 name='rofi window'
 
+[custom4]
+binding='<Alt>F10'
+command='rofi -show run'
+name='rofi run'
+
 [custom3]
 binding='<Alt>Pause'
 command='i3-exit'
 name='i3-exit'
 
-[custom4]
-binding='<Alt>F10'
-command='rofi -show run'
-name='rofi run'
+[custom0]
+binding='<Alt>F12'
+command='i3-dmenu-desktop'
+name='dmenu-desktop'
 
 [custom5]
 binding='Print'
