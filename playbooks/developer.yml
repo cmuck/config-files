@@ -72,4 +72,7 @@
     - name: Install rofi
       role: rofi
       tags: [rofi]
+    - name: Install gifgen
+      role: gifgen
+      tags: [gifgen]
   environment: '{{ proxy_environment }}'

@@ -1,0 +1,7 @@
+---
+- name: Install gifgen
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/lukechilds/gifgen/1.2.0/gifgen
+    dest: /usr/local/bin/gifgen
+    mode: '0755'
+  become: true
