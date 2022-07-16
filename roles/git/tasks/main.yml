@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 - name: Ensure git is installed
   ansible.builtin.apt:
     state: present
@@ -24,16 +25,38 @@
     backup: true
   changed_when: false
 
+- name: Pause to get some input to configure git
+  ansible.builtin.pause:
+    prompt: "Enter git user.name"
+  register: gitusername
+
+- name: Pause to get some input to configure git
+  ansible.builtin.pause:
+    prompt: "Enter git user.email"
+  register: gituseremail
+
+- name: Debug input
+  ansible.builtin.debug:
+    var: gitusername
+  when: gitusername is defined
+
+- name: Debug input
+  ansible.builtin.debug:
+    var: gituseremail
+  when: gituseremail is defined
+
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:
     scope: global
     name: 'user.name'
-    value: '{{ git_user_name }}'
+    value: '{{ gitusername.user_input }}'
   changed_when: false
+  when: gitusername.user_input is defined
 
 - name: Configure user.email in ~/.gitconfig
   community.general.git_config:
     scope: global
     name: 'user.email'
-    value: '{{ git_user_email }}'
+    value: '{{ gituseremail.user_input }}'
   changed_when: false
+  when: gituseremail.user_input is defined
