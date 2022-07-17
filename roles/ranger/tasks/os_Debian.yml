@@ -1,0 +1,20 @@
+---
+# yamllint disable rule:line-length
+- name: Install ranger
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - ranger
+
+- name: Create some dirs
+  file:
+    path: '{{ ansible_user_dir }}/.config/ranger'
+    state: directory
+
+- name: Copy ranger config
+  copy:
+    src: 'rc.conf'
+    dest: '{{ ansible_user_dir }}/.config/ranger'
