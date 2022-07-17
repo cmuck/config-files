@@ -72,8 +72,8 @@ class AnsibleFacade:
                 str(tempdir / "playbook.yml"),
             ]
 
-            ansible_args += ["--ask-become-pass"]
-
+            if self.args.become_pass:
+                ansible_args += ["--ask-become-pass"]
             if self.args.dry_run:
                 ansible_args += ["--check"]
             if self.args.check:
@@ -100,9 +100,12 @@ def parse_arguments():
     parser.add_argument("-v", "--verbose", action="store_true",
                         help='Increase verbosity of ansible to level 1')
     parser.add_argument("-d", "--dry-run", action="store_true",
-                        help='Execution with --check option')
+                        help='Execution with "--check" flag')
     parser.add_argument("-c", "--check", action="store_true",
                         help='Executes only a syntax-check of the playbook')
+    parser.add_argument("-b", "--become-pass", action="store_true",
+                        help='Execution with "--ask-become-pass" flag, it asks for privilege escalation password, '
+                             'it does not imply become will be used')
 
     return parser.parse_args()
 
