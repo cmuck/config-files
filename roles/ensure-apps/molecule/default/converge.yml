@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ensure-apps role"
+      include_role:
+        name: "ensure-apps"
+  environment: '{{ proxy_environment }}'

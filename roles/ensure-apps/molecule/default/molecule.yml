@@ -1,10 +1,14 @@
 ---
 dependency:
   name: galaxy
+  enabled: false
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: instance
     image: ubuntu:18.04
@@ -14,26 +18,5 @@ platforms:
 #      no_proxy: ${no_proxy}
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
 verifier:
-  name: testinfra
-  lint:
-    name: flake8
-scenario:
-  name: default
-  test_sequence:
-    # https://molecule.readthedocs.io/en/stable/configuration.html#scenario
-    - lint
-    - dependency
-    - cleanup
-    - destroy
-    - syntax
-    - create
-    - prepare
-    - converge
-    # - idempotence skipped, due to task changed is true by apt
-    - side_effect
-    - verify
-    - cleanup
-    - destroy
+  name: ansible

@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include atom role"
+      include_role:
+        name: "atom"
+  environment: '{{ proxy_environment }}'

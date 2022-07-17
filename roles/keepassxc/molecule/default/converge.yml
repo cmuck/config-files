@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include keepassxc role"
+      include_role:
+        name: "keepassxc"
+  environment: '{{ proxy_environment }}'
