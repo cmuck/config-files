@@ -1,0 +1,56 @@
+[alias]
+    ad = add --all
+    adi = add --all --interactive
+    adp = add --all --patch
+    aliases = config --get-regexp alias
+    cl = clone
+    cof = commit --fixup
+    com = commit --message
+    cp = cherry-pick
+    cu = checkout
+    cub = checkout --branch
+    di = diff
+    dis = diff --staged
+    f = "!git ls-files | grep -i"
+    ft = fetch --recurse-submodules
+    gr = grep -Ii
+    lg = log --date=relative --color --graph --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit
+    lg2 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+    ln = !git lg --name-status
+    rb = rebase
+    ps = push --atomic
+    pl = pull --recurse-submodules
+    rbi = rebase --interactive
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
+    rs = reset --soft
+    rs1 = reset --soft HEAD^
+    st = status --short --branch
+    wt = worktree
+[branch]
+    autosetuprebase = always
+[color]
+    ui = true
+[core]
+    fscache = true
+    safecrlf = false
+    attributesfile = ~/.gitattributes
+    excludesfile = ~/.gitignore
+    whitespace = blank-at-eol,blank-at-eof,space-before-tab,trailing-space,tab-indent
+[diff]
+    compactionHeuristic = true
+[push]
+    default = simple
+[user]
+    useconfigonly = true
+[rebase]
+    autosqash = true
+    autostash = true
+[clean]
+    requireForce = false
+[submodule]
+    fetchJobs = 4
