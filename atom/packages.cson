@@ -4,7 +4,6 @@ packages: [
   "file-icons"
   "git-blame"
   "git-log"
-  "git-plus"
   "git-time-machine"
   "hex"
   "highlight-line"
