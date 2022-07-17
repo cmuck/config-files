@@ -44,8 +44,8 @@ class AnsibleFacade:
             (tempdir / "ansible.cfg").symlink_to(self.base_path / "ansible.cfg")
 
     def run_playbook(self):
-        tempdir = pathlib.Path(tempfile.mkdtemp())
-        try:
+        with tempfile.TemporaryDirectory() as tempdirname:
+            tempdir = pathlib.Path(tempdirname)
             self._symlink_ansible_files(tempdir)
 
             ansible_args = [
@@ -68,8 +68,6 @@ class AnsibleFacade:
             res = subprocess.run(ansible_args, cwd=str(tempdir))
             if res.returncode != 0:
                 exit(1)
-        finally:
-            shutil.rmtree(str(tempdir), ignore_errors=True)
 
 
 def parse_arguments():
