@@ -2,15 +2,21 @@
 # shellcheck disable=SC2034
 # shellcheck disable=SC1090
 
-# Path to your oh-my-zsh installation.
+### Export
+
+# Path to your oh-my-zsh installation
 export ZSH="${HOME}/.local/share/oh-my-zsh"
 
-###############################################################################
+# Set fzf installation directory path - needs to be exported before plugin is set
+export FZF_BASE="{{ fzf_dir }}"
+
+
+### Theme
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="{{ oh_my_zsh.theme | default(oh_my_zsh_theme) }}"
+ZSH_THEME="{{ oh_my_zsh.theme }}"
 #af-magic
 #aussiegeek
 #baboom
@@ -18,7 +24,8 @@ ZSH_THEME="{{ oh_my_zsh.theme | default(oh_my_zsh_theme) }}"
 #bureau
 #robbyrussell
 
-###############################################################################
+
+### Common
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
@@ -27,22 +34,14 @@ HYPHEN_INSENSITIVE="true"
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-###############################################################################
 
-# Set fzf installation directory path - needs to be exported before plugin is set
-export FZF_BASE="{{ fzf_dir }}"
-
-# Uncomment the following line to disable fuzzy completion
-# export DISABLE_FZF_AUTO_COMPLETION="true"
-
-# Uncomment the following line to disable key bindings (CTRL-T, CTRL-R, ALT-C)
-# export DISABLE_FZF_KEY_BINDINGS="true"
+### Plugins
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=({{ oh_my_zsh.plugins | default(oh_my_zsh_plugins) | join(' ') }})
+plugins=({{ oh_my_zsh.plugins | join(' ') }})
 
 # bazel https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/bazel
 # colored-man-pages https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
@@ -55,6 +54,7 @@ plugins=({{ oh_my_zsh.plugins | default(oh_my_zsh_plugins) | join(' ') }})
 # fzf https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
 # history https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/history
 # pass https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pass
+# rsync https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rsync
 # sudo https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo
 # web-search https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search
 # zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions
@@ -63,7 +63,8 @@ plugins=({{ oh_my_zsh.plugins | default(oh_my_zsh_plugins) | join(' ') }})
 # https://github.com/junegunn/fzf#using-git
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
-###############################################################################
+
+### History
 
 # http://zsh.sourceforge.net/Doc/Release/Options.html#Options
 HISTFILE="${HOME}/.zsh_history" # Where to save history to disk
@@ -80,7 +81,8 @@ setopt hist_reduce_blanks     # `a  b` normalizes to `a b` in history
 setopt inc_append_history     # This option works like APPEND_HISTORY except that new history lines are added to the $HISTFILE incrementally (as soon as they are entered
 setopt share_history           # Share history across terminals
 
-###############################################################################
+
+### Common config
 
 setopt auto_pushd             # cd foo; cd bar; popd --> in foo again
 setopt no_beep                # No beep on error
@@ -88,62 +90,21 @@ setopt no_rm_star_silent      # confirm on `rm *` (default, but let's be safe)
 setopt pipe_fail              # fail when the first command in a pipeline fails
 setopt rm_star_wait           # wait after confirmation on `rm *` to allow ^C
 
-###############################################################################
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+
+autoload -U select-word-style
+select-word-style bash
+
+autoload -U compinit && compinit # https://github.com/zsh-users/zsh-completions
+
+
+### Source
 
 source "${ZSH}/oh-my-zsh.sh"
 
-###############################################################################
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#    export EDITOR='vim'
-# else
-#    export EDITOR='vim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+### Aliases
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -153,10 +114,10 @@ source "${ZSH}/oh-my-zsh.sh"
 # Example aliases
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias zshconfig="mate ~/.zshrc"
+
 alias g="google"
 alias r="ranger"
 alias rm='rm -i'
-#alias cd="cl"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias ccopy='xclip -selection clipboard'
 alias cpaste='xclip -selection clipboard -o'
@@ -168,9 +129,12 @@ alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
 
+
+### Commands
+
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
-command -v bat >/dev/null && alias cat="bat"
-command -v batcat >/dev/null && alias cat="batcat"
+#command -v bat >/dev/null && alias cat="bat"
+#command -v batcat >/dev/null && alias cat="batcat"
 
 if command -v exa >/dev/null; then
   # Changing "ls" to "exa"
@@ -215,12 +179,3 @@ function cl
     fi
     ls -lah --color=auto
 }
-
-bindkey "^[[1;2C" forward-word
-bindkey "^[[1;2D" backward-word
-autoload -U select-word-style
-select-word-style bash
-
-# https://github.com/zsh-users/zsh-completions
-autoload -U compinit
-compinit

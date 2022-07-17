@@ -36,29 +36,3 @@
     name: code
     state: present
   become: true
-
-- name: Install dependencies for vscode
-  apt:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-      - libx11-xcb-dev
-      - libasound2
-      - libxcb-dri3-0
-      - libdrm2
-      - libgbm1
-      - libxshmfence1
-  become: true
-
-- name: Get list of installed extensions
-  command: 'code --list-extensions --user-data-dir={{ ansible_user_dir }}/.config/Code'
-  # https://www.middlewareinventory.com/blog/ansible-changed_when-and-failed_when-examples/
-  changed_when: false
-  register: installed_extensions
-
-- name: Install vscode extensions
-  command: 'code --install-extension {{ item }} --user-data-dir={{ ansible_user_dir }}/.config/Code'
-  loop: '{{ vscode_extension }}'
-  when: item not in installed_extensions.stdout
-  changed_when: false
