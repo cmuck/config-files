@@ -1,44 +1,20 @@
 ---
-dist: bionic
+dist: focal
 
 language: python
 
-#python:
-#  - 3.6
-#  - 3.7
+python:
+  - 3.8
 
 cache: pip
 
 services: docker
 
-env:
-  matrix:
-    - ANSIBLE_ROLE: atom
-    - ANSIBLE_ROLE: bat
-    - ANSIBLE_ROLE: debug
-    - ANSIBLE_ROLE: delta
-    - ANSIBLE_ROLE: docker
-    - ANSIBLE_ROLE: ensure_apps
-    - ANSIBLE_ROLE: exa
-    - ANSIBLE_ROLE: flameshot
-    - ANSIBLE_ROLE: git
-    - ANSIBLE_ROLE: i3
-    - ANSIBLE_ROLE: jetbrains
-    - ANSIBLE_ROLE: keepassxc
-    - ANSIBLE_ROLE: proxy
-    - ANSIBLE_ROLE: ranger
-    - ANSIBLE_ROLE: rofi
-    - ANSIBLE_ROLE: scripts
-    - ANSIBLE_ROLE: ssh
-    - ANSIBLE_ROLE: terminator
-    - ANSIBLE_ROLE: vscode
-    - ANSIBLE_ROLE: zsh
-
 before_script:
   - uname -a
   - ansible --version
   - molecule --version
+  - export
 
 script:
-  - cd "./roles/${ANSIBLE_ROLE}"
-  - molecule test
+  - ./scripts/test-changed-roles.sh
