@@ -3,7 +3,7 @@
 # shellcheck disable=SC1090
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
@@ -11,12 +11,19 @@ export ZSH="${HOME}/.oh-my-zsh"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bureau"
+ZSH_THEME="bira"
 #af-magic
 #aussiegeek
 #baboom
+#bira
 #bureau
 #robbyrussell
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -41,7 +48,7 @@ HYPHEN_INSENSITIVE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -51,7 +58,7 @@ HYPHEN_INSENSITIVE="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -60,23 +67,52 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(colored-man-pages common-aliases debian docker git git-extras history osx sudo web-search)
+plugins=(
+    colored-man-pages
+    common-aliases
+    debian
+    docker
+    git
+    git-extras
+    history
+    sudo
+    web-search
+    zsh-completions
+    zsh-autosuggestions
+)
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=10000                #How many lines of history to keep in memory
+SAVEHIST=10000                #Number of history entries to save to disk
+HISTFILE=~/.zsh_history       #Where to save history to disk
+HISTDUP=erase                 #Erase duplicates in the history file
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt appendhistory          #Append history to the history file (no overwriting)
+setopt sharehistory           #Share history across terminals
+setopt incappendhistory       #Immediately append to the history file, not just when a term is killed
 
 source "${ZSH}/oh-my-zsh.sh"
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
+export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
-export EDITOR='vim'
+#    export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#    export EDITOR='vim'
 # fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+autoload -U compinit && compinit
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -92,3 +128,6 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshconfig="gedit ~/.zshrc"
+
+

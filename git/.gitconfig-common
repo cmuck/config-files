@@ -40,7 +40,7 @@
     ui = true
 [core]
     attributesfile = ~/.gitattributes
-    # editor = atom --wait
+    editor = nano
     excludesfile = ~/.gitignore
     fscache = true
     safecrlf = false
