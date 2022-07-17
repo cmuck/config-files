@@ -30,6 +30,7 @@
       - i3blocks
       - arandr
       - feh
+      - imagemagick
       - scrot
   become: true
 
