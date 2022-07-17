@@ -1,0 +1,11 @@
+---
+- name: Create local dir
+  file:
+    path: '{{ ansible_user_dir }}/.local/bin'
+    state: directory
+
+- name: Copy bin scripts
+  copy:
+    src: local/bin
+    dest: '{{ ansible_user_dir }}/.local'
+    mode: preserve

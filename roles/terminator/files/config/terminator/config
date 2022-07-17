@@ -18,3 +18,4 @@
     cursor_color = "#aaaaaa"
     foreground_color = "#839496"
     show_titlebar = False
+    scrollback_infinite = True

@@ -17,13 +17,17 @@ env:
     - ANSIBLE_ROLE: debug
     - ANSIBLE_ROLE: docker
     - ANSIBLE_ROLE: ensure-apps
+    - ANSIBLE_ROLE: flameshot
     - ANSIBLE_ROLE: git
     - ANSIBLE_ROLE: i3
     - ANSIBLE_ROLE: jetbrains-ide
     - ANSIBLE_ROLE: keepassxc
     - ANSIBLE_ROLE: proxy
     - ANSIBLE_ROLE: ranger
+    - ANSIBLE_ROLE: rofi
+    - ANSIBLE_ROLE: scripts
     - ANSIBLE_ROLE: ssh
+    - ANSIBLE_ROLE: terminator
     - ANSIBLE_ROLE: vscode
     - ANSIBLE_ROLE: zsh
 

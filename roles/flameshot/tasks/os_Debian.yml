@@ -1,0 +1,20 @@
+---
+- name: Install flameshot
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - flameshot
+
+- name: Create config dir for flameshot
+  file:
+    path: '{{ ansible_user_dir }}/.config/Dharkael'
+    state: directory
+
+- name: Write flameshot configuration
+  template:
+    src: flameshot.ini.j2
+    dest: '{{ ansible_user_dir }}/.config/Dharkael/flameshot.ini'
+    backup: true
