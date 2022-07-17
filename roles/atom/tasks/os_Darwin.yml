@@ -18,7 +18,13 @@
   command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   when: not brew.stat.exists
 
+- name: Check if atom is installed
+  stat:
+    path: /Applications/Atom.app
+  register: atom
+
 - name: Install atom
-  homebrew_cask:
+  homebrew:
     name: atom
     state: present
+  when: not atom.stat.exists

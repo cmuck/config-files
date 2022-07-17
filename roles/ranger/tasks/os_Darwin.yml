@@ -18,25 +18,17 @@
   command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   when: not brew.stat.exists
 
-- name: Ensure apps present
+- name: Install ranger
   homebrew:
-    name: "{{ item }}"
-    state: "present"
-  with_items:
-    - curl
-    - git
-    - trash
-    - zsh
+    name: ranger
+    state: present
 
-- name: Ensure up to date system - update homebrew and upgrade all packages
-  homebrew:
-    update_homebrew: true
-    upgrade_all: true
+- name: Create some dirs
+  file:
+    path: '{{ config_dir }}'
+    state: directory
 
-- include: brew_install.yml
-  with_items:
-    - {name: 'spotify', app: 'Spotify.app'}
-    - {name: 'iterm2', app: 'iTerm.app'}
-    - {name: 'firefox', app: 'Firefox.app'}
-    - {name: 'dropbox', app: 'Dropbox.app'}
-    - {name: 'discord', app: 'Discord.app'}
+- name: Copy ranger config
+  copy:
+    src: 'rc.conf'
+    dest: '{{ config_dir }}'
