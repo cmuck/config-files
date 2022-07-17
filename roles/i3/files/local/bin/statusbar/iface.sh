@@ -6,7 +6,7 @@ INTERFACE=$(ip route | awk '/^default/ { print $5 }' | sort | head -1)
 INTERFACE_DOWN_MESSAGE="IPv4: Down"
 
 INET=$(ip addr show "${INTERFACE}" | awk '/^.*inet.*\/24/ {print substr($2, 1, length($2)-3)}')
-INET6=$(ip addr show "${INTERFACE}" | awk '/^.*inet6.*\/64/ {print substr($2, 1, length($2)-3)}')
+#INET6=$(ip addr show "${INTERFACE}" | awk '/^.*inet6.*\/64/ {print substr($2, 1, length($2)-3)}')
 
 # 1 to 3 for left/middle/right mouse button
 case "${BLOCK_BUTTON}" in
