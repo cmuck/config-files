@@ -22,5 +22,4 @@ vscode_extension:
   - PKief.material-icon-theme
   - redhat.vscode-yaml
   - timonwong.shellcheck
-  - vscoss.vscode-ansible
   - wholroyd.jinja
