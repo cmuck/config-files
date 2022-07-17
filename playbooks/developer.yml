@@ -42,7 +42,7 @@
       tags: [ ssh ]
     - name: Ensure apps
       role: ensure-apps
-      tags: [ apps ]
+      tags: [ ensure-apps ]
     - name: Install docker
       role: docker
       tags: [ docker ]

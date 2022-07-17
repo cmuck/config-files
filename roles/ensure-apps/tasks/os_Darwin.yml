@@ -1,0 +1,45 @@
+---
+# yamllint disable rule:line-length
+- name: Check if xcode-select is installed
+  stat:
+    path: /Library/Developer/CommandLineTools/
+  register: xcodeselect
+
+- name: Install xcode-select if missing
+  command: xcode-select --install
+  when: not xcodeselect.stat.exists
+
+- name: Check if brew is installed
+  stat:
+    path: /usr/local/bin/brew
+  register: brew
+
+- name: Install brew if missing
+  command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  when: not brew.stat.exists
+
+- name: Ensure apps present
+  homebrew:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - curl
+    - git
+    - zsh
+
+- name: Ensure up to date system - update homebrew and upgrade all packages
+  homebrew:
+    update_homebrew: true
+    upgrade_all: true
+
+- include: brew_install.yml
+  with_items:
+    - {name: 'spotify', app: 'Spotify.app'}
+    - {name: 'iterm2', app: 'iTerm.app'}
+    - {name: 'firefox', app: 'Firefox.app'}
+    - {name: 'dropbox', app: 'Dropbox.app'}
+    - {name: 'discord', app: 'Discord.app'}
+
+- name: Upgrade brew's managed cask packages
+  homebrew_cask:
+    upgrade_all: true

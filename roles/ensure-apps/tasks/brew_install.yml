@@ -1,0 +1,11 @@
+---
+- name: 'Check if {{ item.name }} is already installed'
+  stat:
+    path: '/Applications/{{ item.app }}'
+  register: app
+
+- name: 'Install {{ item.name }}'
+  homebrew_cask:
+    name: '{{ item.name }}'
+    state: present
+  when: not app.stat.exists

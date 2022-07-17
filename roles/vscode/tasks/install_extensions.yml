@@ -9,6 +9,7 @@
       - libx11-xcb-dev
       - libasound2
   become: true
+  when: ansible_os_family == "Debian"
 
 - name: Get list of installed extensions
   command: 'code --list-extensions --user-data-dir={{ ansible_user_dir }}/.config/Code'
