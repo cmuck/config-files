@@ -121,7 +121,6 @@ function installZSH
 
 function usage()
 {
-    echo "Usage: $SCRIPT [-n NAME] [-e EMAIL]"
 
 cat << EOF
 Usage: $0 options
@@ -185,7 +184,7 @@ GIT_INSTALLED=$(which $GIT_PROGRAM) || true
 VSCODE_INSTALLED=$(which $VSCODE_PROGRAM) || true
 ZSH_INSTALLED=$(which $ZSH_PROGRAM) || true
 
-echo "$ATOM_PROGRAM: n$ATOM_INSTALLED"
+echo "$ATOM_PROGRAM: $ATOM_INSTALLED"
 echo "$GIT_PROGRAM: $GIT_INSTALLED"
 echo "$VSCODE_PROGRAM: $VSCODE_INSTALLED"
 echo "$ZSH_PROGRAM: $ZSH_INSTALLED"
@@ -197,50 +196,50 @@ echo "================================================="
 echo "Install independent OS files"
 echo
 echo "-------------------------------------------------"
-echo "Atom"
+echo "$ATOM_PROGRAM"
 
 if [ -n "$ATOM_INSTALLED" ]; then
     echo "Setup..."
     installAtom
     echo "Finished."
 else
-    echo "Atom is not installed, skipping setup."
+    echo "$ATOM_PROGRAM is not installed, skipping setup."
 fi
 
 echo
 echo "-------------------------------------------------"
-echo "VSCode"
+echo "$VSCODE_PROGRAM"
 
 if [ -n "$VSCODE_INSTALLED" ]; then
     echo "Setup..."
     installVSCode
     echo "Finished."
 else
-    echo "VSCode is not installed, skipping setup."
+    echo "$VSCODE_PROGRAM is not installed, skipping setup."
 fi
 
 echo
 echo "-------------------------------------------------"
-echo "Git"
+echo "$GIT_PROGRAM"
 
 if [ -n "$GIT_INSTALLED" ]; then
     echo "Setup..."
     installGitIndependentOS
     echo "Finished."
 else
-    echo "Git is not installed, skipping setup."
+    echo "$GIT_PROGRAM is not installed, skipping setup."
 fi
 
 
 echo
 echo "-------------------------------------------------"
-echo "oh-my-zsh"
+echo "$ZSH_PROGRAM"
 if [ -n "$ZSH_INSTALLED" ]; then
     echo "Setup..."
     installZSH
     echo "Finished."
 else
-    echo "Git is not installed, skipping setup."
+    echo "$ZSH_PROGRAM is not installed, skipping setup."
 fi
 
 echo
@@ -249,11 +248,11 @@ echo "Install depdendent OS files for: $OS"
 echo "================================================="
 echo
 echo "-------------------------------------------------"
-echo "Git"
+echo "$GIT_PROGRAM"
 if [ -n "$GIT_INSTALLED" ]; then
     echo "Setup..."
     installGitDependentOS
     echo "Finished."
 else
-    echo "Git is not installed, skipping setup."
+    echo "$GIT_PROGRAM is not installed, skipping setup."
 fi
