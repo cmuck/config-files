@@ -32,12 +32,20 @@ for file in "${changed_fies[@]}"; do
       roles+=("roles/${role}")
     done
   fi
+  if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
+    echo "Scheduled run, testing all roles..."
+    all_roles=( $( ls roles ) )
+    for role in "${all_roles[@]}"
+    do
+      roles+=("roles/${role}")
+    done
+  fi
 done
 
 echo
 echo
 echo "###############################################################"
-echo "All roles: ${roles[*]}"
+echo "Listing roles: ${roles[*]}"
 # shellcheck disable=SC2207
 unique_roles=($(echo "${roles[*]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
 echo "Unique roles: ${unique_roles[*]}"
