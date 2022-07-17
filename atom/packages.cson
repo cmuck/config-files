@@ -21,6 +21,7 @@ packages: [
   "minimap-bookmarks"
   "package-sync"
   "project-manager"
+  "sort-lines"
   "todo-show"
   "tool-bar"
   "tool-bar-main"
