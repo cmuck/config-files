@@ -1,48 +1,39 @@
 ---
 # yamllint disable rule:line-length
-- name: 'Test if {{ jetbrains_ide_name }}-{{ jetbrains_ide_version }} is already present'
-  register: jetbrains_ide_info_stat
+- name: Check if already installed
   stat:
-    path: '{{ jetbrains_product_info }}'
+    path: '{{ toolbox_install_dir }}/{{ toolbox_install_file }}'
+  register: jetbrains_toolbox_bin
 
-- name: 'Fetch package {{ jetbrains_ide_name }}-{{ jetbrains_ide_version }}'
-  when: not jetbrains_ide_info_stat.stat.exists
-  get_url:
-    url: '{{ jetbrains_download_url }}'
-    dest: '{{ jetbrains_download_dest }}'
+- name: Download unarchive and install
+  block:
+    - name: Download
+      get_url:
+        url: '{{ download_url }}'
+        checksum: "sha256:{{ toolbox_sha256 }}"
+        dest: "{{ temporary_file_name }}"
 
-- name: 'Extract {{ jetbrains_ide_name }}-{{ jetbrains_ide_version }}'
-  when: not jetbrains_ide_info_stat.stat.exists
-  unarchive:
-    src: '{{ jetbrains_download_dest }}'
-    dest: '{{ jetbrains_download_directory }}'
-    remote_src: true
+    - name: Unarchive
+      unarchive:
+        remote_src: true
+        src: "{{ temporary_file_name }}"
+        dest: "{{ temporary_install_dir }}"
+      when: not jetbrains_toolbox_bin.stat.exists
 
-- name: 'Move {{ jetbrains_ide_name }}-{{ jetbrains_ide_version }}'
-  when: not jetbrains_ide_info_stat.stat.exists
-  command: 'mv {{ jetbrains_download_directory }}/{{ jetbrains_directory }} {{ jetbrains_ide_prefix }}'
-  become: true
+    - name: Create install directory
+      file:
+        path: '{{ toolbox_install_dir }}'
+        state: directory
+        mode: '0700'
 
-- name: Ensure unzip is installed (required for unarchive)
-  apt:
-    name: unzip
-    state: present
-    update_cache: true
-  become: true
+    - name: Move executable
+      copy:
+        src: "{{ temporary_install_dir }}/{{ toolbox_install_file }}-{{ toolbox_version }}/{{ toolbox_install_file }}"
+        dest: "{{ toolbox_install_dir }}/{{ toolbox_install_file }}"
+        mode: '0700'
+        remote_src: true
 
-- name: Ensure jetbrains desktop entry direcotory exists
-  when: not jetbrains_ide_info_stat.stat.exists
-  file:
-    path: '{{ jetbrains_desktop_entry_dir }}'
-    state: directory
-    mode: '0755'
-  become: true
-
-- name: 'Create {{ jetbrains_ide_name }} desktop entry'
-  when: not jetbrains_ide_info_stat.stat.exists
-  template:
-    src: jetbrains.desktop.j2
-    dest: "{{ jetbrains_desktop_entry_dir }}/{{ jetbrains_desktop_file }}"
-    backup: true
-    mode: '0644'
-  become: true
+    - name: Install Toolbox
+      command: "{{ toolbox_install_dir }}/{{ toolbox_install_file }} --install"
+      when: false
+  when: not jetbrains_toolbox_bin.stat.exists
