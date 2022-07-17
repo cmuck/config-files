@@ -18,35 +18,13 @@
   command: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   when: not brew.stat.exists
 
-- name: Check if pycharm is installed
-  stat:
-    path: /Applications/PyCharm.app
-  register: pycharm
-
-- name: Install pycharm
-  homebrew_cask:
-    name: pycharm
-    state: present
-  when: not pycharm.stat.exists
-
 - name: Check if pycharm-ce is installed
   stat:
     path: /Applications/PyCharm CE.app
   register: pycharmce
 
 - name: Install pycharm-ce
-  homebrew_cask:
+  homebrew:
     name: pycharm-ce
     state: present
   when: not pycharmce.stat.exists
-
-- name: Check if clion is installed
-  stat:
-    path: /Applications/CLion.app
-  register: clion
-
-- name: Install clion
-  homebrew_cask:
-    name: clion
-    state: present
-  when: not clion.stat.exists

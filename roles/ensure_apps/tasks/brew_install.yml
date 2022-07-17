@@ -5,7 +5,7 @@
   register: app
 
 - name: 'Install {{ item.name }}'
-  homebrew_cask:
+  homebrew:
     name: '{{ item.name }}'
     state: present
   when: not app.stat.exists

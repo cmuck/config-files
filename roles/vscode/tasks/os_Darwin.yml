@@ -19,6 +19,6 @@
   when: not brew.stat.exists
 
 - name: Install vscode
-  homebrew_cask:
+  homebrew:
     name: visual-studio-code
     state: present
