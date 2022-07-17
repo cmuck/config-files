@@ -1,0 +1,11 @@
+language: bash
+
+os:
+    - linux
+
+install: true
+
+script:
+    - ./setup.bash -h
+    - ./setup.bash -o -n "bla bla" -e foo@bar.com
+
