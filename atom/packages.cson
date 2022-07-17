@@ -1,6 +1,5 @@
 packages: [
   "atom-beautify"
-  "build"
   "busy"
   "docker"
   "file-icons"
@@ -27,5 +26,4 @@ packages: [
   "tool-bar"
   "tool-bar-main"
   "toolbar-iconshortcuts"
-  "vim-mode"
 ]
