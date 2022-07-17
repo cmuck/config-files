@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 - name: Add keepassxc ppa
   apt_repository:
     repo: ppa:phoerious/keepassxc
@@ -10,4 +11,27 @@
 - name: Install keepassxc
   apt:
     name: keepassxc
+    state: present
   become: true
+
+- name: Ensure gsettings is present
+  apt:
+    name: libglib2.0-bin
+    state: present
+  become: true
+
+- name: Get gsettings favorite-apps
+  command: gsettings get org.gnome.shell favorite-apps
+  register: gsettings_favorite_apps
+  changed_when: false
+  ignore_errors: true
+
+- name: Add keepassxc to favorites
+  shell: |
+    set -o pipefail
+    gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed "s/]/,'org.keepassxc.KeePassXC.desktop']/")"
+  when:
+    - gsettings_favorite_apps.rc == 0
+    - gsettings_favorite_apps.stdout is not search("org.keepassxc.KeePassXC.desktop")
+  args:
+    executable: /bin/bash

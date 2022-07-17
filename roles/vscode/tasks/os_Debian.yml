@@ -25,3 +25,25 @@
     name: code
     state: present
   become: true
+
+- name: Ensure gsettings is present
+  apt:
+    name: libglib2.0-bin
+    state: present
+  become: true
+
+- name: Get gsettings favorite-apps
+  command: gsettings get org.gnome.shell favorite-apps
+  register: gsettings_favorite_apps
+  changed_when: false
+  ignore_errors: true
+
+- name: Add vscode to favorites
+  shell: |
+    set -o pipefail
+    gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed "s/]/,'code.desktop']/")"
+  when:
+    - gsettings_favorite_apps.rc == 0
+    - gsettings_favorite_apps.stdout is not search("code.desktop")
+  args:
+    executable: /bin/bash
