@@ -10,7 +10,6 @@ packages: [
   "hex"
   "highlight-line"
   "highlight-selected"
-  "keyboard-localization"
   "language-docker"
   "linter"
   "linter-docker"
