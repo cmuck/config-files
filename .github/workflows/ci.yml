@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
+      - name: set PY
+        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
       - uses: mfinelli/setup-shfmt@v1
       - uses: pre-commit/action@v2.0.3
 
@@ -24,19 +30,9 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.8'
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          # This path is specific to Ubuntu
-          path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
+          cache: 'pip'
       - name: Install dependencies
         run: |
-          # python -m pip install --upgrade pip
           pip install wheel
           pip install -r requirements.txt
       - name: Some debug output
@@ -44,16 +40,15 @@ jobs:
           uname -a
           ansible --version
           molecule --version
-          #export
       - id: files
         name: Get changed files
-        uses: jitterbit/get-changed-files@v1
         if: ${{ github.event_name == 'pull_request' }}
+        uses: jitterbit/get-changed-files@v1
       - name: Testing roles - pull-request
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
-        if: ${{ github.event_name == 'pull_request' }}
       - name: Testing roles - scheduled
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
           ./scripts/test-roles.sh
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
