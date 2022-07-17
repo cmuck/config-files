@@ -1,4 +1,4 @@
-[![CI](https://github.com/cmuck/config-files/actions/workflows/tests.yml/badge.svg?event=schedule)](https://github.com/cmuck/config-files/actions/workflows/tests.yml) 
+[![CI](https://github.com/cmuck/config-files/actions/workflows/main.yml/badge.svg?event=schedule)](https://github.com/cmuck/config-files/actions/workflows/main.yml)
 
 
 # config-files
@@ -78,7 +78,7 @@ The testing of Ansible roles is based on [molecule](https://molecule.readthedocs
 
 ```sh
 # Activate venv so that ansible, molecule etc. is available
-source .venv/bin/activate
+source venv/bin/activate
 
 # Change directory to the explict role which sould be tested
 cd ./roles/<role>
