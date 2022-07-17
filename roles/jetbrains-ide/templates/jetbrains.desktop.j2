@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name={{ jetbrains_ide_name }}
+Name={{ jetbrains_ide_name }} {{ jetbrains_ide_version }}
 {% if jetbrains_ide_name.endswith('-community') %}
 Icon={{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.svg
 Exec="{{ jetbrains_absolute_directory }}/bin/{{ jetbrains_ide_name | regex_replace('-community$','') }}.sh" %f
