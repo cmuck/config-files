@@ -1,4 +1,21 @@
 ---
-- name: 'Install terminator for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+- name: Install terminator
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - terminator
+  become: true
+
+- name: Create config dir for terminator
+  file:
+    path: '{{ ansible_user_dir }}/.config/terminator'
+    state: directory
+    mode: '0700'
+
+- name: Copy terminator config
+  copy:
+    src: config/terminator/config
+    dest: '{{ ansible_user_dir }}/.config/terminator'
+    mode: preserve
+    backup: true

@@ -1,8 +1,47 @@
 ---
-- name: 'Ensure apps are present and not present for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+- name: Ensure apps present
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - autofs
+      - build-essential
+      - cifs-utils
+      - corkscrew
+      - curl
+      - dconf-editor
+      - flameshot
+      - htop
+      - iftop
+      - iotop
+      - kazam
+      - network-manager-openconnect
+      - network-manager-openconnect-gnome
+      - nmap
+      - openconnect
+      - pitivi
+      - preload
+      - safe-rm
+      - silversearcher-ag
+      - terminator
+      - trash-cli
+      - vim
 
-- name: 'Ensure apps are present and not present for Darwin'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Darwin"
+  become: true
+
+- name: Ensure apps present for 20.04 specific
+  apt:
+    state: present
+    pkg:
+      - timeshift
+  become: true
+  when: ansible_distribution_version == "20.04"
+
+- name: Ensure up to date system
+  apt:
+    update_cache: true
+    cache_valid_time: 3600  # Seconds
+    upgrade: "dist"
+    autoclean: true
+    autoremove: true
+  become: true

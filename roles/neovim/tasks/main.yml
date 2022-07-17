@@ -1,4 +1,21 @@
 ---
-- name: 'Install neovim for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+- name: Install neovim
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - neovim
+      - vim
+  become: true
+
+- name: Create some dirs
+  file:
+    path: '{{ config_dir }}'
+    state: directory
+    mode: '0700'
+
+- name: Copy neovim config
+  copy:
+    src: 'init.vim'
+    dest: '{{ config_dir }}'
+    mode: '0600'

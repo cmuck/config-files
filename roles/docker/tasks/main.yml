@@ -1,8 +1,49 @@
 ---
-- name: 'Install docker for Debian'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Debian"
+# yamllint disable rule:line-length
 
-- name: 'Install docker for Darwin'
-  include_tasks: 'os_{{ ansible_os_family }}.yml'
-  when: ansible_os_family == "Darwin"
+- name: Install docker dependencies
+  apt:
+    state: present
+    update_cache: true
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+  become: true
+
+- name: Install docker apt key
+  apt_key:
+    url: 'https://download.docker.com/linux/ubuntu/gpg'
+  become: true
+
+- name: Add docker apt repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable'
+    filename: docker
+  become: true
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+  become: true
+
+- name: Ensure group docker exists
+  group:
+    name: docker
+    state: present
+  become: true
+
+- name: 'Add {{ ansible_user_id }} to docker group'
+  user:
+    name: '{{ ansible_user_id }}'
+    groups: docker
+    append: true
+  become: true
+
+# - name: Activate changes to docker group
+#  command: newgrp docker
+#  become: true
+#  changed_when: false
