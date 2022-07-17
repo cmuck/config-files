@@ -1,0 +1,18 @@
+---
+- name: Debug proxy_environment
+  debug:
+    var: proxy_environment
+
+- name: Debug ansible_env
+  debug:
+    var: ansible_env
+
+- name: Debug lookup
+  debug:
+    var: tmp
+  vars:
+    tmp: "{{ lookup('env','http_proxy') }}"
+
+- name: Debug environment
+  debug:
+    var: environment

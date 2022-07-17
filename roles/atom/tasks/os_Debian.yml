@@ -1,0 +1,34 @@
+---
+# yamllint disable rule:line-length
+
+# - name: Fetch atom public key
+#  get_url:
+#    url: 'https://packagecloud.io/AtomEditor/atom/gpgkey'
+#    dest: '/etc/apt/trusted.gpg.d/atom.gpg'
+#    #use_proxy: true
+#  become: true
+
+- name: Install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+  become: true
+
+- name: Install apt key
+  apt_key:
+    url: 'https://packagecloud.io/AtomEditor/atom/gpgkey'
+    state: present
+  become: true
+
+- name: Add atom apt repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main'
+    filename: atom
+    state: present
+    update_cache: true
+  become: true
+
+- name: Install atom
+  apt:
+    name: atom
+  become: true

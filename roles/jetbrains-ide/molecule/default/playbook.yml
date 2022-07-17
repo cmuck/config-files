@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: jetbrains-ide
+  environment: '{{ proxy_environment }}'

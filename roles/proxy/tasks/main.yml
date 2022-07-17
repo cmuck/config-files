@@ -1,0 +1,24 @@
+---
+- name: Setup fact for default proxy environment
+  set_fact:
+    proxy_environment:
+      proxy_used: '{{ proxy_used }}'
+
+- name: Debug proxy environment
+  debug:
+    var: proxy_environment
+
+- name: Setup fact fro proxy environment
+  set_fact:
+    proxy_environment:
+      http_proxy: '{{ lookup("env","http_proxy") }}'
+      https_proxy: '{{ lookup("env","https_proxy")  }}'
+      no_proxy: '{{ lookup("env","no_proxy")  }}'
+  when:
+    - proxy_used | bool
+
+- name: Debug proxy environment
+  debug:
+    var: proxy_environment
+#  when:
+#    - proxy_used | bool
