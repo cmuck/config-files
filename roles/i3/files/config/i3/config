@@ -256,7 +256,6 @@ bindsym $mod+x move workspace to output right
 #assign [class="(?i)gedit"] → $WS6
 
 exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/warty-final-ubuntu.png
-exec --no-startup-id compton -f --fade-in-step=0.1 --fade-out-step=0.1
 exec --no-startup-id nm-applet
 
 
