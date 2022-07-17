@@ -38,7 +38,7 @@
     ui = true
 [core]
     attributesfile = ~/.gitattributes
-    editor = atom --wait
+    # editor = atom --wait
     excludesfile = ~/.gitignore
     fscache = true
     safecrlf = false
