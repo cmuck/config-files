@@ -1,10 +1,4 @@
 ---
-# - name: Import the elasticsearch i3-gaps key
-#  apt_key:
-#    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-#    state: present
-#  become: true
-
 - name: Add repository for i3-gaps
   apt_repository:
     repo: 'ppa:kgilmer/speed-ricer'
