@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: '*/30 * * * *'
   pull_request:
+  workflow_dispatch:
 
 jobs:
   molecule:
@@ -70,7 +71,7 @@ jobs:
               fi
             done
           fi
-          if [[ "${GITHUB_EVENT_NAME}" == schedule ]]; then
+          if [[ "${GITHUB_EVENT_NAME}" =~ schedule|workflow_dispatch ]]; then
             echo "Scheduled run, testing all roles..."
             all_roles=( $( ls roles ) )
             for role in "${all_roles[@]}"
