@@ -14,13 +14,13 @@
   roles:
     - name: Install CLion
       role: jetbrains
-      #jetbrains_ide_version: '2020.1.3'
+      jetbrains_ide_version: '2020.3.4'
       tags: [ clion ]
     - name: Install pycharm
       role: jetbrains
       jetbrains_language: 'python'
       jetbrains_ide_name: 'pycharm-community'
-      jetbrains_ide_version: '2021.1.1'
+      jetbrains_ide_version: '2021.1.3'
       tags: [ pycharm ]
     - name: Install atom
       role: atom

@@ -23,28 +23,12 @@
   command: 'mv {{ jetbrains_download_directory }}/{{ jetbrains_directory }} {{ jetbrains_ide_prefix }}'
   become: true
 
-- name: 'Download {{ jetbrains_ide_name }} plugins'
-  when: not jetbrains_ide_info_stat.stat.exists
-  get_url:
-    url: "{{ jetbrains_plugin_download_mirror }}{{ item }}"
-    dest: "{{ jetbrains_download_directory }}"
-  register: jetbrains_plugins_downloaded
-  with_items: "{{ jetbrains_plugins }}"
-
 - name: Ensure unzip is installed (required for unarchive)
   apt:
     name: unzip
     state: present
     update_cache: true
   become: true
-
-- name: 'Install {{ jetbrains_ide_name }} plugins'
-  when: not jetbrains_ide_info_stat.stat.exists
-  unarchive:
-    src: "{{ item.dest }}"
-    dest: "{{ jetbrains_ide_prefix }}/{{ jetbrains_directory }}/plugins"
-    remote_src: true
-  with_items: "{{ jetbrains_plugins_downloaded.results }}"
 
 - name: Ensure jetbrains desktop entry direcotory exists
   when: not jetbrains_ide_info_stat.stat.exists
