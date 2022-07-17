@@ -21,3 +21,4 @@
   command: 'code --install-extension {{ item }} --user-data-dir={{ ansible_user_dir }}/.config/Code'
   loop: '{{ vscode_extension }}'
   when: item not in installed_extensions.stdout
+  changed_when: false
