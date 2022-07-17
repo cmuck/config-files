@@ -1,6 +1,7 @@
 [[ -d "/usr/local/bin" ]] && export PATH="/usr/local/bin:$PATH"
 [[ -d "$HOME/bin" ]] && export PATH="${HOME}/bin:$PATH"
 [[ -d "$HOME/.local/bin" ]] && export PATH="${HOME}/.local/bin:$PATH"
+[[ -d "$HOME/.poetry/bin" ]] && export PATH="${HOME}/.poetry/bin:$PATH"
 
 # Default programs:
 #if command -v terminator &>/dev/null; then

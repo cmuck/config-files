@@ -57,4 +57,10 @@
     - name: Install delta
       role: delta
       tags: [delta]
+    - name: Install exa
+      role: exa
+      tags: [exa]
+    - name: Install starship
+      role: starship
+      tags: [starship]
   environment: '{{ proxy_environment }}'
