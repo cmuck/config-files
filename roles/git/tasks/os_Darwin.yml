@@ -27,17 +27,20 @@
   file:
     path: '{{ git_user_dir }}'
     state: directory
+    mode: '0700'
 
 - name: Copy OS independent git common config to {{ git_user_dir }}
   copy:
     src: 'gitconfig-common'
     dest: '{{ git_user_dir }}'
+    mode: '0600'
 
 - name: Copy OS dependent git config
   copy:
     src: 'gitconfig-{{ ansible_os_family }}'
     dest: '{{ ansible_user_dir }}/.gitconfig'
     force: false
+    mode: '0600'
 
 - name: Configure user.name in ~/.gitconfig
   git_config:

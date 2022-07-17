@@ -4,6 +4,7 @@
   file:
     path: '{{ ansible_user_dir }}/.ssh'
     state: directory
+    mode: '0700'
 
 - name: Ensure ssh config file exists
   file:
@@ -11,6 +12,7 @@
     state: touch
     modification_time: preserve
     access_time: preserve
+    mode: '0600'
 
 - name: Write SSH config common block
   blockinfile:

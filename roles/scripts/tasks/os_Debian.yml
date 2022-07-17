@@ -3,6 +3,7 @@
   file:
     path: '{{ ansible_user_dir }}/.local/bin'
     state: directory
+    mode: '0700'
 
 - name: Copy bin scripts
   copy:

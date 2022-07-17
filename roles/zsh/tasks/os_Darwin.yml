@@ -38,6 +38,7 @@
     src: zshrc.j2
     dest: '{{ ansible_user_dir }}/.zshrc'
     backup: true
+    mode: '0600'
   vars:
     oh_my_zsh:
       theme: bira

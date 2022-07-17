@@ -18,12 +18,12 @@ env:
     - ANSIBLE_ROLE: debug
     - ANSIBLE_ROLE: delta
     - ANSIBLE_ROLE: docker
-    - ANSIBLE_ROLE: ensure-apps
+    - ANSIBLE_ROLE: ensure_apps
     - ANSIBLE_ROLE: exa
     - ANSIBLE_ROLE: flameshot
     - ANSIBLE_ROLE: git
     - ANSIBLE_ROLE: i3
-    - ANSIBLE_ROLE: jetbrains-ide
+    - ANSIBLE_ROLE: jetbrains
     - ANSIBLE_ROLE: keepassxc
     - ANSIBLE_ROLE: proxy
     - ANSIBLE_ROLE: ranger

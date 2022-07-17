@@ -1,8 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include jetbrains-ide role"
-      include_role:
-        name: "jetbrains-ide"
-  environment: '{{ proxy_environment }}'
