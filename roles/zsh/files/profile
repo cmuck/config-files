@@ -18,6 +18,3 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 # Set for gnome-control-center when using i3
 [[ -n "${XDG_SESSION_DESKTOP}" ]] && [[ "${XDG_SESSION_DESKTOP}" == "i3" ]] && export XDG_CURRENT_DESKTOP=ubuntu:GNOME
-
-export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
-export ATOM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/atom"

@@ -64,7 +64,7 @@ autoload -U compinit && compinit
 ###############################################################################
 
 # http://zsh.sourceforge.net/Doc/Release/Options.html#Options
-HISTFILE="$XDG_DATA_HOME/zsh/history" # Where to save history to disk
+HISTFILE="${HOME}/.zsh_history" # Where to save history to disk
 HIST_STAMPS="yyyy-mm-dd"      # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HISTSIZE=10000                # How many lines of history to keep in memory
 SAVEHIST=10000                # Number of history entries to save to disk
@@ -180,7 +180,3 @@ ex ()
 
 # Use neovim for vim if present
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
-
-
-# Last command
-#[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
