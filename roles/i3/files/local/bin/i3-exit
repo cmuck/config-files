@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 lock() {
-    i3lock
+    i3-lock-with-screenshot
 }
 
 case "$1" in
@@ -26,5 +27,3 @@ case "$1" in
         echo "Usage: $0 {lock|logout|suspend|hibernate|reboot|shutdown}"
         exit 2
 esac
-
-exit 0

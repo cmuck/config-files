@@ -1,34 +1,39 @@
 ---
-- name: Install dependencies
-  apt:
-    name: "{{ packages }}"
-    state: present
-  become: true
-  vars:
-    packages:
-      - build-essential
-      - git
-      - libx11-dev
-      - rofi
+# - name: Import the elasticsearch i3-gaps key
+#  apt_key:
+#    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+#    state: present
+#  become: true
 
-- name: Ensure i3 present
+- name: Add repository for i3-gaps
+  apt_repository:
+    repo: 'ppa:kgilmer/speed-ricer'
+  become: true
+
+- name: Ensure i3-gaps (fork of i3) and other useful tools are present
   apt:
     name: "{{ packages }}"
     state: present
   become: true
   vars:
     packages:
-      - i3
+      # - i3
+      - i3-gaps
+      - arandr
+      - compton
+      - feh
+      - rofi
+      - scrot
 
 - name: Create local dir
   file:
     path: '{{ ansible_user_dir }}/.local/bin'
     state: directory
 
-- name: Copy i3-exit
+- name: Copy bin scripts
   copy:
-    src: local/bin/i3-exit
-    dest: '{{ ansible_user_dir }}/.local/bin'
+    src: local/bin
+    dest: '{{ ansible_user_dir }}/.local'
     mode: preserve
 
 - name: Create config dir
@@ -45,6 +50,18 @@
 - name: Copy i3 status
   copy:
     src: config/i3status
+    dest: '{{ ansible_user_dir }}/.config'
+    mode: preserve
+
+- name: Copy rofi
+  copy:
+    src: config/rofi
+    dest: '{{ ansible_user_dir }}/.config'
+    mode: preserve
+
+- name: Copy terminator
+  copy:
+    src: config/terminator
     dest: '{{ ansible_user_dir }}/.config'
     mode: preserve
 
@@ -84,6 +101,17 @@
 
 - name: Install xcbw
   block:
+    - name: Install xcwd dependencies
+      apt:
+        name: "{{ packages }}"
+        state: present
+      become: true
+      vars:
+        packages:
+          - build-essential
+          - git
+          - libx11-dev
+
     - name: Clone xcwd
       git:
         repo: https://github.com/schischi/xcwd.git
