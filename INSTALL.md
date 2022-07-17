@@ -7,7 +7,7 @@ sudo apt update && sudo apt dist-upgrade
 
 ## Python
 
-`setup.py` is based on Python 3, pip3 and virtual env, so install these dependencies.
+`run-ansible.py` is based on Python 3, pip3 and virtual env, so install these dependencies.
 
 ```sh
 sudo apt install python3 python3-pip python3-venv
@@ -36,5 +36,5 @@ Because Ansible is based on SSH connections to the targets, we have to ensure a 
 
 Ansible changes a lot between releases or deprecates a lot, therefore I use a pinned version of Ansible.
 
-The first run of `setup.py` creates automatically a virtual environment at `.venv` based on the `requirements.txt`.
-All further calls to `./setup.py` will us the Ansible version installed into this virtual environment.
+The first run of `run-ansible.py` creates automatically a virtual environment at `.venv` based on the `requirements.txt`.
+All further calls to `./run-ansible.py` will us the Ansible version installed into this virtual environment.
