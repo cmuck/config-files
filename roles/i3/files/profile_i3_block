@@ -1,0 +1,5 @@
+if [[ -n "${XDG_SESSION_DESKTOP}" ]] && [[ "${XDG_SESSION_DESKTOP}" == "i3" ]]; then
+  # Set for gnome-control-center when using i3
+  export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+  export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+fi

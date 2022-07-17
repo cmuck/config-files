@@ -81,22 +81,22 @@
     chdir: "{{ fzf_dir }}"
   when: not fzf_installed.stat.exists
 
-- name: Copy .profile
+- name: Copy .profile_zsh_block
   copy:
-    src: profile
-    dest: '/tmp/profile'
+    src: profile_zsh_block
+    dest: '/tmp/profile_zsh_block'
 
-- name: Reading profile file and register it into profile variable
-  command: cat /tmp/profile
-  register: profile
+- name: Reading profile_zsh_block file and register it into profile_zsh_block variable
+  command: cat /tmp/profile_zsh_block
+  register: profile_zsh_block
   changed_when: false
 
 - name: Write block in file to .profile
   blockinfile:
     path: '{{ ansible_user_dir }}/.profile'
-    marker: "# {mark} ANSIBLE MANAGED BLOCK profile sourcing"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
     block: |
-      {{ profile.stdout }}
+      {{ profile_zsh_block.stdout }}
 
 - name: Create symbolic link .zprofile
   file:
