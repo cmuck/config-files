@@ -6,6 +6,7 @@
     cl = clone
     cof = commit --fixup
     com = commit --message
+    coa = commit --amend
     cp = cherry-pick
     cu = checkout
     cub = checkout --branch
