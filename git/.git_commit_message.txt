@@ -1,0 +1,9 @@
+Topic
+
+Detailed explanation
+
+[Ticket: X]
+
+# Usage
+# * git config --global commit.template ~/.git_commit_message.txt
+# * git config --local commit.template ~/.git_commit_message.txt
