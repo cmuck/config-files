@@ -1,0 +1,51 @@
+---
+# yamllint disable rule:line-length
+
+- name: Install docker dependencies
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: true
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+- name: Install docker apt key
+  apt_key:
+    url: 'https://download.docker.com/linux/ubuntu/gpg'
+    state: present
+  become: true
+
+- name: Add docker apt repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+    filename: docker
+    state: present
+    update_cache: true
+  become: true
+
+- name: Install docker
+  apt:
+    name: docker-ce
+  become: true
+
+- name: Ensure group docker exists
+  group:
+    name: docker
+    state: present
+  become: true
+
+- name: 'Add {{ ansible_user_id }} to docker group'
+  user:
+    name: '{{ ansible_user_id }}'
+    groups: docker
+    append: true
+  become: true
+
+- name: Activate changes to docker group
+  command: newgrp docker
+  become: true
+  changed_when: false
