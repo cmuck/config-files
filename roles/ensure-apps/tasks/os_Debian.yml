@@ -64,6 +64,7 @@
       - clang-tidy-6.0
       - corkscrew
       - curl
+      - dconf-editor
       - doxygen
       - git
       - git-lfs
