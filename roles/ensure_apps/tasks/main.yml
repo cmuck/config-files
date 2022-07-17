@@ -1,6 +1,6 @@
 ---
 - name: Ensure apps present
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -34,7 +34,7 @@
   become: true
 
 - name: Ensure apps present for 20.04 specific
-  apt:
+  ansible.builtin.apt:
     state: present
     pkg:
       - timeshift
@@ -42,7 +42,7 @@
   when: ansible_distribution_version == "20.04"
 
 - name: Ensure up to date system
-  apt:
+  ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600  # Seconds
     upgrade: "dist"

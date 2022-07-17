@@ -7,7 +7,7 @@
 #     state: present
 
 - name: Install gnupg2 to add pub key
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -15,24 +15,25 @@
   become: true
 
 - name: Fetch vscode public key
-  get_url:
+  ansible.builtin.get_url:
     url: 'https://packages.microsoft.com/keys/microsoft.asc'
     dest: '/etc/apt/trusted.gpg.d'
+    mode: '0644'
   become: true
 
 - name: Get DEB architecture
-  command: dpkg --print-architecture
+  ansible.builtin.command: dpkg --print-architecture
   register: deb_architecture
   changed_when: deb_architecture.rc != 0
 
 - name: Add vscode apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb [arch={{ deb_architecture.stdout }}] https://packages.microsoft.com/repos/vscode stable main'
     filename: vscode
   become: true
 
 - name: Install vscode
-  apt:
+  ansible.builtin.apt:
     name: code
     state: present
   become: true

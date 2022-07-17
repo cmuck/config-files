@@ -2,7 +2,7 @@
 # yamllint disable rule:line-length
 
 - name: Install docker dependencies
-  apt:
+  ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
@@ -14,35 +14,35 @@
   become: true
 
 - name: Install docker apt key
-  apt_key:
+  ansible.builtin.apt_key:
     url: 'https://download.docker.com/linux/ubuntu/gpg'
   become: true
 
 - name: Get DEB architecture
-  command: dpkg --print-architecture
+  ansible.builtin.command: dpkg --print-architecture
   register: deb_architecture
   changed_when: deb_architecture.rc != 0
 
 - name: Add docker apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb [arch={{ deb_architecture.stdout }}] https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable'
     filename: docker
   become: true
 
 - name: Install docker
-  apt:
+  ansible.builtin.apt:
     name: docker-ce
     state: present
   become: true
 
 - name: Ensure group docker exists
-  group:
+  ansible.builtin.group:
     name: docker
     state: present
   become: true
 
 - name: 'Add {{ ansible_user_id }} to docker group'
-  user:
+  ansible.builtin.user:
     name: '{{ ansible_user_id }}'
     groups:
       - docker

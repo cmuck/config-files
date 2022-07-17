@@ -3,6 +3,6 @@
   hosts: all
   tasks:
     - name: "Include jetbrains role"
-      include_role:
+      ansible.builtin.include_role:
         name: "jetbrains"
   environment: '{{ proxy_environment }}'

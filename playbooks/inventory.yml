@@ -2,14 +2,14 @@
 - name: "Inventory"
   hosts: all
   tasks:
-    - debug:
+    - name: Message ansible facts
+      ansible.builtin.debug:
         msg: '{{ ansible_facts }}'
-    - debug:
-        msg: "Saving inventory to: {{ ansible_user_dir }}/Desktop/inventory.json"
     - name: Save all facts to host specific file
-      copy:
+      ansible.builtin.copy:
         content: '{{ ansible_facts | to_nice_json  }}'
         dest: '{{ ansible_user_dir }}/Desktop/inventory.json'
+        mode: 0600'
       delegate_to: localhost
 
 # Alternative: ansible localhost -m setup > inventory.yaml

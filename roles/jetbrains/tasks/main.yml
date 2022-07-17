@@ -1,40 +1,41 @@
 ---
 # yamllint disable rule:line-length
 - name: Check if already installed
-  stat:
+  ansible.builtin.stat:
     path: '{{ toolbox_install_dir }}/{{ toolbox_install_file }}'
   register: jetbrains_toolbox_bin
 
 - name: Download unarchive and install
   block:
     - name: Download
-      get_url:
+      ansible.builtin.get_url:
         url: '{{ download_url }}'
         checksum: "sha256:{{ toolbox_sha256 }}"
         dest: "{{ temporary_file_name }}"
+        mode: '0644'
 
     - name: Unarchive
-      unarchive:
+      ansible.builtin.unarchive:
         remote_src: true
         src: "{{ temporary_file_name }}"
         dest: "{{ temporary_install_dir }}"
       when: not jetbrains_toolbox_bin.stat.exists
 
     - name: Create install directory
-      file:
+      ansible.builtin.file:
         path: '{{ toolbox_install_dir }}'
         state: directory
-        mode: '0700'
+        mode: '0755'
 
     - name: Move executable
-      copy:
+      ansible.builtin.copy:
         src: "{{ temporary_install_dir }}/{{ toolbox_install_file }}-{{ toolbox_version }}/{{ toolbox_install_file }}"
         dest: "{{ toolbox_install_dir }}/{{ toolbox_install_file }}"
-        mode: '0700'
+        mode: '0755'
         remote_src: true
 
     - name: Reminder how to launch
-      debug:
+      ansible.builtin.debug:
         msg: |
           Please run {{ toolbox_install_dir }}/{{ toolbox_install_file }} manually for the first time
           to finish installation
