@@ -26,7 +26,7 @@
 - name: Add docker apt repository
   ansible.builtin.apt_repository:
     repo: 'deb [arch={{ deb_architecture.stdout }}] https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable'
-    filename: docker
+    filename: config-files-docker
   become: true
 
 - name: Install docker
