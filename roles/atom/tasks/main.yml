@@ -23,9 +23,14 @@
     state: present
   become: true
 
+- name: Get DEB architecture
+  command: dpkg --print-architecture
+  register: deb_architecture
+  changed_when: deb_architecture.rc != 0
+
 - name: Add atom apt repository
   apt_repository:
-    repo: 'deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main'
+    repo: 'deb [arch={{ deb_architecture.stdout }}] https://packagecloud.io/AtomEditor/atom/any/ any main'
     filename: atom
   become: true
 
