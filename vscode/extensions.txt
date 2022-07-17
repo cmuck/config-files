@@ -1,0 +1,14 @@
+PeterJausovec.vscode-docker
+ajshort.msg
+akamud.vscode-theme-onedark
+akamud.vscode-theme-onelight
+alefragnani.project-manager
+donjayamanne.githistory
+donjayamanne.python
+ms-vscode.cpptools
+robertohuertasm.vscode-icons
+twxs.cmake
+vector-of-bool.cmake-tools
+waderyan.gitblame
+xaver.clang-format
+zhuangtongfa.Material-theme

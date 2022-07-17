@@ -1,6 +1,7 @@
 packages: [
   "atom-beautify"
   "atom-clock"
+  "busy-signal"
   "docker"
   "file-icons"
   "file-types"
@@ -11,6 +12,7 @@ packages: [
   "hex"
   "highlight-line"
   "highlight-selected"
+  "intentions"
   "language-cmake"
   "language-docker"
   "language-ini"
@@ -20,6 +22,7 @@ packages: [
   "linter-gcc"
   "linter-js-yaml"
   "linter-python-pep8"
+  "linter-ui-default"
   "markdown-writer"
   "merge-conflicts"
   "minimap"
