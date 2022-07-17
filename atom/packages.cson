@@ -19,9 +19,11 @@ packages: [
   "minimap"
   "minimap-bookmarks"
   "package-sync"
+  "pretty-json"
   "project-manager"
   "sort-lines"
   "todo-show"
   "tool-bar"
   "tool-bar-main"
+  "toolbar-iconshortcuts"
 ]
