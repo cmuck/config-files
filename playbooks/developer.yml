@@ -66,4 +66,7 @@
     - name: Install gh
       role: gh
       tags: [gh]
+    - name: Install rust
+      role: rust
+      tags: [rust]
   environment: '{{ proxy_environment }}'
