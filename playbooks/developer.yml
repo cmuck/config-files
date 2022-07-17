@@ -63,4 +63,7 @@
     - name: Install starship
       role: starship
       tags: [starship]
+    - name: Install gh
+      role: gh
+      tags: [gh]
   environment: '{{ proxy_environment }}'
