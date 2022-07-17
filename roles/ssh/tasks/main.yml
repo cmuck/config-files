@@ -34,7 +34,8 @@
         Hostname github.com
         User git
         IdentityFile ~/.ssh/id_rsa
-        ProxyCommand /usr/bin/corkscrew proxy.muc 8080 %h %p
+        # myauth see https://github.com/bryanpkc/corkscrew#how-do-i-use-the-http-authentication-feature
+        ProxyCommand /usr/bin/corkscrew proxy.muc 8080 %h %p ~/.ssh/myauth
       {% else %}
         # No proxy set for GitHub
       {% endif %}
