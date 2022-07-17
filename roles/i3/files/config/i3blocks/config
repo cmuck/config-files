@@ -62,7 +62,7 @@ interval=30
 #separator=false
 
 [disk.sh]
-label=HOME
+label=DISK
 color=#00FF00
 interval=30
 
