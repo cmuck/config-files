@@ -1,4 +1,4 @@
 ---
-- name: 'Install ranger for Debian'
+- name: 'Install neovim for Debian'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
