@@ -29,10 +29,16 @@
     oh_my_zsh:
       theme: bira
       plugins:
+        - bazel
         - colored-man-pages
+        - copybuffer
+        - copydir
+        - copyfile
         - common-aliases
+        - dirhistory
         - docker
         - fzf
+        - pass
         - rsync
         - sudo
         - web-search
