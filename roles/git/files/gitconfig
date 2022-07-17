@@ -1,0 +1,54 @@
+[user]
+    #signingkey = 20BC5291D5B3C267
+    useconfigonly = true
+[alias]
+    # More aliases used from https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
+    aliases = config --get-regexp alias
+    rb = rebase
+    rbi = rebase --interactive
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rs = reset --soft
+    rs1 = reset --soft HEAD^
+    wt = worktree
+[branch]
+    autosetuprebase = always
+[color]
+    ui = true
+[credential]
+    helper = store
+[core]
+    attributesfile = ~/.gitattributes
+    autocrlf = input
+    editor = nvim
+    excludesfile = ~/.gitignore
+    fscache = true
+    safecrlf = false
+    whitespace = blank-at-eol,blank-at-eof,space-before-tab,trailing-space,tab-indent
+[push]
+    default = current
+[rebase]
+    autosqash = true
+    autostash = true
+[clean]
+    requireForce = false
+[submodule]
+    fetchJobs = 4
+
+[merge]
+    tool = mymeld
+    conflictstyle = diff3
+    # http://www.drdobbs.com/tools/three-way-merging-a-look-under-the-hood/240164902
+[mergetool "mymeld"]
+    cmd = meld $LOCAL $BASE $REMOTE -o $MERGED --auto-merge
+[diff]
+    tool = mymeld
+    compactionHeuristic = true
+[difftool]
+    #prompt = false
+[difftool "mymeld"]
+    cmd = meld $LOCAL $REMOTE
+[remote "origin"]
+	  prune = true
+#[commit]
+#    gpgsign = true
