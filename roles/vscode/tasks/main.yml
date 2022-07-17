@@ -1,9 +1,9 @@
 ---
-- name: 'Install vscode for OS {{ ansible_os_family }}'
+- name: 'Install vscode for Debian'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
 
-- name: 'Install vscode for OS {{ ansible_os_family }}'
+- name: 'Install vscode for Darwin'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Darwin"
 

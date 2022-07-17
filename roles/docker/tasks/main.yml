@@ -1,8 +1,8 @@
 ---
-- name: 'Install docker OS {{ ansible_os_family }}'
+- name: 'Install docker for Debian'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Debian"
 
-- name: 'Install docker OS {{ ansible_os_family }}'
+- name: 'Install docker for Darwin'
   include_tasks: 'os_{{ ansible_os_family }}.yml'
   when: ansible_os_family == "Darwin"
