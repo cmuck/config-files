@@ -10,13 +10,13 @@
 
 - name: Add i3 apt-key
   ansible.builtin.apt_key:
-    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbda0e4ba891b327bb00df1e076458020c35556dc
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xEFC31B0AE9F1000B38E37FC8C0930F305A0E0FEF
     state: present
   become: true
 
 - name: Add repository for i3-gaps
   ansible.builtin.apt_repository:
-    repo: 'deb http://ppa.launchpad.net/kgilmer/speed-ricer/ubuntu {{ ansible_lsb.codename }} main'
+    repo: 'deb https://ppa.launchpadcontent.net/regolith-linux/release/ubuntu {{ ansible_lsb.codename }} main'
     filename: i3-gaps
   become: true
 
