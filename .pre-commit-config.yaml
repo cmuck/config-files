@@ -46,5 +46,8 @@ repos:
     rev: 2.1.6
     hooks:
       - id: markdownlint
-      - id: shellcheck
       - id: shfmt
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
