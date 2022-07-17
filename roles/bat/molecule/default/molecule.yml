@@ -20,20 +20,3 @@ provisioner:
   name: ansible
 verifier:
   name: ansible
-scenario:
-  name: default
-  test_sequence:
-    # https://molecule.readthedocs.io/en/stable/configuration.html#scenario
-    - lint
-    - dependency
-    - cleanup
-    - destroy
-    - syntax
-    - create
-    - prepare
-    - converge
-    # - idempotence skipped, due to task changed is true by apt
-    - side_effect
-    - verify
-    - cleanup
-    - destroy
