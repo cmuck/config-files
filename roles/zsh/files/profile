@@ -4,7 +4,7 @@
 
 # Default programs:
 #export EDITOR=""
-#export TERMINAL=""
+export TERMINAL="terminator"
 #export BROWSER=""
 #export READER=""
 
