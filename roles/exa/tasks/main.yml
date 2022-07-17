@@ -1,0 +1,40 @@
+---
+- name: Install exa when Ubuntu >= 22.04
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - exa
+  become: true
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
+
+- name: Install exa when Ubuntu < 22.04
+  block:
+    - name: Install gnupg2 to add pub key
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - gnupg2
+      become: true
+
+    - name: Add apt-key for exa
+      ansible.builtin.apt_key:
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2C37BD8BDF01321549242C9AEC82AC78B65E182
+        state: present
+      become: true
+
+    - name: Add repository for exa
+      ansible.builtin.apt_repository:
+        repo: 'deb https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu {{ ansible_lsb.codename }} main'
+        filename: exa
+      become: true
+
+    - name: Install exa
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - exa
+      become: true
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float < 22.04
