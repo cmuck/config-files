@@ -15,7 +15,11 @@
     - name: Install CLion
       role: jetbrains-ide
       jetbrains_ide_version: '2019.2.5'
-      tags: [ clion ]
+      tags: [ clion201925 ]
+    - name: Install CLion
+      role: jetbrains-ide
+      jetbrains_ide_version: '2019.3.4'
+      tags: [ clion201934 ]
     - name: Install pycharm
       role: jetbrains-ide
       jetbrains_language: 'python'
