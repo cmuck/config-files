@@ -61,6 +61,9 @@
     - name: Install flameshot
       role: flameshot
       tags: [ flameshot ]
+    - name: Install bat
+      role: bat
+      tags: [ bat ]
     - name: Install terminator
       role: terminator
       tags: [ terminator ]

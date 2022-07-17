@@ -14,6 +14,7 @@ services: docker
 env:
   matrix:
     - ANSIBLE_ROLE: atom
+    - ANSIBLE_ROLE: bat
     - ANSIBLE_ROLE: debug
     - ANSIBLE_ROLE: delta
     - ANSIBLE_ROLE: docker
