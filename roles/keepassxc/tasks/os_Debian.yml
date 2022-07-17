@@ -14,7 +14,7 @@
 
 - name: Add repository for keepass
   apt_repository:
-    repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu bionic main'
+    repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main'
     filename: keepass
   become: true
 
