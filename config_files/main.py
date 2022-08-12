@@ -1,52 +1,15 @@
 #!/usr/bin/env python3
 
 import argparse
-import pathlib
-import shutil
 import subprocess
-import sys
 import tempfile
+from pathlib import Path
 
 
 class AnsibleFacade:
     def __init__(self, args):
-        self.base_path = pathlib.Path(__file__).resolve().parent
-        self.venv_path = self.base_path / "venv"
         self.args = args
-
-        self._setup_venv()
-
-    def _setup_venv(self):
-        requirements = self.base_path / "requirements.txt"
-        venv_requirements = self.venv_path / "installed-requirements.txt"
-
-        if (
-            venv_requirements.exists()
-            and venv_requirements.read_bytes() == requirements.read_bytes()
-        ):
-            return
-
-        shutil.rmtree(self.venv_path, ignore_errors=True)
-        subprocess.run(
-            [sys.executable, "-m", "venv", str(self.venv_path)], check=True
-        )
-        # Module wheel needs to be installed as a dependency before other
-        # requirements to avoid bdist_wheel errors
-        subprocess.run(
-            [str(self.venv_path / "bin" / "pip"), "install", "wheel"],
-            check=True,
-        )
-        subprocess.run(
-            [
-                str(self.venv_path / "bin" / "pip"),
-                "install",
-                "-r",
-                str(requirements),
-            ],
-            check=True,
-        )
-        shutil.copy(str(requirements), str(venv_requirements))
-        print("Created venv and installed requirements")
+        self.base_path = Path.cwd()
 
     @staticmethod
     def _print_tree(directory):
@@ -71,21 +34,17 @@ class AnsibleFacade:
         if tempdir.exists():
             (tempdir / "roles").symlink_to(self.base_path / "roles")
             (tempdir / "group_vars").symlink_to(self.base_path / "group_vars")
-            (tempdir / "playbook.yml").symlink_to(
-                self.base_path / "playbooks" / (self.args.playbook + ".yml")
-            )
+            (tempdir / "playbook.yml").symlink_to(self.base_path / "playbooks" / (self.args.playbook + ".yml"))
             (tempdir / "inventory").symlink_to(self.base_path / "inventory")
-            (tempdir / "ansible.cfg").symlink_to(
-                self.base_path / "ansible.cfg"
-            )
+            (tempdir / "ansible.cfg").symlink_to(self.base_path / "ansible.cfg")
 
     def run_playbook(self):
         with tempfile.TemporaryDirectory() as tempdirname:
-            tempdir = pathlib.Path(tempdirname)
+            tempdir = Path(tempdirname)
             self._symlink_ansible_files(tempdir)
 
             ansible_args = [
-                str(self.venv_path / "bin" / "ansible-playbook"),
+                str("ansible-playbook"),
                 "-i",
                 str(tempdir / "inventory"),
                 str(tempdir / "playbook.yml"),
@@ -110,11 +69,9 @@ class AnsibleFacade:
                 exit(1)
 
 
-def parse_arguments():
+def get_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "playbook", help='Playbook from playbooks directory, e.g. "helloworld"'
-    )
+    parser.add_argument("playbook", help='Playbook from playbooks directory, e.g. "helloworld"')
     parser.add_argument(
         "-t",
         "--tag",
@@ -140,12 +97,14 @@ def parse_arguments():
         help="Executes only a syntax-check of the playbook",
     )
 
-    return parser.parse_args()
+    return parser
+
+
+def main():
+    parsed_arguments = get_parser().parse_args()
+    if parsed_arguments.playbook:
+        AnsibleFacade(parsed_arguments).run_playbook()
 
 
 if __name__ == "__main__":
-    parsed_arguments = parse_arguments()
-
-    if parsed_arguments.playbook:
-        ansible_facade = AnsibleFacade(parsed_arguments)
-        ansible_facade.run_playbook()
+    main()

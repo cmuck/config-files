@@ -13,73 +13,73 @@ cd "${root_dir}"
 ROLES=()
 
 check_github_execution() {
-  if [[ -n "${GITHUB_EVENT_NAME:-}" ]]; then
-    return 0
-  fi
-  return 1
+	if [[ -n "${GITHUB_EVENT_NAME:-}" ]]; then
+		return 0
+	fi
+	return 1
 }
 
 add_all_roles() {
-  mapfile -t all_roles < <(ls roles)
-  for role in "${all_roles[@]}"; do
-    ROLES+=("roles/${role}")
-    echo "Added role ${role}"
-  done
+	mapfile -t all_roles < <(ls roles)
+	for role in "${all_roles[@]}"; do
+		ROLES+=("roles/${role}")
+		echo "Added role ${role}"
+	done
 }
 
 add_changed_role() {
-  local changed_files=("$@")
-  for file in "${changed_files[@]}"; do
-    echo "Changed file: ${file}"
-    role_path=$(echo "${file}" | cut -f1,2 -d'/')
-    if [[ "${role_path}" =~ roles/.* ]]; then
-      ROLES+=("${role_path}")
-      echo "Adding ${role_path}"
-    fi
-  done
+	local changed_files=("$@")
+	for file in "${changed_files[@]}"; do
+		echo "Changed file: ${file}"
+		role_path=$(echo "${file}" | cut -f1,2 -d'/')
+		if [[ "${role_path}" =~ roles/.* ]]; then
+			ROLES+=("${role_path}")
+			echo "Adding ${role_path}"
+		fi
+	done
 }
 
 handle_pip() {
-  local changed_files=("$@")
-  if [[ ${changed_files[*]} =~ requirements.txt ]]; then
-    echo "requirements.txt changed, testing all roles..."
-    add_all_roles
-    return 0
-  fi
-  return 1
+	local changed_files=("$@")
+	if [[ ${changed_files[*]} =~ pyproject.toml ]]; then
+		echo "pyproject.toml changed, testing all roles..."
+		add_all_roles
+		return 0
+	fi
+	return 1
 }
 
 handle_github() {
-  if ! check_github_execution; then
-    echo "GitHub execution skipped..."
-    return 0
-  fi
-  echo "GitHub execution..."
-  local changed_files=("${@}")
-  if [[ "${GITHUB_EVENT_NAME}" == pull_request ]]; then
-    echo "Pull request run, testing roles ..."
-    if handle_pip "${changed_files[@]}"; then
-      return 0
-    fi
-    add_changed_role "${changed_files[@]}"
-  fi
-  if [[ "${GITHUB_EVENT_NAME}" =~ schedule|workflow_dispatch ]]; then
-    echo "Scheduled run, testing all roles..."
-    add_all_roles
-  fi
+	if ! check_github_execution; then
+		echo "GitHub execution skipped..."
+		return 0
+	fi
+	echo "GitHub execution..."
+	local changed_files=("${@}")
+	if [[ "${GITHUB_EVENT_NAME}" == pull_request ]]; then
+		echo "Pull request run, testing roles ..."
+		if handle_pip "${changed_files[@]}"; then
+			return 0
+		fi
+		add_changed_role "${changed_files[@]}"
+	fi
+	if [[ "${GITHUB_EVENT_NAME}" =~ schedule|workflow_dispatch ]]; then
+		echo "Scheduled run, testing all roles..."
+		add_all_roles
+	fi
 }
 
 handle_local_run() {
-  if check_github_execution; then
-    echo "Local execution skipped..."
-    return 0
-  fi
-  echo "Local execution..."
-  mapfile -t changed_files < <(git diff --name-only HEAD..origin/master)
-  if handle_pip "${changed_files[@]}"; then
-    return 0
-  fi
-  add_changed_role "${changed_files[@]}"
+	if check_github_execution; then
+		echo "Local execution skipped..."
+		return 0
+	fi
+	echo "Local execution..."
+	mapfile -t changed_files < <(git diff --name-only HEAD..origin/master)
+	if handle_pip "${changed_files[@]}"; then
+		return 0
+	fi
+	add_changed_role "${changed_files[@]}"
 }
 
 handle_github "${@}"
@@ -95,13 +95,13 @@ echo "Unique ROLES: ${unique_roles[*]}"
 echo "###############################################################"
 
 for role in "${unique_roles[@]}"; do
-  echo
-  echo
-  echo "###############################################################"
-  echo "Testing role: ${role}"
-  {
-    pushd "${role}" >/dev/null
-    molecule test
-    popd >/dev/null
-  }
+	echo
+	echo
+	echo "###############################################################"
+	echo "Testing role: ${role}"
+	{
+		pushd "${role}" >/dev/null
+		molecule test
+		popd >/dev/null
+	}
 done

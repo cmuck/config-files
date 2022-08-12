@@ -1,3 +1,34 @@
 ---
 exclude_paths:
+  - .yamllint
+  - .pre-commit-config.yaml
+  - .cache/
   - .github/
+  - ./roles/bat/molecule/
+  - ./roles/debug/molecule/
+  - ./roles/delta/molecule/
+  - ./roles/docker/molecule/
+  - ./roles/ensure_apps/molecule/
+  - ./roles/exa/molecule/
+  - ./roles/flameshot/molecule/
+  - ./roles/gh/molecule/
+  - ./roles/gifgen/molecule/
+  - ./roles/git/molecule/
+  - ./roles/i3/molecule/
+  - ./roles/jetbrains/molecule/
+  - ./roles/keepassxc/molecule/
+  - ./roles/neovim/molecule/
+  - ./roles/proxy/molecule/
+  - ./roles/ranger/molecule/
+  - ./roles/rofi/molecule/
+  - ./roles/rust/molecule/
+  - ./roles/scripts/molecule/
+  - ./roles/ssh/molecule/
+  - ./roles/starship/molecule/
+  - ./roles/terminator/molecule/
+  - ./roles/vscode/molecule/
+  - ./roles/zsh/molecule/
+
+skip_list:
+  - no-handler
+  - command-instead-of-shell

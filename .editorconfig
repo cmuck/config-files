@@ -1,5 +1,0 @@
-[*]
-# like -i=2
-indent_style = space
-indent_size = 2
-switch_case_indent = true  # like -ci

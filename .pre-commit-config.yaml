@@ -3,51 +3,55 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.2.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
       - id: check-added-large-files
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.14
-    hooks:
-      - id: mdformat
-        args: [--wrap=80]
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: debug-statements
+  - repo: local
     hooks:
       - id: black
-        args: [--config=pyproject.toml]
-  - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
-    hooks:
+        name: black
+        entry: poetry run black
+        language: system
+        types: [ file, python ]
+        args: [ --config=pyproject.toml ]
       - id: isort
-        files: \.(py)$
-        args: [--settings-path=pyproject.toml]
-  - repo: https://github.com/hadialqattan/pycln
-    rev: v1.3.1
-    hooks:
-      - id: pycln
-        args: [--config=pyproject.toml]
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 4.0.1
-    hooks:
-      - id: flake8
-  - repo: https://github.com/ansible-community/ansible-lint
-    rev: v6.0.2
-    hooks:
+        name: isort
+        entry: poetry run isort
+        language: system
+        types: [ file, python ]
+        args: [ --settings-path=pyproject.toml ]
       - id: ansible-lint
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.26.3
-    hooks:
+        name: ansible-lint
+        entry: poetry run ansible-lint
+        language: system
+        types: [ file, yaml ]
       - id: yamllint
+        name: yamllint
+        entry: poetry run yamllint
+        language: system
+        types: [ file, yaml ]
+      - id: mdformat
+        name: mdformat
+        entry: poetry run mdformat
+        language: system
+        types: [ file, markdown ]
+        args: [--wrap=120]
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 2.1.6
     hooks:
-      - id: markdownlint
       - id: shfmt
+        name: shfmt
+        types: [ file, bash, shell ]
+        args: [ -i 2 -ci ]
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.8.0
     hooks:
       - id: shellcheck
+        name: shellheck
+        types: [ file, bash, shell ]

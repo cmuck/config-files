@@ -27,7 +27,7 @@
     - name: Add repository for exa
       ansible.builtin.apt_repository:
         repo: 'deb https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu {{ ansible_lsb.codename }} main'
-        filename: config-files-exa
+        filename: config_files-exa
       become: true
 
     - name: Install exa
