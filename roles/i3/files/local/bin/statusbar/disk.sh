@@ -8,8 +8,8 @@ THRESHOLD_CRITICAL=80
 
 # 1 to 3 for left/middle/right mouse button
 case "${BLOCK_BUTTON}" in
-  1) notify-send "💽Disk space" "$(df -h --output=target,used,size)" ;;
-  3) notify-send "Disk status" "Shows disk space [used]/[total] [% used]
+1) notify-send "💽Disk space" "$(df -h --output=target,used,size)" ;;
+3) notify-send "Disk status" "Shows disk space [used]/[total] [% used]
 - Left click to show all disk info
 - Middle none
 - Right click none" ;;
@@ -37,8 +37,8 @@ echo "${used}G/${total}G ${percent_used}%"
 echo "${used}G/${total}G ${percent_used}%"
 
 if [[ "${percent_used}" -ge "${THRESHOLD_CRITICAL}" ]]; then
-  echo "#FF0000"
-  exit 33
+	echo "#FF0000"
+	exit 33
 elif [[ "${percent_used}" -ge "${THRESHOLD_WARNING}" ]]; then
-  echo "#FFFC00"
+	echo "#FFFC00"
 fi

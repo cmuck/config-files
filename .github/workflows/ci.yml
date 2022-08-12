@@ -8,38 +8,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  pre-commit:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4.2.0
-      - name: set PY
-        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pre-commit
-          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
-      - uses: mfinelli/setup-shfmt@v1
-      - uses: pre-commit/action@v2.0.3
-
   molecule:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
       - name: Set up Python
         uses: actions/setup-python@v4.2.0
         with:
           python-version: '3.8'
-          cache: 'pip'
+          cache: 'poetry'
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r requirements.txt
-      - name: Some debug output
-        run: |
-          uname -a
-          ansible --version
-          molecule --version
+        run: poetry install
+      - uses: mfinelli/setup-shfmt@v1
       - id: files
         name: Get changed files
         if: ${{ github.event_name == 'pull_request' }}
@@ -47,8 +29,8 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
+          poetry run ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          ./scripts/test-roles.sh
+          poetry run ./scripts/test-roles.sh
