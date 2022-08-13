@@ -18,6 +18,7 @@ ansible-lint = "^6.4.0"
 black = "^22.6.0"
 isort = "^5.10.1"
 mdformat = "^0.7.14"
+mypy = "^0.971"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -33,6 +34,10 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
+
+[tool.mypy]
+strict = true
+files = ["config_files"]
 
 [tool.poetry.scripts]
 cf = "config_files.main:main"

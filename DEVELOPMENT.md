@@ -3,6 +3,10 @@
 - [molecule](https://molecule.readthedocs.io/en/latest/) is used for testing Ansible roles
 - [pre-commit](https://pre-commit.com/) is used for several formatters and linters
 
+```bash
+poetry install
+```
+
 ## molecule
 
 The testing of Ansible roles is based on [molecule](https://molecule.readthedocs.io/en/stable/index.html).

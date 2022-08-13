@@ -26,6 +26,12 @@ repos:
         language: system
         types: [ file, python ]
         args: [ --settings-path=pyproject.toml ]
+      - id: mypyp
+        name: mypy
+        entry: poetry run mypy
+        args: [ --strict ]
+        language: system
+        types: [ python ]
       - id: ansible-lint
         name: ansible-lint
         entry: poetry run ansible-lint
