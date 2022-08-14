@@ -6,19 +6,19 @@ authors = ["cmuck <cmuckmuck@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-ansible = "^6.2.0"
+ansible = {version = "^6.2.0", platform = "linux"}
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^2.20.0"
-docker = "^5.0.3"
-molecule = "^4.0.1"
-molecule-docker = "^2.0.0"
-yamllint = "^1.27.1"
-ansible-lint = "^6.4.0"
-black = "^22.6.0"
-isort = "^5.10.1"
-mdformat = "^0.7.14"
-mypy = "^0.971"
+docker = {version = "^5.0.3", platform = "linux"}
+molecule-docker = {version = "^2.0.0", platform = "linux"}
+pre-commit = {version = "^2.20.0", platform = "linux"}
+molecule = {version = "^4.0.1", platform = "linux"}
+yamllint = {version = "^1.27.1", platform = "linux"}
+ansible-lint = {version = "^6.4.0", platform = "linux"}
+black = {version = "^22.6.0", platform = "linux"}
+isort = {version = "^5.10.1", platform = "linux"}
+mdformat = {version = "^0.7.14", platform = "linux"}
+mypy = {version = "^0.971", platform = "linux"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
