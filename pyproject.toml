@@ -17,7 +17,7 @@ yamllint = {version = "^1.27.1", platform = "linux"}
 ansible-lint = {version = "^6.4.0", platform = "linux"}
 black = {version = "^22.6.0", platform = "linux"}
 isort = {version = "^5.10.1", platform = "linux"}
-mdformat = {version = "^0.7.14", platform = "linux"}
+mdformat = {version = "^0.7.16", platform = "linux"}
 mypy = {version = "^0.971", platform = "linux"}
 
 [build-system]
