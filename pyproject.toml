@@ -9,7 +9,7 @@ python = "^3.8"
 ansible = {version = "^6.2.0", platform = "linux"}
 
 [tool.poetry.dev-dependencies]
-docker = {version = "^5.0.3", platform = "linux"}
+docker = {version = "^6.0.0", platform = "linux"}
 molecule-docker = {version = "^2.0.0", platform = "linux"}
 pre-commit = {version = "^2.20.0", platform = "linux"}
 molecule = {version = "^4.0.1", platform = "linux"}
