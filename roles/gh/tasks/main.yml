@@ -1,25 +1,40 @@
 ---
 # yamllint disable rule:line-length
-- name: Download gh gpg key
-  ansible.builtin.get_url:
-    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
-    mode: '0644'
-  become: true
 
-- name: Get DEB architecture
-  ansible.builtin.command: dpkg --print-architecture
-  register: deb_architecture
-  changed_when: deb_architecture.rc != 0
+# Installation from apt repository is currently broken
+# See https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian-ubuntu-linux-raspberry-pi-os-apt
+# - name: Download gh gpg key
+#  ansible.builtin.get_url:
+#    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+#    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+#    mode: '0644'
+#  become: true
+#
+# - name: Get DEB architecture
+#  ansible.builtin.command: dpkg --print-architecture
+#  register: deb_architecture
+#  changed_when: deb_architecture.rc != 0
+#
+# - name: Add repository for gh
+#  ansible.builtin.apt_repository:
+#    repo: 'deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main'
+#    filename: config_files-gh
+#  become: true
+#
+# - name: Install gh
+#  ansible.builtin.apt:
+#    name: gh
+#    state: present
+#  become: true
 
-- name: Add repository for gh
-  ansible.builtin.apt_repository:
-    repo: 'deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main'
-    filename: config_files-gh
-  become: true
-
-- name: Install gh
+- name: Ensure required dependency is installed
   ansible.builtin.apt:
-    name: gh
     state: present
+    update_cache: true
+    pkg:
+      - git
+
   become: true
+- name: Install gh from .deb package
+  ansible.builtin.apt:
+    deb: https://github.com/cli/cli/releases/download/v2.14.7/gh_2.14.7_linux_amd64.deb
