@@ -18,7 +18,7 @@ ansible-lint = {version = "^6.6.1", platform = "linux"}
 black = {version = "^22.8.0", platform = "linux"}
 isort = {version = "^5.10.1", platform = "linux"}
 mdformat = {version = "^0.7.16", platform = "linux"}
-mypy = {version = "^0.971", platform = "linux"}
+mypy = {version = "^0.982", platform = "linux"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
