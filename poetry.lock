@@ -518,7 +518,7 @@ windows = ["pywinrm"]
 
 [[package]]
 name = "molecule-docker"
-version = "2.0.0"
+version = "2.1.0"
 description = "Molecule aids in the development and testing of Ansible roles"
 category = "dev"
 optional = false
@@ -936,7 +936,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "e5cfb50c9e7c1851460166c612195bbca98b24e63422e83f05394a77f55fcb7d"
+content-hash = "2343212c130f5ae9cccd69bfaef6beac51042dce8660da80aeec0c8e5d1ec821"
 
 [metadata.files]
 ansible = [
@@ -1236,8 +1236,8 @@ molecule = [
     {file = "molecule-4.0.1.tar.gz", hash = "sha256:ee10e5463bc9940f9afd9b85812c63eacefea889a99c21274f4054ebe248c3b9"},
 ]
 molecule-docker = [
-    {file = "molecule-docker-2.0.0.tar.gz", hash = "sha256:12c180c95c3f022d89aedd52e42b57e5c1e0ee4d4be8ec997c3dcb9c28d7e2a3"},
-    {file = "molecule_docker-2.0.0-py3-none-any.whl", hash = "sha256:c447842ee4817fe6efa64ca6a73b1e3081cd60710ed86385b6ad7569d9599ab5"},
+    {file = "molecule-docker-2.1.0.tar.gz", hash = "sha256:195b97673cbc2335cfa6810816de5cbf807507bf350a9d16ca98b224b1647145"},
+    {file = "molecule_docker-2.1.0-py3-none-any.whl", hash = "sha256:d439b075789be700b6594ed73f3254e2a25ed61dcf312d80ab6e718d13bf150e"},
 ]
 mypy = [
     {file = "mypy-0.982-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:5085e6f442003fa915aeb0a46d4da58128da69325d8213b4b35cc7054090aed5"},
