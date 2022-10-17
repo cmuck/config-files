@@ -21,7 +21,7 @@ jobs:
           cache: 'poetry'
       - name: Install dependencies
         run: poetry install
-      - uses: mfinelli/setup-shfmt@v1
+      - uses: mfinelli/setup-shfmt@v2
       - id: files
         name: Get changed files
         if: ${{ github.event_name == 'pull_request' }}
