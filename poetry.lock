@@ -90,7 +90,7 @@ python-versions = ">=3.5"
 dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
 docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
 tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "binaryornot"
@@ -132,17 +132,6 @@ description = "Bash style brace expander."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
-
-[[package]]
-name = "cerberus"
-version = "1.3.2"
-description = "Lightweight, extensible schema and data validation tool for Python dictionaries."
-category = "dev"
-optional = false
-python-versions = ">=2.7"
-
-[package.dependencies]
-setuptools = "*"
 
 [[package]]
 name = "certifi"
@@ -188,7 +177,7 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -389,9 +378,9 @@ python-versions = ">=3.6.1,<4.0"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
+pipfile-deprecated-finder = ["pipreqs", "requirementslib"]
 plugins = ["setuptools"]
-requirements_deprecated_finder = ["pip-api", "pipreqs"]
+requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "jinja2"
@@ -450,7 +439,7 @@ mdurl = ">=0.1,<1.0"
 
 [package.extras]
 benchmarking = ["psutil", "pytest", "pytest-benchmark (>=3.2,<4.0)"]
-code_style = ["pre-commit (==2.6)"]
+code-style = ["pre-commit (==2.6)"]
 compare = ["commonmark (>=0.9.1,<0.10.0)", "markdown (>=3.3.6,<3.4.0)", "mistletoe (>=0.8.1,<0.9.0)", "mistune (>=2.0.2,<2.1.0)", "panflute (>=2.1.3,<2.2.0)"]
 linkify = ["linkify-it-py (>=1.0,<2.0)"]
 plugins = ["mdit-py-plugins"]
@@ -489,7 +478,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "molecule"
-version = "4.0.1"
+version = "4.0.2"
 description = "Molecule aids in the development and testing of Ansible roles"
 category = "dev"
 optional = false
@@ -497,12 +486,12 @@ python-versions = ">=3.8"
 
 [package.dependencies]
 ansible-compat = ">=2.2.0"
-cerberus = ">=1.3.1,<1.3.3 || >1.3.3,<1.3.4 || >1.3.4"
 click = ">=8.0,<9"
 click-help-colors = ">=0.9"
 cookiecutter = ">=1.7.3"
 enrich = ">=1.2.7"
 Jinja2 = ">=2.11.3"
+jsonschema = ">=4.9.1"
 packaging = "*"
 pluggy = ">=0.7.1,<2.0"
 PyYAML = ">=5.1"
@@ -511,7 +500,7 @@ rich = ">=9.5.1"
 [package.extras]
 docker = ["molecule-docker (>=1.0.0)"]
 docs = ["Sphinx (>=5.0.0,<6.0.0)", "ansible-core (>=2.12.0)", "jinja2 (<3.2.0)", "simplejson (>=3.17.2)", "sphinx-ansible-theme (>=0.8.0,<0.10.0)", "sphinx-notfound-page (>=0.7.1)"]
-lint = ["flake8 (>=3.8.4)", "pre-commit (>=2.10.1)", "yamllint"]
+lint = ["check-jsonschema (>=0.18.3)", "flake8 (>=3.8.4)", "jsonschema (>=4.16.0)", "pre-commit (>=2.10.1)", "yamllint"]
 podman = ["molecule-podman (>=1.0.1)"]
 test = ["ansi2html (>=1.6.0)", "coverage (>=6.2)", "filelock", "pexpect (>=4.8.0,<5)", "pytest (>=6.1.2)", "pytest-cov (>=2.10.1)", "pytest-html (>=3.0.0)", "pytest-mock (>=3.3.1)", "pytest-plus (>=0.2)", "pytest-testinfra (>=6.1.0)", "pytest-xdist (>=2.1.0)"]
 windows = ["pywinrm"]
@@ -723,7 +712,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "resolvelib"
@@ -936,7 +925,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "092fb4bd1a13d9c243376c1c01dccbbc1266ae4ad5d1636c0e199aa2f2c2e639"
+content-hash = "d93bec9c04d87020fc511fc39b07fb1790b6b17f401ec21155df8505adced300"
 
 [metadata.files]
 ansible = [
@@ -993,9 +982,6 @@ black = [
 bracex = [
     {file = "bracex-2.3.post1-py3-none-any.whl", hash = "sha256:351b7f20d56fb9ea91f9b9e9e7664db466eb234188c175fd943f8f755c807e73"},
     {file = "bracex-2.3.post1.tar.gz", hash = "sha256:e7b23fc8b2cd06d3dec0692baabecb249dda94e06a617901ff03a6c56fd71693"},
-]
-cerberus = [
-    {file = "Cerberus-1.3.2.tar.gz", hash = "sha256:302e6694f206dd85cb63f13fd5025b31ab6d38c99c50c6d769f8fa0b0f299589"},
 ]
 certifi = [
     {file = "certifi-2022.6.15-py3-none-any.whl", hash = "sha256:fe86415d55e84719d75f8b69414f6438ac3547d2078ab91b67e779ef69378412"},
@@ -1230,8 +1216,8 @@ mdurl = [
     {file = "mdurl-0.1.1.tar.gz", hash = "sha256:f79c9709944df218a4cdb0fcc0b0c7ead2f44594e3e84dc566606f04ad749c20"},
 ]
 molecule = [
-    {file = "molecule-4.0.1-py3-none-any.whl", hash = "sha256:dcf829a70fd987ad21d28d44820b05d7fc09250dc19a79572ca10669e27bd8be"},
-    {file = "molecule-4.0.1.tar.gz", hash = "sha256:ee10e5463bc9940f9afd9b85812c63eacefea889a99c21274f4054ebe248c3b9"},
+    {file = "molecule-4.0.2-py3-none-any.whl", hash = "sha256:22c61eb226958ff6cb8a88ade5b7aeaaddeb0d7d9d1649b528fd8c12fb7b6729"},
+    {file = "molecule-4.0.2.tar.gz", hash = "sha256:13362f741a1c80279a2b25f49a1f55c3bfc345054c5feedcdcdf928e1103e1e5"},
 ]
 molecule-docker = [
     {file = "molecule-docker-2.1.0.tar.gz", hash = "sha256:195b97673cbc2335cfa6810816de5cbf807507bf350a9d16ca98b224b1647145"},
@@ -1477,6 +1463,7 @@ websocket-client = [
     {file = "websocket_client-1.3.3-py3-none-any.whl", hash = "sha256:5d55652dc1d0b3c734f044337d929aaf83f4f9138816ec680c1aefefb4dc4877"},
 ]
 yamllint = [
+    {file = "yamllint-1.28.0-py2.py3-none-any.whl", hash = "sha256:89bb5b5ac33b1ade059743cf227de73daa34d5e5a474b06a5e17fc16583b0cf2"},
     {file = "yamllint-1.28.0.tar.gz", hash = "sha256:9e3d8ddd16d0583214c5fdffe806c9344086721f107435f68bad990e5a88826b"},
 ]
 zipp = [
