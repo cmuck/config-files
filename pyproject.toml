@@ -12,7 +12,7 @@ ansible = {version = "^6.2.0", platform = "linux"}
 docker = {version = "^6.0.0", platform = "linux"}
 molecule-docker = {version = "^2.1.0", platform = "linux"}
 pre-commit = {version = "^2.20.0", platform = "linux"}
-molecule = {version = "^4.0.1", platform = "linux"}
+molecule = {version = "^4.0.2", platform = "linux"}
 yamllint = {version = "^1.28.0", platform = "linux"}
 ansible-lint = {version = "^6.6.1", platform = "linux"}
 black = {version = "^22.10.0", platform = "linux"}
