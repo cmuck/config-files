@@ -6,7 +6,7 @@ Setup python virtual environment and install development dependencies
 python3 -m venv venv
 source venv/bin/activate
 pip install pip-tools
-pip-sync requirements-dev.txt
+pip-sync dev-requirements.txt
 ```
 
 ## molecule
