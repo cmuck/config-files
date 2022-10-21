@@ -12,15 +12,12 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Install poetry
-        run: pipx install poetry
       - name: Set up Python
         uses: actions/setup-python@v4.3.0
         with:
           python-version: '3.8'
-          cache: 'poetry'
-      - name: Install dependencies
-        run: poetry install
+          cache: 'pip'
+      - run: pip install -r requirements-dev.txt
       - uses: mfinelli/setup-shfmt@v2
       - id: files
         name: Get changed files
@@ -29,8 +26,8 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          poetry run ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
+          ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          poetry run ./scripts/test-roles.sh
+          ./scripts/test-roles.sh

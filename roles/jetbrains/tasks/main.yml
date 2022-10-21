@@ -6,6 +6,7 @@
   register: jetbrains_toolbox_bin
 
 - name: Download unarchive and install
+  when: not jetbrains_toolbox_bin.stat.exists
   block:
     - name: Download
       ansible.builtin.get_url:
@@ -39,4 +40,3 @@
         msg: |
           Please run {{ toolbox_install_dir }}/{{ toolbox_install_file }} manually for the first time
           to finish installation
-  when: not jetbrains_toolbox_bin.stat.exists

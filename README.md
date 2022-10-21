@@ -11,11 +11,16 @@ Follow the instructions at [INSTALL.md](./INSTALL.md)
 
 ## Usage
 
-Run `poetry run cf --help` to see the available options.
+```sh
+python3 -m venv venv
+source venv/bin/activate
+pip install pip-tools
+pip-sync requirements.txt
+```
 
 ```sh
-poetry run cf --help
-usage: cf [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
+./config-files -h
+usage: config-files [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
 
 positional arguments:
   playbook              Playbook from playbooks directory, e.g. "helloworld"
@@ -34,31 +39,31 @@ optional arguments:
 - Default usage
 
   ```sh
-  poetry run cf developer
+  config-files developer
   ```
 
 - Syntax-check of the playbook
 
   ```sh
-  poetry run cf -c developer
+  config-files -c developer
   ```
 
 - Dry-run of the playbook
 
   ```sh
-  poetry run cf -d developer
+  config-files -d developer
   ```
 
 - Execute specific tags of the playbook
 
   ```sh
-  poetry run cf -t zsh git developer
+  config-files -t zsh git developer
   ```
 
 - Increase verbosity
 
   ```sh
-  poetry run cf -v developer
+  config-files -v developer
   ```
 
 ### Playbook helloworld
@@ -66,10 +71,10 @@ optional arguments:
 Can be used to check e.g. if config-files and Ansible works properly
 
 ```sh
-poetry run cf helloworld
-poetry run cf -v helloworld
-poetry run cf -d helloworld
-poetry run cf -c helloworld
+config-files helloworld
+config-files -v helloworld
+config-files -d helloworld
+config-files -c helloworld
 ```
 
 ## Development

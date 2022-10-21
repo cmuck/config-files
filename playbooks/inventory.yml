@@ -7,7 +7,7 @@
         msg: '{{ ansible_facts }}'
     - name: Save all facts to host specific file
       ansible.builtin.copy:
-        content: '{{ ansible_facts | to_nice_json  }}'
+        content: '{{ ansible_facts | to_nice_json }}'
         dest: '{{ ansible_user_dir }}/Desktop/inventory.json'
         mode: '0600'
       delegate_to: localhost

@@ -109,6 +109,7 @@
   register: xcwd_installed
 
 - name: Install xcbw
+  when: not xcwd_installed.stat.exists
   block:
     - name: Install xcwd dependencies
       ansible.builtin.apt:
@@ -140,4 +141,3 @@
         mode: preserve
         remote_src: true
       become: true
-  when: not xcwd_installed.stat.exists

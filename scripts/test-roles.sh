@@ -41,8 +41,8 @@ add_changed_role() {
 
 handle_pip() {
 	local changed_files=("$@")
-	if [[ ${changed_files[*]} =~ pyproject.toml ]]; then
-		echo "pyproject.toml changed, testing all roles..."
+	if [[ ${changed_files[*]} =~ (dev-)?requirements\.txt ]]; then
+		echo "python requirements changed, testing all roles..."
 		add_all_roles
 		return 0
 	fi

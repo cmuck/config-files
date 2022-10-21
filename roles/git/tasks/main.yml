@@ -11,7 +11,7 @@
       - meld
   become: true
 
-- name: Ensure {{ git_user_dir }} exists
+- name: "Ensure exists: {{ git_user_dir }}"
   ansible.builtin.file:
     path: '{{ git_user_dir }}'
     state: directory

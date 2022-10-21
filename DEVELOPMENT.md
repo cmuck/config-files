@@ -1,15 +1,17 @@
 # Development
 
-- [molecule](https://molecule.readthedocs.io/en/latest/) is used for testing Ansible roles
-- [pre-commit](https://pre-commit.com/) is used for several formatters and linters
+Setup python virtual environment and install development dependencies
 
 ```bash
-poetry install
+python3 -m venv venv
+source venv/bin/activate
+pip install pip-tools
+pip-sync requirements-dev.txt
 ```
 
 ## molecule
 
-The testing of Ansible roles is based on [molecule](https://molecule.readthedocs.io/en/stable/index.html).
+[molecule](https://molecule.readthedocs.io/en/latest/) is used for testing Ansible roles
 
 - `molecule` provides support for testing with multiple instances, operating systems and distributions, virtualization
   providers, test frameworks and testing scenarios.
@@ -17,19 +19,15 @@ The testing of Ansible roles is based on [molecule](https://molecule.readthedocs
   understood and maintained.
 - `molecule` is already part of the virtual environment installation.
 
-### Examples
-
-Execute molecule for all roles
+Example execute molecule for all roles
 
 ```bash
-poetry run ./scripts/test-roles.sh
+./scripts/test-roles.sh
 ```
 
 or use molecule for single roles
 
 ```bash
-# Activate interactive poetry shell so that molecule can be executed
-poetry shell
 # Execute molecule on a single role
 cd roles/<role>
 molecule test
@@ -43,10 +41,12 @@ molecule destroy
 
 ## pre-commit
 
-Example execution of pre-commit on all files
+[pre-commit](https://pre-commit.com/) is used for several formatters and linters
+
+Example execute pre-commit on all files
 
 ```bash
-poetry run pre-commit run --all-files
+pre-commit run --all-files
 ```
 
-But it's recommended to install the automatic git pre-commit hook by `poetry run pre-commit install`
+But it's recommended to install the automatic git pre-commit hook by `pre-commit install`

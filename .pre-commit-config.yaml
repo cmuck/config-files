@@ -16,45 +16,51 @@ repos:
     hooks:
       - id: black
         name: black
-        entry: poetry run black
+        entry: black
         language: system
         types: [ file, python ]
-        args: [ --config=pyproject.toml ]
+        args: [ --line-length=120 ]
       - id: isort
         name: isort
-        entry: poetry run isort
+        entry: isort
         language: system
         types: [ file, python ]
-        args: [ --settings-path=pyproject.toml ]
+        args: [ --line-length=120,
+                --multi-line=3,
+                --trailing-comma,
+                --ensure-newline-before-comments,
+                --use-parentheses]
       - id: mypyp
         name: mypy
-        entry: poetry run mypy
-        args: [ --strict ]
+        entry: mypy
+        args: [ --strict,
+                --ignore-missing-imports ]
         language: system
         types: [ python ]
       - id: ansible-lint
         name: ansible-lint
-        entry: poetry run ansible-lint
+        entry: ansible-lint
         language: system
         types: [ file, yaml ]
       - id: yamllint
         name: yamllint
-        entry: poetry run yamllint
+        entry: yamllint
         language: system
         types: [ file, yaml ]
       - id: mdformat
         name: mdformat
-        entry: poetry run mdformat
+        entry: mdformat
         language: system
         types: [ file, markdown ]
         args: [--wrap=120]
-  - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.1.6
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.5.1-1
     hooks:
-      - id: shfmt
+      - id: shfmt-docker
         name: shfmt
         types: [ file, bash, shell ]
-        args: [ -i 2 -ci ]
+        args: [ -i=2,
+                -ci ]
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.8.0
     hooks:

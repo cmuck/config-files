@@ -1,0 +1,12 @@
+-r requirements.txt
+ansible-lint
+black
+docker
+isort
+mdformat
+molecule-docker
+molecule
+mypy
+pip-tools
+pre-commit
+yamllint

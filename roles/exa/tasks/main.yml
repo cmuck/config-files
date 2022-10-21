@@ -9,6 +9,7 @@
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
 
 - name: Install exa when Ubuntu < 22.04
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float < 22.04
   block:
     - name: Install gnupg2 to add pub key
       ansible.builtin.apt:
@@ -37,4 +38,3 @@
         pkg:
           - exa
       become: true
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float < 22.04

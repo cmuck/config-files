@@ -11,9 +11,9 @@
 - name: Setup fact fro proxy environment
   ansible.builtin.set_fact:
     proxy_environment:
-      http_proxy: '{{ lookup("env","http_proxy") }}'
-      https_proxy: '{{ lookup("env","https_proxy")  }}'
-      no_proxy: '{{ lookup("env","no_proxy")  }}'
+      http_proxy: '{{ lookup("env", "http_proxy") }}'
+      https_proxy: '{{ lookup("env", "https_proxy") }}'
+      no_proxy: '{{ lookup("env", "no_proxy") }}'
   when:
     - proxy_used | bool
 
