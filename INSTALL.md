@@ -6,13 +6,19 @@ Before starting, ensure to have an up-to-date system
 sudo apt update && sudo apt dist-upgrade
 ```
 
-The script execution is based on Python 3 and [poetry](https://python-poetry.org/), so continue to install these
-dependencies.
+The script execution is based on Python 3, so continue to install these dependencies.
 
 ```sh
 sudo apt install python3 python3-pip
-pip install --user poetry
-poetry install
+```
+
+Setup python virtual environment and install runtime dependencies
+
+```sh
+python3 -m venv venv
+source venv/bin/activate
+pip install pip-tools
+pip-sync requirements.txt
 ```
 
 Ansible is used to configure the system and requires a SSH for the connection.

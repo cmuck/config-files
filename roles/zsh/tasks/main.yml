@@ -100,7 +100,7 @@
   become: true
 
 - name: Clean up old installation paths
-  include_tasks: "delete_dir.yml"
+  ansible.legacy.include_tasks: "delete_dir.yml"
   with_items:
     - '{{ ansible_user_dir }}/.fzf'
     - '{{ ansible_user_dir }}/.oh-my-zsh'

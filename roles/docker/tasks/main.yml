@@ -41,7 +41,7 @@
     state: present
   become: true
 
-- name: 'Add {{ ansible_user_id }} to docker group'
+- name: 'Add to docker group: {{ ansible_user_id }}'
   ansible.builtin.user:
     name: '{{ ansible_user_id }}'
     groups:
