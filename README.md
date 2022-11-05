@@ -12,14 +12,20 @@ Follow the instructions at [INSTALL.md](./INSTALL.md)
 ## Usage
 
 ```sh
+# Setup virtual environment
 python3 -m venv venv
 source venv/bin/activate
+# Required pkg to install dependencies
 pip install pip-tools
-pip-sync requirements.txt
+# Install runtime dependencies
+pip-sync
+# Install config-files in local venv
+pip install -e .
+
 ```
 
 ```sh
-./config-files -h
+./cf -h
 usage: config-files [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
 
 positional arguments:
@@ -39,31 +45,31 @@ optional arguments:
 - Default usage
 
   ```sh
-  config-files developer
+  cf developer
   ```
 
 - Syntax-check of the playbook
 
   ```sh
-  config-files -c developer
+  cf -c developer
   ```
 
 - Dry-run of the playbook
 
   ```sh
-  config-files -d developer
+  cf -d developer
   ```
 
 - Execute specific tags of the playbook
 
   ```sh
-  config-files -t zsh git developer
+  cf -t zsh git developer
   ```
 
 - Increase verbosity
 
   ```sh
-  config-files -v developer
+  cf -v developer
   ```
 
 ### Playbook helloworld
@@ -71,10 +77,10 @@ optional arguments:
 Can be used to check e.g. if config-files and Ansible works properly
 
 ```sh
-config-files helloworld
-config-files -v helloworld
-config-files -d helloworld
-config-files -c helloworld
+cf helloworld
+cf -v helloworld
+cf -d helloworld
+cf -c helloworld
 ```
 
 ## Development

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "config-files"
+version = "0.1.0"
+description = "config-files"
+readme = "README.md"
+authors = [{ name = "Christian Muck", email = "cmuckmuck@gmail.com" }]
+license = { file = "LICENSE.md" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["dotfiles"]
+dependencies = [
+    "ansible",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+dev = [
+    "ansible-lint",
+    "black",
+    "docker",
+    "isort",
+    "mdformat",
+    "molecule-docker",
+    "molecule",
+    "mypy",
+    "pip-tools",
+    "pre-commit",
+    "yamllint"
+]
+
+[project.urls]
+Homepage = "https://github.com/cmuck/config-files"
+
+[tool.pytest.ini_options]
+minversion = 7.0
+pythonpath = ["src"]
+
+[project.scripts]
+cf = "config_files.main:main"
