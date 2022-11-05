@@ -3,10 +3,39 @@
 Setup python virtual environment and install development dependencies
 
 ```bash
+# Setup virtual environment
 python3 -m venv venv
 source venv/bin/activate
-pip install pip-tools
+
+# Regenerate requirement files
+pip-compile --extra=dev --generate-hashes --output-file=dev-requirements.txt pyproject.toml
+pip-compile --generate-hashes --output-file=requirements.txt pyproject.toml
+
+# Install dependencies
+pip-sync
 pip-sync dev-requirements.txt
+
+# Build package
+python -m build
+
+# Install locally
+pip install -e .
+
+# Check pre-commit gates
+pre-commit run --all-files
+
+# Create test coverage
+coverage run -m pytest && coverage report -m
+coverage run -m pytest && coverage html
+
+# Format code
+black --line-length=120 .
+
+# Run unit tests
+pytest
+
+# Static type checker
+mypy
 ```
 
 ## molecule

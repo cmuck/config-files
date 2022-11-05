@@ -1,21 +1,21 @@
 # IDEs
-.idea/
-.vscode/
+.clwb
+.idea
+.vscode
 
 # Ignore vagrant environment
 .vagrant/
 
-# Ignore virtual environment
-venv/
-
-# Ignore python chache
-.cache
+# Python
 __pycache__
-dist/
-
-# Ignore generated files.
 *.pyc
-*.retry
+.mypy_cache/
+.pytest_cache/
+dist/
+venv/
+.coverage
+htmlcov/
+*.egg-info
 
 # Ignore temporary and backup files.
 .DS_Store

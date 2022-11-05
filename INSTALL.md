@@ -15,10 +15,15 @@ sudo apt install python3 python3-pip
 Setup python virtual environment and install runtime dependencies
 
 ```sh
+# Setup virtual environment
 python3 -m venv venv
 source venv/bin/activate
+# Required pkg to install dependencies
 pip install pip-tools
-pip-sync requirements.txt
+# Install runtime dependencies
+pip-sync
+# Install mws in local venv
+pip install -e .
 ```
 
 Ansible is used to configure the system and requires a SSH for the connection.
