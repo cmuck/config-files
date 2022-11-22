@@ -20,9 +20,9 @@ ansible-core==2.13.6 \
     # via
     #   ansible
     #   ansible-lint
-ansible-lint==6.8.6 \
-    --hash=sha256:171fe8dad62078b9819b5c74d60eb5afaa30ea9cb9c9ba8706149e56c55a9b6e \
-    --hash=sha256:bac923e2fa805973838390565e2ddd792ca4ffd33d66f21ab629dd6a84407d67
+ansible-lint==6.8.7 \
+    --hash=sha256:1824afce2a5619b47c19f6377a0d85b4f39e80b1fc1857191d6a908d68396bf9 \
+    --hash=sha256:de3de4e57cd54e17c1ec3a0b4a21d4811838e77d67b56cbe8f91107f2a434432
     # via config-files (pyproject.toml)
 arrow==1.2.3 \
     --hash=sha256:3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1 \
