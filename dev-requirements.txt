@@ -4,9 +4,9 @@
 #
 #    pip-compile --extra=dev --generate-hashes --output-file=dev-requirements.txt pyproject.toml
 #
-ansible==6.6.0 \
-    --hash=sha256:3c6812e9af1c243b8a9e5fc6cba618449813765e609caae39a757452e2818dee \
-    --hash=sha256:e1b940a8d4f412123ede3c14b25cb99c3c8a4d535fd040aabf8e4fb7b0e4f092
+ansible==7.0.0 \
+    --hash=sha256:2e9f519441780595ab173ac017210efc94c58633c9bc6e55917745d214cb4332 \
+    --hash=sha256:73144e7e602715fab623005d2e71e503dddae86185e061fed861b2449c5618ea
     # via config-files (pyproject.toml)
 ansible-compat==2.2.5 \
     --hash=sha256:28c7c545fd60ef9c3059cfb2fefd27f92db091ff6b5868f83f121ceb5e1fe1b5 \
