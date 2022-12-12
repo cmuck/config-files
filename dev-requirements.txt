@@ -317,9 +317,9 @@ mdurl==0.1.2 \
     --hash=sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8 \
     --hash=sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba
     # via markdown-it-py
-molecule==4.0.3 \
-    --hash=sha256:3ddf33a8b3a3fb33b75cf1c31a410834eda42dbc23d6161fbdb7b0e72009f4ce \
-    --hash=sha256:b5a78a77f29f1deecf768dfbffafc21b419d9520123468191438ec4c72eaef69
+molecule==4.0.4 \
+    --hash=sha256:437a0829c3273f542e0db09516ae743607e6a2eda4d8cbdfb407edda3e0facb2 \
+    --hash=sha256:aab00c1ba62a42d77edd1a51528dfbb46abca70df7c7147fda0925ee4fe7deda
     # via
     #   config-files (pyproject.toml)
     #   molecule-docker
