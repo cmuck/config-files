@@ -603,9 +603,9 @@ urllib3==1.26.12 \
     # via
     #   docker
     #   requests
-virtualenv==20.17.0 \
-    --hash=sha256:40a7e06a98728fd5769e1af6fd1a706005b4bb7e16176a272ed4292473180389 \
-    --hash=sha256:7d6a8d55b2f73b617f684ee40fd85740f062e1f2e379412cb1879c7136f05902
+virtualenv==20.17.1 \
+    --hash=sha256:ce3b1684d6e1a20a3e5ed36795a97dfc6af29bc3970ca8dab93e11ac6094b3c4 \
+    --hash=sha256:f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058
     # via pre-commit
 wcmatch==8.4.1 \
     --hash=sha256:3476cd107aba7b25ba1d59406938a47dc7eec6cfd0ad09ff77193f21a964dee7 \
