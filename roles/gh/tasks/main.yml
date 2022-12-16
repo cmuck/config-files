@@ -22,6 +22,6 @@
 - name: Install gh
   ansible.builtin.apt:
     pkg:
-    - gh
-    - git
+      - gh
+      - git
   become: true
