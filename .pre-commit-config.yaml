@@ -37,6 +37,12 @@ repos:
                 --ignore-missing-imports ]
         language: system
         types: [ python ]
+      - id: tomlcheck
+        name: tomlcheck
+        description: Checks TOML files for valid syntax.
+        entry: tomlcheck
+        language: system
+        files: \**/*.toml$
       - id: ansible-lint
         name: ansible-lint
         entry: ansible-lint
