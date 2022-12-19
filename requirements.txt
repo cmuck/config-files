@@ -8,9 +8,9 @@ ansible==6.6.0 \
     --hash=sha256:3c6812e9af1c243b8a9e5fc6cba618449813765e609caae39a757452e2818dee \
     --hash=sha256:e1b940a8d4f412123ede3c14b25cb99c3c8a4d535fd040aabf8e4fb7b0e4f092
     # via config-files (pyproject.toml)
-ansible-core==2.13.6 \
-    --hash=sha256:31fe322b63290674a8f7386110df501f0044aa44890be3ab313a6e225b9a29cf \
-    --hash=sha256:e31fd550a5ea9423f1fc1391de6b41bb0d264a83bbfc9c7edfef0f78b7624fd3
+ansible-core==2.14.1 \
+    --hash=sha256:06e136c8eda4d8695251995d3c3efa612ebb3ac66948bf42492d4c7b46a75ff2 \
+    --hash=sha256:589257f2560fffd5d4465352cd4504e2cbfc418ba49e0c4265cd54e16070c938
     # via ansible
 cffi==1.15.1 \
     --hash=sha256:00a9ed42e88df81ffae7a8ab6d9356b371399b91dbdf0c3cb1e84c03a13aceb5 \
