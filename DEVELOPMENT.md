@@ -1,44 +1,43 @@
 # Development
 
-Setup python virtual environment and install development dependencies
+## Setup development environment
+
+The script execution is based on Python 3 and a virtual environment, so continue to install these dependencies.
+
+```sh
+sudo apt install python3 python3-pip
+```
+
+Setup Python virtual environment and install development dependencies
 
 ```bash
 # Setup virtual environment
 python3 -m venv venv
 source venv/bin/activate
-
-# Regenerate requirement files
-pip-compile --extra=dev --generate-hashes --output-file=dev-requirements.txt pyproject.toml
-pip-compile --generate-hashes --output-file=requirements.txt pyproject.toml
-
-# Install dependencies
-pip-sync
 pip-sync dev-requirements.txt
-
-# Build package
-python -m build
-
-# Install locally
-pip install -e .
-
-# Check pre-commit gates
-pre-commit run --all-files
-
-# Create test coverage
-coverage run -m pytest && coverage report -m
-coverage run -m pytest && coverage html
-
-# Format code
-black --line-length=120 .
-
-# Run unit tests
-pytest
-
-# Static type checker
-mypy
 ```
 
-## molecule
+## Typical development
+
+Changes shall be developed on feature-branches, tested by molecule and pre-commit locally and by
+[CI](./.github/workflows/ci.yml).
+
+Setup of git, usage of feature-branches and pushing is not explained in detail here, assumption is that you are familiar
+with this tool.
+
+### Check changes using `pre-commit`
+
+[pre-commit](https://pre-commit.com/) is used for several formatters and linters
+
+Example execute pre-commit on all files
+
+```bash
+pre-commit run --all-files
+```
+
+But it's recommended to install the automatic git pre-commit hook by `pre-commit install`
+
+### Check changes using `molecule`
 
 [molecule](https://molecule.readthedocs.io/en/latest/) is used for testing Ansible roles
 
@@ -54,7 +53,7 @@ Example execute molecule for all roles
 ./scripts/test-roles.sh
 ```
 
-or use molecule for single roles
+or use molecule on a single role
 
 ```bash
 # Execute molecule on a single role
@@ -68,14 +67,33 @@ molecule converge
 molecule destroy
 ```
 
-## pre-commit
+## Generate or upgrade Python `[dev-]requirements.txt`
 
-[pre-commit](https://pre-commit.com/) is used for several formatters and linters
-
-Example execute pre-commit on all files
-
-```bash
-pre-commit run --all-files
+```sh
+# Regenerate requirement files
+pip-compile --upgrade --extra=dev --generate-hashes --output-file=dev-requirements.txt pyproject.toml
+pip-compile --upgrade --generate-hashes --output-file=requirements.txt pyproject.toml
 ```
 
-But it's recommended to install the automatic git pre-commit hook by `pre-commit install`
+## Further development commands
+
+```sh
+# Install locally
+pip install -e .
+
+# Build package
+python -m build
+
+# Create test coverage
+coverage run -m pytest && coverage report -m
+coverage run -m pytest && coverage html
+
+# Format code
+black --line-length=120 .
+
+# Run unit tests
+pytest
+
+# Static type checker
+mypy
+```

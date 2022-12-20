@@ -7,25 +7,60 @@ application-deployment as infrastructure as code, tested with molecule.
 
 ## Installation
 
-Follow the instructions at [INSTALL.md](./INSTALL.md)
+### Setup SSH for Ansible
 
-## Usage
+Ansible is used to configure the system and requires a SSH connection.
+
+First, ensure to have an up-to-date system
+
+```sh
+sudo apt update && sudo apt dist-upgrade
+```
+
+A vanilla Ubuntu installation misses `openssh-server`. Therefore install `openssh-server` so that the system can be used
+by Ansible.
+
+```sh
+sudo apt install openssh-server
+# Check if openssh-server is running
+systemctl status ssh
+```
+
+Please re-use your existing SSH key if already created or
+[create a new SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
+
+### Setup Python
+
+The script execution is based on Python 3 and a virtual environment, so continue to install these dependencies.
+
+```sh
+sudo apt install python3 python3-pip
+```
+
+Setup Python virtual environment and install runtime dependencies
 
 ```sh
 # Setup virtual environment
 python3 -m venv venv
 source venv/bin/activate
-# Required pkg to install dependencies
+# Install required pkg to sync python dependencies
 pip install pip-tools
-# Install runtime dependencies
+# Install Python runtime dependencies, see requirements.txt
 pip-sync
-# Install config-files in local venv
-pip install -e .
-
 ```
 
+Finally install the script `config-files` to the local virtual environment
+
 ```sh
-./cf -h
+pip install -e .
+```
+
+## Usage
+
+When installed to the local virtual environment, you can use the script by the command `cf`
+
+```sh
+cf -h
 usage: config-files [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
 
 positional arguments:
