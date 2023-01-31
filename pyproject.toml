@@ -1,13 +1,9 @@
-[build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "config-files"
 version = "0.1.0"
 description = "config-files"
 readme = "README.md"
-authors = [{ name = "Christian Muck", email = "cmuckmuck@gmail.com" }]
+authors = [{ name = "cmuck", email = "cmuckmuck@gmail.com" }]
 license = { file = "LICENSE.md" }
 classifiers = [
     "Programming Language :: Python :: 3",
