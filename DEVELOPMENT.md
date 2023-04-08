@@ -5,7 +5,7 @@
 The script execution is based on Python 3 and a virtual environment, so continue to install these dependencies.
 
 ```sh
-sudo apt install python3 python3-pip
+sudo apt install python3 python3-pip python3-venv
 ```
 
 Setup Python virtual environment and install development dependencies

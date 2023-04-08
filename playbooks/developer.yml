@@ -50,9 +50,6 @@
     - name: Install exa
       role: exa
       tags: [exa]
-    - name: Install starship
-      role: starship
-      tags: [starship]
     - name: Install gh
       role: gh
       tags: [gh]
@@ -65,4 +62,10 @@
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
+#    - name: Install starship
+#      role: starship
+#      tags: [starship]
+#    - name: Install i3 window manager
+#      role: i3
+#      tags: [i3]
   environment: '{{ proxy_environment }}'
