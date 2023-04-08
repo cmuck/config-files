@@ -62,6 +62,9 @@
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
+    - name: Install lazygit
+      role: lazygit
+      tags: [lazygit]
 #    - name: Install starship
 #      role: starship
 #      tags: [starship]
