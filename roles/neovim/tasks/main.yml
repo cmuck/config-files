@@ -1,21 +1,54 @@
 ---
-- name: Install neovim
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    pkg:
-      - neovim
-      - vim
-  become: true
+- name: Check if NvChad is installed
+  stat:
+    path: "{{ ansible_user_dir }}/.config/nvim/.git"
+  register: stat_result
 
-- name: Create some dirs
-  ansible.builtin.file:
-    path: '{{ config_dir }}'
-    state: directory
-    mode: '0755'
+- name: Install NvChad
+  block:
+    - name: Remove neovim when installed by package manager not to conflict
+      ansible.builtin.apt:
+        state: absent
+        pkg:
+          - neovim
+          - neovim-runtime
+      become: true
 
-- name: Copy neovim config
-  ansible.builtin.copy:
-    src: 'init.vim'
-    dest: '{{ config_dir }}'
-    mode: '0644'
+    - name: Install git and vim
+      ansible.builtin.apt:
+        state: present
+        pkg:
+          - git
+          - vim
+        update_cache: true
+      become: true
+
+    - name: Install neovim by .deb package
+      ansible.builtin.apt:
+        deb: https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-linux64.deb
+      become: true
+    
+    - name: Remove nvim config directories
+      ansible.builtin.file:
+          path: "{{ item }}"
+          state: absent
+      with_items:
+        -  "{{ ansible_user_dir }}/.config/nvim"
+        -  "{{ ansible_user_dir }}/.local/share/nvim"
+      
+    - name: Install NvChad from https://nvchad.com/
+      ansible.builtin.git:
+        repo: "https://github.com/NvChad/NvChad"
+        dest: "{{ ansible_user_dir }}/.config/nvim"
+        depth: 1
+      # To update NvChad run the following command:
+      #  NvChadUpdate
+  when: not stat_result.stat.exists
+
+
+
+
+
+
+
+
