@@ -1,6 +1,14 @@
 [global_config]
   window_state = maximise
 [keybindings]
+[profiles]
+  [[default]]
+    background_color = "#300a24"
+    background_darkness = 0.45
+    cursor_color = "#aaaaaa"
+    foreground_color = "#ffffff"
+    scrollback_infinite = True
+    copy_on_selection = True
 [layouts]
   [[default]]
     [[[child1]]]
@@ -11,11 +19,3 @@
       parent = ""
       type = Window
 [plugins]
-[profiles]
-  [[default]]
-    background_color = "#002b36"
-    background_darkness = 0.45
-    cursor_color = "#aaaaaa"
-    foreground_color = "#839496"
-    show_titlebar = False
-    scrollback_infinite = True
