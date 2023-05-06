@@ -71,8 +71,8 @@ molecule destroy
 
 ```sh
 # Regenerate requirement files
-pip-compile --upgrade --extra=dev --generate-hashes --output-file=dev-requirements.txt pyproject.toml
-pip-compile --upgrade --generate-hashes --output-file=requirements.txt pyproject.toml
+pip-compile --upgrade --extra=dev --generate-hashes --allow-unsafe --output-file=dev-requirements.txt pyproject.toml
+pip-compile --upgrade --generate-hashes --allow-unsafe --output-file=requirements.txt pyproject.toml
 ```
 
 ## Further development commands
