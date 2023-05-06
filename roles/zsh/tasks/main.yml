@@ -27,6 +27,7 @@
         - copyfile
         - extract
         - fzf
+        - fzf-tab
         - gh
         - git
         - rsync
@@ -50,6 +51,12 @@
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
     version: '0.7.1'
     dest: '{{ oh_my_zsh_dir }}/custom/plugins/zsh-syntax-highlighting'
+    depth: 1
+
+- name: Clone fzf-tab plugin oh-my-zsh directory
+  ansible.builtin.git:
+    repo: https://github.com/Aloxaf/fzf-tab.git
+    dest: '{{ oh_my_zsh_dir }}/custom/plugins/fzf-tab'
     depth: 1
 
 - name: Clone fzf
