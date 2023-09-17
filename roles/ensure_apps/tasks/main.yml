@@ -11,15 +11,13 @@
       - corkscrew
       - curl
       - dconf-editor
-      - flameshot
+      - gthumb
       - htop
       - iftop
       - iotop
       - iperf3
       - kazam
       - ncdu
-      - network-manager-openconnect
-      - network-manager-openconnect-gnome
       - nmap
       - openconnect
       - peek
@@ -27,7 +25,6 @@
       - preload
       - safe-rm
       - silversearcher-ag
-      - terminator
       - timeshift
       - trash-cli
       - vim
