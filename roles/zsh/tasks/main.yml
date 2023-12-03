@@ -65,16 +65,11 @@
     dest: '{{ fzf_dir }}'
     depth: 1  # noqa 401
 
-- name: Check fzf is installed
-  ansible.builtin.stat:
-    path: '{{ ansible_user_dir }}/.config/fzf'
-  register: fzf_installed
-
 - name: Install fzf
   ansible.builtin.command: "./install --all --xdg"
   args:
     chdir: "{{ fzf_dir }}"
-  when: not fzf_installed.stat.exists
+  changed_when: false
 
 - name: Copy profile_block
   ansible.builtin.copy:

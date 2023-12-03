@@ -23,5 +23,5 @@ pathedit -p "$HOME/.poetry/bin"
 #export TERMINAL="gnome-terminal"
 if command -v nvim &>/dev/null; then
     export EDITOR="nvim"
-    export VISUAL="nvim"
+    export VISUAL="code"
 fi
