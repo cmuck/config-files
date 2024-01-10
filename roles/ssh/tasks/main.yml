@@ -18,24 +18,3 @@
         IgnoreUnknown UseKeychain
         UseKeychain yes
         IdentityFile ~/.ssh/id_rsa
-
-- name: Write SSH config GitHub via corkscrew block
-  ansible.builtin.blockinfile:
-    create: true
-    mode: '0644'
-    path: '{{ ansible_user_dir }}/.ssh/config'
-    backup: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK corkscrew"
-    block: |
-      {% if environment[0].http_proxy is defined and environment[0].http_proxy | length %}
-      Host github.com
-        Hostname github.com
-        User git
-        IdentityFile ~/.ssh/id_rsa
-        # myauth see https://github.com/bryanpkc/corkscrew#how-do-i-use-the-http-authentication-feature
-        ProxyCommand /usr/bin/corkscrew proxy.muc 8080 %h %p ~/.ssh/myauth
-      {% else %}
-        # No proxy set for GitHub
-      {% endif %}
-    # Use proxy_environment.http_proxy instead of environment[0].http_proxy but environment is the default in Ansible
-    # and proxy_environment depends on the name of the var used in group_vars
