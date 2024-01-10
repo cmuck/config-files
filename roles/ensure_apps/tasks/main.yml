@@ -8,7 +8,6 @@
       - baobab
       - build-essential
       - cifs-utils
-      - corkscrew
       - curl
       - dconf-editor
       - gthumb
