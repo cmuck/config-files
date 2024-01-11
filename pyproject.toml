@@ -14,7 +14,7 @@ keywords = ["dotfiles"]
 dependencies = [
     "ansible",
 ]
-requires-python = ">=3.8"
+requires-python = ">= 3.8"
 
 [project.optional-dependencies]
 dev = [
