@@ -65,6 +65,9 @@
     - name: Install lazygit
       role: lazygit
       tags: [lazygit]
+    - name: Install tmux
+      role: tmux
+      tags: [tmux]
 #    - name: Install starship
 #      role: starship
 #      tags: [starship]
