@@ -12,9 +12,9 @@ ansible-compat==3.0.2 \
     --hash=sha256:1c051fb7cedd7a067c5b8fca86e76109bff69cdd31115dea751e3166296a73da \
     --hash=sha256:a10ea191f9efe08590ff64cb46a31af1f8142c08618db1a4bc827ed257c68230
     # via molecule
-ansible-core==2.13.9 \
-    --hash=sha256:8fcd6b915857e7a3167926bcfe5743f9b4e4abf3566d6d53028c1c1a7ffa3aa8 \
-    --hash=sha256:9c319eca0a9c53cde6f174812ddd7114edb1e5d0eb5e1df47bd0d8fefedac76c
+ansible-core==2.15.9 \
+    --hash=sha256:25f9b1b5a5af3c0986bd3928ed086eaddb867527fb5c83afef1a03cfad34f345 \
+    --hash=sha256:5b6a4b12aa5358f60933e79d86763e3558862282fb1dc563a29b9999e5849fc3
     # via
     #   ansible
     #   ansible-compat
