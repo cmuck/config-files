@@ -17,10 +17,6 @@ pathedit -p "$HOME/.local/bin"
 pathedit -p "$HOME/.poetry/bin"
 
 # Default programs
-#if command -v terminator &>/dev/null; then
-#    export TERMINAL="terminator"
-#fi
-#export TERMINAL="gnome-terminal"
 if command -v nvim &>/dev/null; then
     export EDITOR="nvim"
     export VISUAL="code"

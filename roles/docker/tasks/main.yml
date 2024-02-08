@@ -49,7 +49,4 @@
     append: true
   become: true
 
-# - name: Activate changes to docker group
-#  command: newgrp docker
-#  become: true
-#  changed_when: false
+# Reboot required to become effective

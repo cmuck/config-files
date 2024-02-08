@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: "Include i3 role"
-      ansible.builtin.include_role:
-        name: "i3"

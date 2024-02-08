@@ -2,16 +2,15 @@
 - name: Get lazygit releases
   ansible.builtin.uri:
     url: "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
-    body_format: json
-  register: lazygit_releases
+  register: lazygit_latest
 
 - name: Print latest lazygit tag
   ansible.builtin.debug:
-    msg: "{{ lazygit_releases.json.tag_name[1:] }}"
+    msg: "{{ lazygit_latest.json.tag_name[1:] }}"
 
 - name: Download lazygit
   ansible.builtin.get_url:
-    url: 'https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{  lazygit_releases.json.tag_name[1:] }}_Linux_x86_64.tar.gz'
+    url: 'https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{  lazygit_latest.json.tag_name[1:] }}_Linux_x86_64.tar.gz'
     dest: "/tmp/lazygit.tar.gz"
     mode: '0644'
 

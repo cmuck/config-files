@@ -7,21 +7,30 @@
     update_cache: true
   become: true
 
-- name: Install delta from github release page but works...
-  ansible.builtin.apt:
-    deb: "https://github.com/dandavison/delta/releases/download/{{ delta_version }}/git-delta_{{ delta_version }}_amd64.deb"
-  become: true
+- name: Install delta when Ubuntu <= 20.04
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float <= 20.04
+  block:
+  - name: Check latest version for Ubuntu 20.04
+    uri:
+      url: https://api.github.com/repos/dandavison/delta/releases/tags/0.15.1
+    register: delta_latest_20_04
+  - name: Install delta from github release page for Ubuntu 20.04
+    ansible.builtin.apt:
+      deb: "{{ delta_latest_20_04.json.assets[8].browser_download_url }}"
+    become: true
 
-- name: Copy delta_gitconfig_block
-  ansible.builtin.copy:
-    src: delta_gitconfig_block
-    dest: '/tmp/delta_gitconfig_block'
-    mode: '0644'
+- name: Install delta when Ubuntu >= 22.04
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
+  block:
+  - name: Check latest version
+    uri:
+      url: https://api.github.com/repos/dandavison/delta/releases/latest
+    register: delta_latest
 
-- name: Reading delta_gitconfig_block file and register it into delta_gitconfig_block variable
-  ansible.builtin.command: cat /tmp/delta_gitconfig_block
-  register: delta_gitconfig_block
-  changed_when: false
+  - name: Install delta from github release page
+    ansible.builtin.apt:
+      deb: "{{ delta_latest.json.assets[9].browser_download_url }}"
+    become: true
 
 - name: Write block in file to .gitconfig
   ansible.builtin.blockinfile:
@@ -30,4 +39,10 @@
     path: '{{ ansible_user_dir }}/.gitconfig'
     marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"
     block: |
-      {{ delta_gitconfig_block.stdout }}
+      [core]
+          pager = delta
+      [interactive]
+          diffFilter = delta --color-only
+      [delta]
+          side-by-side = true
+          line-numbers = true

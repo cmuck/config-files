@@ -11,13 +11,7 @@
       - meld
   become: true
 
-- name: "Ensure exists: {{ git_user_dir }}"
-  ansible.builtin.file:
-    path: '{{ git_user_dir }}'
-    state: directory
-    mode: '0755'
-
-- name: Copy OS dependent git config
+- name: Copy git config
   ansible.builtin.copy:
     src: 'gitconfig'
     dest: '{{ ansible_user_dir }}/.gitconfig'
