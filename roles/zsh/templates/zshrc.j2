@@ -106,8 +106,8 @@ alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
 ### Commands
 
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
-#command -v bat >/dev/null && alias cat="bat"
-#command -v batcat >/dev/null && alias cat="batcat"
+command -v bat >/dev/null && alias bc="bat"
+command -v batcat >/dev/null && alias bc="batcat"
 
 if command -v exa >/dev/null; then
   # Changing "ls" to "exa"
@@ -116,4 +116,11 @@ if command -v exa >/dev/null; then
   alias ll='exa -l --color=always --group-directories-first'  # long format
   alias lt='exa -aT --color=always --group-directories-first' # tree listing
   alias l.='exa -a | egrep "^\."'
+fi
+
+if command -v pyenv >/dev/null; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
