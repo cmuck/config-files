@@ -23,6 +23,13 @@
         update_cache: true
       become: true
 
+
+    - name: Check latest version
+      uri:
+        url: https://api.github.com/repos/neovim/neovim/releases/latest
+      register: neovim_latest
+
+
     - name: Install neovim by .deb package
       ansible.builtin.apt:
         deb: https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-linux64.deb

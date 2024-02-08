@@ -117,8 +117,3 @@ if command -v exa >/dev/null; then
   alias lt='exa -aT --color=always --group-directories-first' # tree listing
   alias l.='exa -a | egrep "^\."'
 fi
-
-# Always last
-if command -v starship >/dev/null; then
-    eval "$(starship init zsh)"
-fi
