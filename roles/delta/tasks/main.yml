@@ -44,5 +44,10 @@
       [interactive]
           diffFilter = delta --color-only
       [delta]
-          side-by-side = true
+          conflictstyle = diff3
           line-numbers = true
+          hyperlinks = true
+          hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+          # or: hyperlinks-file-link-format = "pycharm://open?file={path}&line={line}"
+          navigate = true
+          side-by-side = true
