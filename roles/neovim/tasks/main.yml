@@ -1,56 +1,75 @@
 ---
-- name: Check if NvChad is installed
-  stat:
-    path: "{{ ansible_user_dir }}/.config/nvim/.git"
-  register: stat_result
+- name: Remove neovim when installed by package manager not to conflict
+  ansible.builtin.apt:
+    state: absent
+    pkg:
+      - neovim
+      - neovim-runtime
+  become: true
 
-- name: Install NvChad
-  block:
-    - name: Remove neovim when installed by package manager not to conflict
-      ansible.builtin.apt:
-        state: absent
-        pkg:
-          - neovim
-          - neovim-runtime
-      become: true
+- name: Install ripgrep, git and vim
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - git
+      - vim
+      - ripgrep
+    update_cache: true
+  become: true
 
-    - name: Install git and vim
-      ansible.builtin.apt:
-        state: present
-        pkg:
-          - git
-          - vim
-        update_cache: true
-      become: true
+- name: Remove config directories
+  ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+  with_items:
+    - "{{ ansible_user_dir }}/.config/nvim"
+    - "{{ ansible_user_dir }}/.local/share/nvim"
+    - "{{ ansible_user_dir }}/.cache/nvim"
+  changed_when: false
 
+- name: Remove config directories
+  ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+  with_items:
+    - "/opt/nvim-linux64"
+  changed_when: false
+  become: true
 
-    - name: Check latest version
-      uri:
-        url: https://api.github.com/repos/neovim/neovim/releases/latest
-      register: neovim_latest
+- name: Check latest neovim version
+  uri:
+    url: https://api.github.com/repos/neovim/neovim/releases/latest
+  register: neovim_latest
+  changed_when: false
 
+- name: Download neovim
+  ansible.builtin.unarchive:
+    src: "{{ neovim_latest.json.assets[0].browser_download_url }}"
+    dest: "/opt"
+    remote_src: yes
+  changed_when: false
+  become: true
 
-    - name: Install neovim by .deb package
-      ansible.builtin.apt:
-        deb: https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-linux64.deb
-      become: true
-    
-    - name: Remove nvim config directories
-      ansible.builtin.file:
-          path: "{{ item }}"
-          state: absent
-      with_items:
-        -  "{{ ansible_user_dir }}/.config/nvim"
-        -  "{{ ansible_user_dir }}/.local/share/nvim"
-      
-    - name: Install NvChad from https://nvchad.com/
-      ansible.builtin.git:
-        repo: "https://github.com/NvChad/NvChad"
-        dest: "{{ ansible_user_dir }}/.config/nvim"
-        depth: 1
-      # To update NvChad run the following command:
-      #  NvChadUpdate
-  when: not stat_result.stat.exists
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK nvim sourcing"
+    block: |
+      export PATH="$PATH:/opt/nvim-linux64/bin"
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'
+  changed_when: false
+
+- name: Install NvChad from https://nvchad.com/
+  ansible.builtin.git:
+    repo: "https://github.com/NvChad/NvChad"
+    dest: "{{ ansible_user_dir }}/.config/nvim"
+    depth: 1
+  changed_when: false
+  # To update NvChad run the following command:
+  #  NvChadUpdate
 
 
 
