@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include gogh role"
+      ansible.builtin.include_role:
+        name: "gogh"

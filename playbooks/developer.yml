@@ -17,6 +17,9 @@
     - name: Install lunarvim
       role: lunarvim
       tags: [lunarvim]
+    - name: Install gogh
+      role: gogh
+      tags: [gogh]
     - name: Install git
       role: git
       tags: [git]

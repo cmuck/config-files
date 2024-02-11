@@ -1,0 +1,29 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - curl
+      - dconf-cli
+      - git
+      - gnome-terminal
+      - uuid-runtime
+    update_cache: true
+  become: true
+
+- name: Clone gogh directory
+  ansible.builtin.git:
+    repo: 'https://github.com/Gogh-Co/Gogh.git'
+    dest: '/tmp/gogh'
+    depth: 1
+
+- name: Install pyenv
+  ansible.builtin.command: './{{ item }}'
+  args:
+    chdir: '/tmp/gogh/installs'
+  changed_when: false
+  environment:
+    TERMINAL: gnome-terminal
+  with_items:
+    - 'catppuccin-macchiato.sh'
+    - 'cobalt-neon.sh'
