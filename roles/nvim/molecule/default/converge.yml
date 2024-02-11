@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include nvim role"
+      ansible.builtin.include_role:
+        name: "nvim"

@@ -14,9 +14,9 @@
     - name: Install ranger
       role: ranger
       tags: [ranger]
-    - name: Install neovim
-      role: neovim
-      tags: [neovim]
+    - name: Install lunarvim
+      role: lunarvim
+      tags: [lunarvim]
     - name: Install git
       role: git
       tags: [git]
@@ -65,4 +65,7 @@
     - name: Install tmux
       role: tmux
       tags: [tmux]
+    - name: Install pyenv
+      role: pyenv
+      tags: [pyenv]
   environment: '{{ proxy_environment }}'

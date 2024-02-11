@@ -18,3 +18,15 @@
     src: 'rc.conf'
     dest: '{{ config_dir }}'
     mode: '0644'
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK ranger"
+    block: |
+      alias r='ranger'
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'

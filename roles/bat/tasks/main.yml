@@ -5,3 +5,16 @@
     state: present
     update_cache: true
   become: true
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK bat"
+    block: |
+      command -v bat >/dev/null && alias bc="bat"
+      command -v batcat >/dev/null && alias bc="batcat"
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'
