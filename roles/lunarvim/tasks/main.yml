@@ -1,0 +1,75 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - build-essential
+      - curl
+      - git
+      - python3
+      - python3-pip
+      - ripgrep
+      - software-properties-common
+      - vim
+    update_cache: true
+  become: true
+
+- name: "Include rust"
+  ansible.builtin.include_role:
+    name: "rust"
+
+- name: "Include lazygit"
+  ansible.builtin.include_role:
+    name: "lazygit"
+
+- name: "Include nodejs"
+  ansible.builtin.include_role:
+    name: "nodejs"
+
+- name: "Include nvim"
+  ansible.builtin.include_role:
+    name: "nvim"
+
+- name: Remove config directories
+  ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+  with_items:
+    - "{{ ansible_user_dir }}/.local/share/lunarvim"
+    - "{{ ansible_user_dir }}/.local/share/lunarvim.old"
+    - "{{ ansible_user_dir }}/.cache/lvim"
+    - "{{ ansible_user_dir }}/.cache/lvim.old"
+    - "{{ ansible_user_dir }}/.config/lvim"
+    - "{{ ansible_user_dir }}/.config/lvim.old"
+  changed_when: false
+
+- name: Download lunarvim install script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh
+    dest: /tmp/install_lunarvim.sh
+    mode: '0755'
+  register: lunarvim
+
+- name: Install pynvim python package globally
+  ansible.builtin.pip:
+    name: pynvim
+
+- name: Install lunarvim
+  ansible.builtin.command: '{{ lunarvim.dest }} --no-install-dependencies'
+  environment:
+          LV_BRANCH: 'release-1.3/neovim-0.9'
+          PATH: '{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.cargo/bin:/opt/nvim-linux64/bin'
+  changed_when: false
+
+- name: Download NerdFonts install script getnf
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/ronniedroid/getnf/master/install.sh
+    dest: /tmp/install_getnf.sh
+    mode: '0755'
+  register: getnf
+
+- name: Install getnf
+  ansible.builtin.command: '{{ getnf.dest }}'
+  changed_when: false
+
+  # Then manual execute getnf since only interactive mode

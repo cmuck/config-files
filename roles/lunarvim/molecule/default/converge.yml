@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include lunarvim role"
+      ansible.builtin.include_role:
+        name: "lunarvim"

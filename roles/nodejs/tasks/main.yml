@@ -1,0 +1,35 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - build-essential
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
+    update_cache: true
+  become: true
+
+- name: Install node apt key
+  ansible.builtin.apt_key:
+    url: 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
+  become: true
+
+- name: Get DEB architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: deb_architecture
+  changed_when: deb_architecture.rc != 0
+
+- name: Add node apt repository
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch={{ deb_architecture.stdout }}] https://deb.nodesource.com/node_20.x nodistro main'
+    filename: config_node
+    update_cache: yes
+  become: true
+
+- name: Install node
+  ansible.builtin.apt:
+    name: nodejs
+    state: present
+  become: true

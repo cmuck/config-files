@@ -100,23 +100,9 @@ source "${ZSH}/oh-my-zsh.sh"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
-alias r='ranger'
 alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
 
 ### Commands
-
-command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d"
-command -v bat >/dev/null && alias bc="bat"
-command -v batcat >/dev/null && alias bc="batcat"
-
-if command -v exa >/dev/null; then
-  # Changing "ls" to "exa"
-  alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-  alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-  alias ll='exa -l --color=always --group-directories-first'  # long format
-  alias lt='exa -aT --color=always --group-directories-first' # tree listing
-  alias l.='exa -a | egrep "^\."'
-fi
 
 if command -v pyenv >/dev/null; then
   export PYENV_ROOT="$HOME/.pyenv"
