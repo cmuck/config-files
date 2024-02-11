@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include neovim role"
+    - name: "Include nvchad role"
       ansible.builtin.include_role:
-        name: "neovim"
+        name: "nvchad"
