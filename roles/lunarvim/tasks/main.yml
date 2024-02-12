@@ -61,6 +61,18 @@
           PATH: '{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.cargo/bin:/opt/nvim-linux64/bin'
   changed_when: false
 
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK lvim"
+    block: |
+      command -v lvim >/dev/null && alias vim="lvim" nvim="lvim"
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'
+
 - name: Download NerdFonts install script getnf
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/ronniedroid/getnf/master/install.sh

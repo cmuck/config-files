@@ -3,13 +3,40 @@
     useconfigonly = true
 [alias]
     # More aliases used from https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
+    ada = add --all
+    adai = add --all --interactive
+    adap = add --all --patch
+    adu = add --update
+    adup = add --update --patch
     aliases = config --get-regexp alias
+    ch = checkout
+    chb = checkout --branch
+    cl = clone
+    coa = commit --amend
+    cof = commit --fixup
+    com = commit --message
+    cp = cherry-pick
+    di = diff
+    dis = diff --staged
+    f = "!git ls-files | grep -i"
+    ft = fetch --recurse-submodules
+    gr = grep -Ii
+    lg = log --date=relative --color --graph --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(cyan)<%an>%Creset' --abbrev-commit
+    lg2 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+    ln = !git lg --name-status
+    pl = pull --recurse-submodules
+    ps = push --atomic
+    r = reset
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
     rb = rebase
     rbi = rebase --interactive
     rh = reset --hard
     rh1 = reset HEAD^ --hard
     rs = reset --soft
     rs1 = reset --soft HEAD^
+    st = status --short --branch
+    wt = worktree
     wt = worktree
 [branch]
     autosetuprebase = always
@@ -34,7 +61,6 @@
     requireForce = false
 [submodule]
     fetchJobs = 4
-
 [merge]
     tool = mymeld
     conflictstyle = diff3

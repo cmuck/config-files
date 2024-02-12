@@ -12,7 +12,7 @@
   block:
   - name: Check latest version for Ubuntu 20.04
     uri:
-      url: https://api.github.com/repos/dandavison/delta/releases/tags/0.15.1
+      url: https://api.github.com/repos/dandavison/delta/releases/tags/0.14.0
     register: delta_latest_20_04
   - name: Install delta from github release page for Ubuntu 20.04
     ansible.builtin.apt:
@@ -44,10 +44,9 @@
       [interactive]
           diffFilter = delta --color-only
       [delta]
-          conflictstyle = diff3
-          line-numbers = true
-          hyperlinks = true
-          hyperlinks-file-link-format = "vscode://file/{path}:{line}"
-          # or: hyperlinks-file-link-format = "pycharm://open?file={path}&line={line}"
-          navigate = true
-          side-by-side = true
+          features = side-by-side line-numbers decorations
+          whitespace-error-style = 22 reverse
+      [delta "decorations"]
+          commit-decoration-style = bold yellow box ul
+          file-style = bold yellow ul
+          file-decoration-style = none

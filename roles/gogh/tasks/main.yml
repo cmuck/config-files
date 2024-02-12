@@ -7,6 +7,7 @@
       - dconf-cli
       - git
       - gnome-terminal
+      - meld
       - uuid-runtime
     update_cache: true
   become: true
@@ -17,7 +18,7 @@
     dest: '/tmp/gogh'
     depth: 1
 
-- name: Install pyenv
+- name: Install themes
   ansible.builtin.command: './{{ item }}'
   args:
     chdir: '/tmp/gogh/installs'
