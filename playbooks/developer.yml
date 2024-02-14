@@ -14,6 +14,15 @@
     - name: Install ranger
       role: ranger
       tags: [ranger]
+    - name: Install lazygit
+      role: lazygit
+      tags: [lazygit]
+    - name: Install rust
+      role: rust
+      tags: [rust]
+    - name: Install nvim
+      role: nvim
+      tags: [nvim]
     - name: Install lunarvim
       role: lunarvim
       tags: [lunarvim]
@@ -53,18 +62,12 @@
     - name: Install gh
       role: gh
       tags: [gh]
-    - name: Install rust
-      role: rust
-      tags: [rust]
     - name: Install rofi
       role: rofi
       tags: [rofi]
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
-    - name: Install lazygit
-      role: lazygit
-      tags: [lazygit]
     - name: Install tmux
       role: tmux
       tags: [tmux]

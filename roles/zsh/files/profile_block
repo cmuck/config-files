@@ -14,7 +14,6 @@ pathedit()
 pathedit -p "/usr/local/bin"
 pathedit -p "$HOME/bin"
 pathedit -p "$HOME/.local/bin"
-pathedit -p "$HOME/.poetry/bin"
 
 # Default programs
 if command -v nvim &>/dev/null; then
