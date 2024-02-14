@@ -10,12 +10,8 @@
       - zsh
   become: true
 
-- name: Write .zshrc based on template
-  ansible.builtin.template:
-    src: zshrc.j2
-    dest: '{{ ansible_user_dir }}/.zshrc'
-    backup: true
-    mode: '0644'
+- set_fact:
+    hosts_content: "{{ lookup('template', 'templates/zshrc.j2') }}"
   vars:
     oh_my_zsh:
       theme: bira
@@ -33,6 +29,33 @@
         - rsync
         - zsh-autosuggestions
         - zsh-syntax-highlighting
+  
+- name: Write .zshrc based on template
+  ansible.builtin.blockinfile:
+    backup: true
+    create: true
+    dest: '{{ ansible_user_dir }}/.zshrc'
+    insertbefore: "BOF"
+    mode: '0644'
+    content: '{{ hosts_content }}'
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK aliases"
+    block: |
+      alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+      alias df='df -h'                         
+      alias e='exit'
+      alias free='free -m'                    
+      alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'
 
 - name: Clone oh-my-zsh
   ansible.builtin.git:

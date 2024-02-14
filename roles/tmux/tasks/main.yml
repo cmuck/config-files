@@ -13,3 +13,20 @@
     dest: '{{ ansible_user_dir }}/.tmux.conf'
     mode: preserve
     backup: true
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: '{{ item }}'
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK tmux"
+    block: |
+      if command -v tmux >/dev/null; then
+        alias t='tmux'
+        alias tn='(){tmux new -s $1}'
+      fi
+  with_items:
+    - '{{ ansible_user_dir }}/.zshrc'
+    - '{{ ansible_user_dir }}/.bashrc'
+
+ 

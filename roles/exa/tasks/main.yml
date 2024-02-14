@@ -53,6 +53,7 @@
         alias ll='exa -l --color=always --group-directories-first'  # long format
         alias lt='exa -aT --color=always --group-directories-first' # tree listing
         alias l.='exa -a | egrep "^\."'
+        alias ela='exa -a --group-directories-first --icons'
       fi
   with_items:
     - '{{ ansible_user_dir }}/.zshrc'
