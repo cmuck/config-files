@@ -28,11 +28,11 @@
     create: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK pyenv"
     block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
       if command -v pyenv >/dev/null; then
-        export PYENV_ROOT="$HOME/.pyenv"
-        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
         eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
+        # eval "$(pyenv virtualenv-init -)"
       fi
   with_items:
     - '{{ ansible_user_dir }}/.zshrc'
