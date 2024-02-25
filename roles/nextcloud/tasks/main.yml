@@ -1,0 +1,36 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  uri:
+    url: https://api.github.com/repos/nextcloud-releases/desktop/releases/latest
+  register: nextcloud_latest
+
+- name: Create bin directory
+  ansible.builtin.file:
+    path: '{{ ansible_user_dir }}/bin'
+    state: directory
+    mode: '0755'
+
+#- name: Find Nextcloud wildcard files
+#  find:
+#    paths:  '{{ ansible_user_dir }}/bin'
+#    patterns: "^Nextcloud.*.AppImage"
+#    use_regex: true
+#  register: wildcard_files_to_delete
+#
+#- name: Display results
+#  debug:
+#    var: wildcard_files_to_delete
+#
+#- name: Remove wildcard files
+#  file:
+#    path: "{{ item.path }}"
+#    state: absent
+#  with_items: "{{ wildcard_files_to_delete.files }}"
+#  changed_when: false
+
+- name: Download latest Nextcloud AppImage
+  ansible.builtin.get_url:
+    url: "{{ nextcloud_latest.json.assets[2].browser_download_url }}"
+    dest:  '{{ ansible_user_dir }}/bin'
+    mode: '0755'

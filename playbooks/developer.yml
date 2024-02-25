@@ -74,4 +74,7 @@
     - name: Install pyenv
       role: pyenv
       tags: [pyenv]
+    - name: Install Nextcloud client
+      role: nextcloud
+      tags: [ nextcloud ]
   environment: '{{ proxy_environment }}'
