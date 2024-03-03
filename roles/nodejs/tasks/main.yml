@@ -11,22 +11,44 @@
     update_cache: true
   become: true
 
-- name: Install node apt key
-  ansible.builtin.apt_key:
-    url: 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
-  become: true
+- set_fact:
+     repoid_key: "0x6F71F525282841EEDAF851B42F59B5F99B1BE0B4"
+     repoid_key_file: "/usr/share/keyrings/config_files-nodejs.asc"
 
-- name: Get DEB architecture
-  ansible.builtin.command: dpkg --print-architecture
-  register: deb_architecture
-  changed_when: deb_architecture.rc != 0
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
+  block:
+    - name: Install gnupg2 to handle apt key
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - gnupg2
+      become: true
 
-- name: Add node apt repository
-  ansible.builtin.apt_repository:
-    repo: 'deb [arch={{ deb_architecture.stdout }}] https://deb.nodesource.com/node_20.x nodistro main'
-    filename: config_node
-    update_cache: yes
-  become: true
+    - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
+      apt_key:
+        id: "{{ repoid_key }}"
+        state: absent
+      become: true
+
+    - name: Download apt key
+      ansible.builtin.get_url:
+        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        dest: "{{ repoid_key_file }}"
+        mode: '0644'
+      become: true
+      changed_when: false
+
+    - name: Get DEB architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: deb_architecture
+      changed_when: deb_architecture.rc != 0
+
+    - name: Add apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://deb.nodesource.com/node_20.x nodistro main"
+        filename: "config_files-node"
+      become: true
 
 - name: Install node
   ansible.builtin.apt:

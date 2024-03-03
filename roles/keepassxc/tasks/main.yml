@@ -1,27 +1,46 @@
 ---
 # yamllint disable rule:line-length
-- name: Install gnupg2 to add pub key
+- set_fact:
+     repoid_key: "0xD89C66D0E31FEA2874EBD20561922AB60068FCD6"
+     repoid_key_file: "/usr/share/keyrings/config_files-keepassxc.asc"
+
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
+  block:
+    - name: Install gnupg2 to handle apt key
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - gnupg2
+      become: true
+
+    - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
+      apt_key:
+        id: "{{ repoid_key }}"
+        state: absent
+      become: true
+
+    - name: Download apt key
+      ansible.builtin.get_url:
+        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        dest: "{{ repoid_key_file }}"
+        mode: '0644'
+      become: true
+      changed_when: false
+
+    - name: Get DEB architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: deb_architecture
+      changed_when: deb_architecture.rc != 0
+
+    - name: Add apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main"
+        filename: "config_files-keepassxc"
+      become: true
+
+- name: Install
   ansible.builtin.apt:
-    state: present
-    update_cache: true
-    pkg:
-      - gnupg2
-  become: true
-
-- name: Add keepass apt-key
-  ansible.builtin.apt_key:
-    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd89c66d0e31fea2874ebd20561922ab60068fcd6
-    state: present
-  become: true
-
-- name: Add repository for keepass
-  ansible.builtin.apt_repository:
-    repo: 'deb http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main'
-    filename: config_files-keepass
-  become: true
-
-- name: Install keepassxc
-  ansible.builtin.apt:
-    name: keepassxc
+    name: "keepassxc"
     state: present
   become: true

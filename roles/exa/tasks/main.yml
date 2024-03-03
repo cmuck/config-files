@@ -8,10 +8,15 @@
   become: true
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
 
+
+- set_fact:
+    repoid_key: "0xF2C37BD8BDF01321549242C9AEC82AC78B65E182"
+    repoid_key_file: "/usr/share/keyrings/config_files-exa.asc"
+
 - name: Install exa when Ubuntu < 22.04
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float < 22.04
   block:
-    - name: Install gnupg2 to add pub key
+    - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
         state: present
         update_cache: true
@@ -19,15 +24,28 @@
           - gnupg2
       become: true
 
-    - name: Add apt-key for exa
-      ansible.builtin.apt_key:
-        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2C37BD8BDF01321549242C9AEC82AC78B65E182
-        state: present
+    - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
+      apt_key:
+        id: "{{ repoid_key }}"
+        state: absent
       become: true
 
-    - name: Add repository for exa
+    - name: Download apt key
+      ansible.builtin.get_url:
+        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        dest: "{{ repoid_key_file }}"
+        mode: '0644'
+      become: true
+      changed_when: false
+
+    - name: Get DEB architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: deb_architecture
+      changed_when: deb_architecture.rc != 0
+
+    - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: 'deb https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu {{ ansible_lsb.codename }} main'
+        repo: 'deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu {{ ansible_lsb.codename }} main'
         filename: config_files-exa
       become: true
 
