@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include debug role"
+    - name: Include debug role
       ansible.builtin.include_role:
-        name: "debug"
-  environment: '{{ proxy_environment }}'
+        name: debug
+  environment: "{{ proxy_environment }}"

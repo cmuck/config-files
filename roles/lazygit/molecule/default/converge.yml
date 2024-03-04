@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include lazygit"
+    - name: Include lazygit
       ansible.builtin.include_role:
-        name: "lazygit"
+        name: lazygit

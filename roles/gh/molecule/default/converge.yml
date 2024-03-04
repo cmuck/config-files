@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include gh role"
+    - name: Include gh role
       ansible.builtin.include_role:
-        name: "gh"
-  environment: '{{ proxy_environment }}'
+        name: gh
+  environment: "{{ proxy_environment }}"

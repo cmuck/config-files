@@ -1,5 +1,5 @@
 ---
-- name: "Setup machine for developing"
+- name: Setup machine for developing
   hosts: all
   roles:
     - name: Install Jetbrains Toolbox
@@ -76,5 +76,5 @@
       tags: [pyenv]
     - name: Install Nextcloud client
       role: nextcloud
-      tags: [ nextcloud ]
-  environment: '{{ proxy_environment }}'
+      tags: [nextcloud]
+  environment: "{{ proxy_environment }}"

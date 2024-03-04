@@ -9,24 +9,23 @@
     update_cache: true
   become: true
 
-- name: "Include nvim"
+- name: Include nvim
   ansible.builtin.include_role:
-    name: "nvim"
+    name: nvim
 
 - name: Remove config directories
   ansible.builtin.file:
-      path: "{{ item }}"
-      state: absent
+    path: "{{ item }}"
+    state: absent
   with_items:
     - "{{ ansible_user_dir }}/.config/nvim"
     - "{{ ansible_user_dir }}/.local/share/nvim"
     - "{{ ansible_user_dir }}/.cache/nvim"
   changed_when: false
 
-- name: Install NvChad from https://nvchad.com/
+- name: Install NvChad from https://nvchad.com/  # noqa latest[git]
   ansible.builtin.git:
-    repo: "https://github.com/NvChad/NvChad"
+    repo: https://github.com/NvChad/NvChad
     dest: "{{ ansible_user_dir }}/.config/nvim"
     depth: 1
   changed_when: false
-

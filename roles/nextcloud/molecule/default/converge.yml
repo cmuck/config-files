@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include nextcloud role"
+    - name: Include nextcloud role
       ansible.builtin.include_role:
-        name: "nextcloud"
-  environment: '{{ proxy_environment }}'
+        name: nextcloud
+  environment: "{{ proxy_environment }}"

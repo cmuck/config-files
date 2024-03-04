@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include delta role"
+    - name: Include delta role
       ansible.builtin.include_role:
-        name: "delta"
-  environment: '{{ proxy_environment }}'
+        name: delta
+  environment: "{{ proxy_environment }}"

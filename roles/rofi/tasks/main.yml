@@ -9,13 +9,13 @@
 
 - name: Create config dir for rofi
   ansible.builtin.file:
-    path: '{{ ansible_user_dir }}/.config/rofi'
+    path: "{{ ansible_user_dir }}/.config/rofi"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Copy rofi config
   ansible.builtin.copy:
     src: config/rofi/config
-    dest: '{{ ansible_user_dir }}/.config/rofi'
-    mode: '0644'
+    dest: "{{ ansible_user_dir }}/.config/rofi"
+    mode: "0644"
     backup: true

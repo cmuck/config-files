@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length
 - name: Install exa when Ubuntu >= 22.04
   ansible.builtin.apt:
     state: present
@@ -8,10 +9,10 @@
   become: true
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
 
-
-- set_fact:
+- name: Set facts
+  ansible.builtin.set_fact:
     repoid_key: "0xF2C37BD8BDF01321549242C9AEC82AC78B65E182"
-    repoid_key_file: "/usr/share/keyrings/config_files-exa.asc"
+    repoid_key_file: /usr/share/keyrings/config_files-exa.asc
 
 - name: Install exa when Ubuntu < 22.04
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float < 22.04
@@ -25,16 +26,16 @@
       become: true
 
     - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
-      apt_key:
+      ansible.builtin.apt_key:
         id: "{{ repoid_key }}"
         state: absent
       become: true
 
     - name: Download apt key
       ansible.builtin.get_url:
-        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}
         dest: "{{ repoid_key_file }}"
-        mode: '0644'
+        mode: "0644"
       become: true
       changed_when: false
 
@@ -45,7 +46,8 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: 'deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu {{ ansible_lsb.codename }} main'
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu
+          {{ ansible_lsb.codename }} main
         filename: config_files-exa
       become: true
 
@@ -60,8 +62,9 @@
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: '{{ item }}'
+    path: "{{ item }}"
     create: true
+    mode: "0600"
     marker: "# {mark} ANSIBLE MANAGED BLOCK exa"
     block: |
       if command -v exa >/dev/null; then
@@ -74,5 +77,5 @@
         alias ela='exa -a --group-directories-first --icons'
       fi
   with_items:
-    - '{{ ansible_user_dir }}/.zshrc'
-    - '{{ ansible_user_dir }}/.bashrc'
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"

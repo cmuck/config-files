@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include bat role"
+    - name: Include bat role
       ansible.builtin.include_role:
-        name: "bat"
-  environment: '{{ proxy_environment }}'
+        name: bat
+  environment: "{{ proxy_environment }}"

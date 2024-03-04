@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include zsh role"
+    - name: Include zsh role
       ansible.builtin.include_role:
-        name: "zsh"
-  environment: '{{ proxy_environment }}'
+        name: zsh
+  environment: "{{ proxy_environment }}"

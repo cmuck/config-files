@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include terminator"
+    - name: Include terminator
       ansible.builtin.include_role:
-        name: "terminator"
+        name: terminator

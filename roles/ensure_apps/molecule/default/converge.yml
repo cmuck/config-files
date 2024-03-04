@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include ensure_apps role"
+    - name: Include ensure_apps role
       ansible.builtin.include_role:
-        name: "ensure_apps"
-  environment: '{{ proxy_environment }}'
+        name: ensure_apps
+  environment: "{{ proxy_environment }}"

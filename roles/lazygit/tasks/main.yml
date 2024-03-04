@@ -1,7 +1,8 @@
 ---
+# yamllint disable rule:line-length
 - name: Get lazygit releases
   ansible.builtin.uri:
-    url: "https://api.github.com/repos/jesseduffield/lazygit/releases/latest"
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
   register: lazygit_latest
 
 - name: Print latest lazygit tag
@@ -10,13 +11,13 @@
 
 - name: Download lazygit
   ansible.builtin.get_url:
-    url: 'https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{  lazygit_latest.json.tag_name[1:] }}_Linux_x86_64.tar.gz'
-    dest: "/tmp/lazygit.tar.gz"
-    mode: '0644'
+    url: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{  lazygit_latest.json.tag_name[1:] }}_Linux_x86_64.tar.gz
+    dest: /tmp/lazygit.tar.gz
+    mode: "0644"
 
 - name: Unzip lazygit
   ansible.builtin.unarchive:
-    src: "/tmp/lazygit.tar.gz"
-    dest: "/usr/local/bin"
-    copy: no
+    src: /tmp/lazygit.tar.gz
+    dest: /usr/local/bin
+    copy: false
   become: true

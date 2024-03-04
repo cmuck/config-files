@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include keepassxc role"
+    - name: Include keepassxc role
       ansible.builtin.include_role:
-        name: "keepassxc"
-  environment: '{{ proxy_environment }}'
+        name: keepassxc
+  environment: "{{ proxy_environment }}"

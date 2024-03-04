@@ -2,7 +2,7 @@
 # yamllint disable rule:line-length
 - name: Check if already installed
   ansible.builtin.stat:
-    path: '{{ toolbox_install_dir }}/{{ toolbox_install_file }}'
+    path: "{{ jetbrains_toolbox_install_dir }}/{{ jetbrains_toolbox_install_file }}"
   register: jetbrains_toolbox_bin
 
 - name: Download unarchive and install
@@ -10,33 +10,34 @@
   block:
     - name: Download
       ansible.builtin.get_url:
-        url: '{{ download_url }}'
-        checksum: "sha256:{{ toolbox_sha256 }}"
-        dest: "{{ temporary_file_name }}"
-        mode: '0644'
+        url: "{{ jetbrains_download_url }}"
+        checksum: sha256:{{ jetbrains_toolbox_sha256 }}
+        dest: "{{ jetbrains_temporary_file_name }}"
+        mode: "0644"
 
     - name: Unarchive
       ansible.builtin.unarchive:
         remote_src: true
-        src: "{{ temporary_file_name }}"
-        dest: "{{ temporary_install_dir }}"
+        src: "{{ jetbrains_temporary_file_name }}"
+        dest: "{{ jetbrains_temporary_install_dir }}"
       when: not jetbrains_toolbox_bin.stat.exists
 
     - name: Create install directory
       ansible.builtin.file:
-        path: '{{ toolbox_install_dir }}'
+        path: "{{ jetbrains_toolbox_install_dir }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: Move executable
       ansible.builtin.copy:
-        src: "{{ temporary_install_dir }}/{{ toolbox_install_file }}-{{ toolbox_version }}/{{ toolbox_install_file }}"
-        dest: "{{ toolbox_install_dir }}/{{ toolbox_install_file }}"
-        mode: '0755'
+        src: "{{ jetbrains_temporary_install_dir }}/{{ jetbrains_toolbox_install_file }}-{{ jetbrains_toolbox_version }}/{{
+          jetbrains_toolbox_install_file }}"
+        dest: "{{ jetbrains_toolbox_install_dir }}/{{ jetbrains_toolbox_install_file }}"
+        mode: "0755"
         remote_src: true
 
     - name: Reminder how to launch
       ansible.builtin.debug:
         msg: |
-          Please run {{ toolbox_install_dir }}/{{ toolbox_install_file }} manually for the first time
+          Please run {{ jetbrains_toolbox_install_dir }}/{{ jetbrains_toolbox_install_file }} manually for the first time
           to finish installation

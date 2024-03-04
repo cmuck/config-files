@@ -1,11 +1,11 @@
 ---
 # yamllint disable rule:line-length
-toolbox_version: 2.2.1.19765
-toolbox_sha256: 737fd85838e6f48d4c7ad2ae88b6830bf43564101d68fbac52e59f018dc7836b
-toolbox_install_file: "jetbrains-toolbox"
-toolbox_install_dir: "{{ ansible_user_dir }}/.local/share/JetBrains/Toolbox/bin"
+jetbrains_toolbox_version: 2.2.1.19765
+jetbrains_toolbox_sha256: 737fd85838e6f48d4c7ad2ae88b6830bf43564101d68fbac52e59f018dc7836b
+jetbrains_toolbox_install_file: jetbrains-toolbox
+jetbrains_toolbox_install_dir: "{{ ansible_user_dir }}/.local/share/JetBrains/Toolbox/bin"
 
-archive_file_name: "{{ toolbox_install_file }}-{{ toolbox_version }}.tar.gz"
-download_url: "https://download.jetbrains.com/toolbox/{{ archive_file_name }}"
-temporary_install_dir: "/tmp"
-temporary_file_name: "{{ temporary_install_dir }}/{{ archive_file_name }}"
+jetbrains_archive_file_name: "{{ jetbrains_toolbox_install_file }}-{{ jetbrains_toolbox_version }}.tar.gz"
+jetbrains_download_url: https://download.jetbrains.com/toolbox/{{ jetbrains_archive_file_name }}
+jetbrains_temporary_install_dir: /tmp
+jetbrains_temporary_file_name: "{{ jetbrains_temporary_install_dir }}/{{ jetbrains_archive_file_name }}"
