@@ -9,35 +9,36 @@
 
 - name: Remove config directories
   ansible.builtin.file:
-      path: "{{ item }}"
-      state: absent
+    path: "{{ item }}"
+    state: absent
   with_items:
-    - "/opt/nvim-linux64"
+    - /opt/nvim-linux64
   become: true
   changed_when: false
 
 - name: Check latest neovim version
-  uri:
+  ansible.builtin.uri:
     url: https://api.github.com/repos/neovim/neovim/releases/latest
   register: neovim_latest
 
 - name: Download neovim
   ansible.builtin.unarchive:
     src: "{{ neovim_latest.json.assets[0].browser_download_url }}"
-    dest: "/opt"
-    remote_src: yes
+    dest: /opt
+    remote_src: true
   changed_when: false
   become: true
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: '{{ item }}'
+    path: "{{ item }}"
     create: true
+    mode: "0600"
     marker: "# {mark} ANSIBLE MANAGED BLOCK nvim"
     block: |
       export PATH="$PATH:/opt/nvim-linux64/bin"
       command -v nvim >/dev/null && alias vim='nvim' vimdiff='nvim -d' n='nvim'
   with_items:
-    - '{{ ansible_user_dir }}/.zshrc'
-    - '{{ ansible_user_dir }}/.bashrc'
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"

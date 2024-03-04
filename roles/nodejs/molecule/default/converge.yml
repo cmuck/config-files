@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include nodejs role"
+    - name: Include nodejs role
       ansible.builtin.include_role:
-        name: "nodejs"
+        name: nodejs

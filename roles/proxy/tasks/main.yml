@@ -2,7 +2,7 @@
 - name: Setup fact for default proxy environment
   ansible.builtin.set_fact:
     proxy_environment:
-      proxy_used: '{{ proxy_used }}'
+      proxy_used: "{{ proxy_used }}"
 
 - name: Debug proxy environment
   ansible.builtin.debug:

@@ -5,13 +5,13 @@
 #   apt_key:
 #     url: "https://packages.microsoft.com/keys/microsoft.asc"
 #     state: present
+- name: Set facts
+  ansible.builtin.set_fact:
+    repoid_key: "0xBC528686B50D79E339D3721CEB3E94ADBE1229CF"
+    repoid_key_file: /usr/share/keyrings/config_files-vscode.asc
 
-
-- set_fact:
-     repoid_key: "0xBC528686B50D79E339D3721CEB3E94ADBE1229CF"
-     repoid_key_file: "/usr/share/keyrings/config_files-vscode.asc"
-
-- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary
+    should use .gpg
   block:
     - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
@@ -22,7 +22,7 @@
       become: true
 
     - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
-      apt_key:
+      ansible.builtin.apt_key:
         id: "{{ repoid_key }}"
         state: absent
       become: true
@@ -30,9 +30,9 @@
 
     - name: Download apt key
       ansible.builtin.get_url:
-        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}
         dest: "{{ repoid_key_file }}"
-        mode: '0644'
+        mode: "0644"
       become: true
       changed_when: false
 
@@ -43,8 +43,9 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: "deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://packages.microsoft.com/repos/vscode stable main"
-        filename: "config_files-vscode"
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://packages.microsoft.com/repos/vscode
+          stable main
+        filename: config_files-vscode
       become: true
 
 - name: Install vscode

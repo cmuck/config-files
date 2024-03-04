@@ -12,11 +12,13 @@
       - software-properties-common
   become: true
 
-- set_fact:
-     repoid_key: "0x9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
-     repoid_key_file: "/usr/share/keyrings/config_files-docker.asc"
+- name: Set facts
+  ansible.builtin.set_fact:
+    repoid_key: "0x9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    repoid_key_file: /usr/share/keyrings/config_files-docker.asc
 
-- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary
+    should use .gpg
   block:
     - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
@@ -27,16 +29,16 @@
       become: true
 
     - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
-      apt_key:
+      ansible.builtin.apt_key:
         id: "{{ repoid_key }}"
         state: absent
       become: true
 
     - name: Download apt key
       ansible.builtin.get_url:
-        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}
         dest: "{{ repoid_key_file }}"
-        mode: '0644'
+        mode: "0644"
       become: true
       changed_when: false
 
@@ -47,8 +49,9 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: "deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable"
-        filename: "config_files-docker"
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://download.docker.com/linux/{{
+          ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable
+        filename: config_files-docker
       become: true
 
 - name: Install docker
@@ -63,9 +66,9 @@
     state: present
   become: true
 
-- name: 'Add to docker group: {{ ansible_user_id }}'
+- name: "Add to docker group: {{ ansible_user_id }}"
   ansible.builtin.user:
-    name: '{{ ansible_user_id }}'
+    name: "{{ ansible_user_id }}"
     groups:
       - docker
     append: true

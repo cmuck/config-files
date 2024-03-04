@@ -9,24 +9,25 @@
 
 - name: Create some dirs
   ansible.builtin.file:
-    path: '{{ config_dir }}'
+    path: "{{ ranger_config_dir }}"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Copy ranger config
   ansible.builtin.copy:
-    src: 'rc.conf'
-    dest: '{{ config_dir }}'
-    mode: '0644'
+    src: rc.conf
+    dest: "{{ ranger_config_dir }}"
+    mode: "0644"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: '{{ item }}'
+    path: "{{ item }}"
     create: true
+    mode: "0600"
     marker: "# {mark} ANSIBLE MANAGED BLOCK ranger"
     block: |
       alias r='ranger'
   with_items:
-    - '{{ ansible_user_dir }}/.zshrc'
-    - '{{ ansible_user_dir }}/.bashrc'
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"

@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include scripts"
+    - name: Include scripts
       ansible.builtin.include_role:
-        name: "scripts"
+        name: scripts

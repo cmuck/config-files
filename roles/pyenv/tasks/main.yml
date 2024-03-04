@@ -13,19 +13,20 @@
   ansible.builtin.get_url:
     url: https://pyenv.run
     dest: /tmp/install_pyenv.sh
-    mode: '0755'
+    mode: "0755"
   changed_when: false
   register: pyenv
 
 - name: Install pyenv
-  ansible.builtin.command: '{{ pyenv.dest }}'
+  ansible.builtin.command: "{{ pyenv.dest }}"
   changed_when: false
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: '{{ item }}'
+    path: "{{ item }}"
     create: true
+    mode: "0600"
     marker: "# {mark} ANSIBLE MANAGED BLOCK pyenv"
     block: |
       export PYENV_ROOT="$HOME/.pyenv"
@@ -35,5 +36,5 @@
         # eval "$(pyenv virtualenv-init -)"
       fi
   with_items:
-    - '{{ ansible_user_dir }}/.zshrc'
-    - '{{ ansible_user_dir }}/.bashrc'
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"

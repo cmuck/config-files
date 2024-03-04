@@ -1,11 +1,11 @@
 ---
 - name: "Check exist: {{ item }}"
   ansible.builtin.stat:
-    path: '{{ item }}'
+    path: "{{ item }}"
   register: dir
 
 - name: "Delete home directory: {{ item }}"
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: absent
   when: dir.stat.exists and dir.stat.isdir

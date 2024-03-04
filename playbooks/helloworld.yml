@@ -1,5 +1,5 @@
 ---
-- name: "Hello world!"
+- name: Hello world!
   hosts: all
   debugger: on_failed
   tasks:

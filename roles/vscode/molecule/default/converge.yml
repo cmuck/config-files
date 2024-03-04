@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include vscode role"
+    - name: Include vscode role
       ansible.builtin.include_role:
-        name: "vscode"
-  environment: '{{ proxy_environment }}'
+        name: vscode
+  environment: "{{ proxy_environment }}"

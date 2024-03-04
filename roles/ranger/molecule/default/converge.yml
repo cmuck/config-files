@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include ranger role"
+    - name: Include ranger role
       ansible.builtin.include_role:
-        name: "ranger"
+        name: ranger

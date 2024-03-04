@@ -1,10 +1,12 @@
 ---
 # yamllint disable rule:line-length
-- set_fact:
-     repoid_key: "0xD89C66D0E31FEA2874EBD20561922AB60068FCD6"
-     repoid_key_file: "/usr/share/keyrings/config_files-keepassxc.asc"
+- name: Set facts
+  ansible.builtin.set_fact:
+    repoid_key: "0xD89C66D0E31FEA2874EBD20561922AB60068FCD6"
+    repoid_key_file: /usr/share/keyrings/config_files-keepassxc.asc
 
-- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary
+    should use .gpg
   block:
     - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
@@ -15,16 +17,16 @@
       become: true
 
     - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
-      apt_key:
+      ansible.builtin.apt_key:
         id: "{{ repoid_key }}"
         state: absent
       become: true
 
     - name: Download apt key
       ansible.builtin.get_url:
-        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}"
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ repoid_key }}
         dest: "{{ repoid_key_file }}"
-        mode: '0644'
+        mode: "0644"
       become: true
       changed_when: false
 
@@ -35,12 +37,13 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: "deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] http://ppa.launchpad.net/phoerious/keepassxc/ubuntu {{ ansible_lsb.codename }} main"
-        filename: "config_files-keepassxc"
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] http://ppa.launchpad.net/phoerious/keepassxc/ubuntu
+          {{ ansible_lsb.codename }} main
+        filename: config_files-keepassxc
       become: true
 
 - name: Install
   ansible.builtin.apt:
-    name: "keepassxc"
+    name: keepassxc
     state: present
   become: true

@@ -14,26 +14,26 @@
     update_cache: true
   become: true
 
-- name: "Include rust"
+- name: Include rust
   ansible.builtin.include_role:
-    name: "rust"
+    name: rust
 
-- name: "Include lazygit"
+- name: Include lazygit
   ansible.builtin.include_role:
-    name: "lazygit"
+    name: lazygit
 
-- name: "Include nodejs"
+- name: Include nodejs
   ansible.builtin.include_role:
-    name: "nodejs"
+    name: nodejs
 
-- name: "Include nvim"
+- name: Include nvim
   ansible.builtin.include_role:
-    name: "nvim"
+    name: nvim
 
 - name: Remove config directories
   ansible.builtin.file:
-      path: "{{ item }}"
-      state: absent
+    path: "{{ item }}"
+    state: absent
   with_items:
     - "{{ ansible_user_dir }}/.local/share/lunarvim"
     - "{{ ansible_user_dir }}/.local/share/lunarvim.old"
@@ -47,7 +47,7 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh
     dest: /tmp/install_lunarvim.sh
-    mode: '0755'
+    mode: "0755"
   register: lunarvim
 
 - name: Install pynvim python package globally
@@ -55,33 +55,34 @@
     name: pynvim
 
 - name: Install lunarvim
-  ansible.builtin.command: '{{ lunarvim.dest }} --no-install-dependencies'
+  ansible.builtin.command: "{{ lunarvim.dest }} --no-install-dependencies"
   environment:
-          LV_BRANCH: 'release-1.3/neovim-0.9'
-          PATH: '{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.cargo/bin:/opt/nvim-linux64/bin'
+    LV_BRANCH: release-1.3/neovim-0.9
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.cargo/bin:/opt/nvim-linux64/bin"
   changed_when: false
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: '{{ item }}'
+    path: "{{ item }}"
     create: true
+    mode: "0600"
     marker: "# {mark} ANSIBLE MANAGED BLOCK lvim"
     block: |
       command -v lvim >/dev/null && alias vim="lvim" nvim="lvim"
   with_items:
-    - '{{ ansible_user_dir }}/.zshrc'
-    - '{{ ansible_user_dir }}/.bashrc'
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
 
 - name: Download NerdFonts install script getnf
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/ronniedroid/getnf/master/install.sh
     dest: /tmp/install_getnf.sh
-    mode: '0755'
+    mode: "0755"
   register: getnf
 
 - name: Install getnf
-  ansible.builtin.command: '{{ getnf.dest }}'
+  ansible.builtin.command: "{{ getnf.dest }}"
   changed_when: false
 
   # Then manual execute getnf since only interactive mode

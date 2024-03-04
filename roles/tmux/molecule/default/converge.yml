@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include tmux"
+    - name: Include tmux
       ansible.builtin.include_role:
-        name: "tmux"
+        name: tmux

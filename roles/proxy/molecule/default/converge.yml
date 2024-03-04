@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include proxy role"
+    - name: Include proxy role
       ansible.builtin.include_role:
-        name: "proxy"
-  environment: '{{ proxy_environment }}'
+        name: proxy
+  environment: "{{ proxy_environment }}"

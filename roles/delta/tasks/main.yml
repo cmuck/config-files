@@ -10,33 +10,33 @@
 - name: Install delta when Ubuntu <= 20.04
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float <= 20.04
   block:
-  - name: Check latest version for Ubuntu 20.04
-    uri:
-      url: https://api.github.com/repos/dandavison/delta/releases/tags/0.14.0
-    register: delta_latest_20_04
-  - name: Install delta from github release page for Ubuntu 20.04
-    ansible.builtin.apt:
-      deb: "{{ delta_latest_20_04.json.assets[8].browser_download_url }}"
-    become: true
+    - name: Check latest version for Ubuntu 20.04
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/dandavison/delta/releases/tags/0.14.0
+      register: delta_latest_20_04
+    - name: Install delta from github release page for Ubuntu 20.04
+      ansible.builtin.apt:
+        deb: "{{ delta_latest_20_04.json.assets[8].browser_download_url }}"
+      become: true
 
 - name: Install delta when Ubuntu >= 22.04
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
   block:
-  - name: Check latest version
-    uri:
-      url: https://api.github.com/repos/dandavison/delta/releases/latest
-    register: delta_latest
+    - name: Check latest version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/dandavison/delta/releases/latest
+      register: delta_latest
 
-  - name: Install delta from github release page
-    ansible.builtin.apt:
-      deb: "{{ delta_latest.json.assets[9].browser_download_url }}"
-    become: true
+    - name: Install delta from github release page
+      ansible.builtin.apt:
+        deb: "{{ delta_latest.json.assets[9].browser_download_url }}"
+      become: true
 
 - name: Write block in file to .gitconfig
   ansible.builtin.blockinfile:
     create: true
-    mode: '0644'
-    path: '{{ ansible_user_dir }}/.gitconfig'
+    mode: "0644"
+    path: "{{ ansible_user_dir }}/.gitconfig"
     marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"
     block: |
       [core]

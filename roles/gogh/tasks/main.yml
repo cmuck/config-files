@@ -12,19 +12,19 @@
     update_cache: true
   become: true
 
-- name: Clone gogh directory
+- name: Clone gogh directory  # noqa latest[git]
   ansible.builtin.git:
-    repo: 'https://github.com/Gogh-Co/Gogh.git'
-    dest: '/tmp/gogh'
+    repo: https://github.com/Gogh-Co/Gogh.git
+    dest: /tmp/gogh
     depth: 1
 
 - name: Install themes
-  ansible.builtin.command: './{{ item }}'
+  ansible.builtin.command: ./{{ item }}
   args:
-    chdir: '/tmp/gogh/installs'
+    chdir: /tmp/gogh/installs
   changed_when: false
   environment:
     TERMINAL: gnome-terminal
   with_items:
-    - 'catppuccin-macchiato.sh'
-    - 'cobalt-neon.sh'
+    - catppuccin-macchiato.sh
+    - cobalt-neon.sh

@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include exa"
+    - name: Include exa
       ansible.builtin.include_role:
-        name: "exa"
+        name: exa

@@ -9,13 +9,13 @@
 
 - name: Create config dir for terminator
   ansible.builtin.file:
-    path: '{{ ansible_user_dir }}/.config/terminator'
+    path: "{{ ansible_user_dir }}/.config/terminator"
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Copy terminator config
   ansible.builtin.copy:
     src: config/terminator/config
-    dest: '{{ ansible_user_dir }}/.config/terminator'
+    dest: "{{ ansible_user_dir }}/.config/terminator"
     mode: preserve
     backup: true

@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include rust role"
+    - name: Include rust role
       ansible.builtin.include_role:
-        name: "rust"
+        name: rust
