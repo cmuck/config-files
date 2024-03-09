@@ -61,20 +61,16 @@
     requireForce = false
 [submodule]
     fetchJobs = 4
-[merge]
-    tool = mymeld
-    conflictstyle = diff3
-    # http://www.drdobbs.com/tools/three-way-merging-a-look-under-the-hood/240164902
-[mergetool "mymeld"]
-    cmd = meld $LOCAL $BASE $REMOTE -o $MERGED --auto-merge
-[diff]
-    tool = mymeld
-    compactionHeuristic = true
 [difftool]
-    #prompt = false
-[difftool "mymeld"]
-    cmd = meld $LOCAL $REMOTE
+	prompt=false
+[merge]
+    tool = pycharm
+[difftool "pycharm"]
+    cmd = pycharm diff $LOCAL $REMOTE --wait
+[mergetool "intellij"]
+    cmd = pycharm merge $LOCAL $REMOTE $BASE $MERGED --wait
+    trustExitCode = true
 [remote "origin"]
-	  prune = true
+    prune = true
 #[commit]
 #    gpgsign = true
