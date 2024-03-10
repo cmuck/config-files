@@ -1,0 +1,18 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/hadolint/hadolint/releases/latest
+  register: hadolint_latest
+
+- name: Create bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Download latest
+  ansible.builtin.get_url:
+    url: "{{ hadolint_latest.json.assets[4].browser_download_url }}"
+    dest: "{{ ansible_user_dir }}/bin/hadolint"
+    mode: "0700"
