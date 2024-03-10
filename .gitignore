@@ -16,6 +16,7 @@ venv/
 .coverage
 htmlcov/
 *.egg-info
+.python-version
 
 # Ignore temporary and backup files.
 .DS_Store

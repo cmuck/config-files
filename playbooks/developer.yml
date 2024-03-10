@@ -77,4 +77,7 @@
     - name: Install Nextcloud client
       role: nextcloud
       tags: [nextcloud]
+    - name: Install hadolint
+      role: hadolint
+      tags: [hadolint]
   environment: "{{ proxy_environment }}"
