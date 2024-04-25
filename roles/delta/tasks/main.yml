@@ -16,8 +16,10 @@
       register: delta_latest_20_04
     - name: Install delta from github release page for Ubuntu 20.04
       ansible.builtin.apt:
-        deb: "{{ delta_latest_20_04.json.assets[8].browser_download_url }}"
+        deb: "{{ delta_latest_20_04.json | community.general.json_query(app_image_query) | first }}"
       become: true
+      vars:
+        app_image_query: "assets[?name=='git-delta_0.14.0_amd64.deb'].browser_download_url"
 
 - name: Install delta when Ubuntu >= 22.04
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
@@ -26,11 +28,12 @@
       ansible.builtin.uri:
         url: https://api.github.com/repos/dandavison/delta/releases/latest
       register: delta_latest
-
     - name: Install delta from github release page
       ansible.builtin.apt:
-        deb: "{{ delta_latest.json.assets[9].browser_download_url }}"
+        deb: "{{ delta_latest.json | community.general.json_query(app_image_query) }}"
       become: true
+      vars:
+        app_image_query: "assets[?ends_with(name,'amd64.deb')].browser_download_url | [0]"
 
 - name: Write block in file to .gitconfig
   ansible.builtin.blockinfile:

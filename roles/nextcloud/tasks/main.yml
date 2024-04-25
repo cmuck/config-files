@@ -31,6 +31,8 @@
 
 - name: Download latest Nextcloud AppImage
   ansible.builtin.get_url:
-    url: "{{ nextcloud_latest.json.assets[2].browser_download_url }}"
+    url: "{{ nextcloud_latest.json | community.general.json_query(app_image_query) | first }}"
     dest: "{{ ansible_user_dir }}/bin"
     mode: "0755"
+  vars:
+    app_image_query: "assets[?ends_with(name,'AppImage')].browser_download_url"
