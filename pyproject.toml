@@ -13,6 +13,7 @@ classifiers = [
 keywords = ["dotfiles"]
 dependencies = [
     "ansible",
+    "jmespath",
 ]
 requires-python = ">= 3.8"
 

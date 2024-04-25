@@ -13,6 +13,8 @@
 
 - name: Download latest
   ansible.builtin.get_url:
-    url: "{{ hadolint_latest.json.assets[4].browser_download_url }}"
+    url: "{{ hadolint_latest.json | community.general.json_query(app_image_query) | first }}"
     dest: "{{ ansible_user_dir }}/bin/hadolint"
     mode: "0700"
+  vars:
+    app_image_query: "assets[?ends_with(name,'Linux-x86_64')].browser_download_url"
