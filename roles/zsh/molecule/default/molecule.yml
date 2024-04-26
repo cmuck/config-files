@@ -9,6 +9,8 @@ platforms:
     image: ubuntu:20.04
   - name: ubuntu_22_04
     image: ubuntu:22.04
+  - name: ubuntu_24_04
+    image: ubuntu:24.04
 #    env:
 #      http_proxy: ${http_proxy}
 #      https_proxy: ${https_proxy}

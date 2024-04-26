@@ -1,13 +1,14 @@
 ---
 # yamllint disable rule:line-length
-- name: Install exa when Ubuntu >= 22.04
+# TODO Check again for 24.04
+- name: Install exa when Ubuntu == 22.04
   ansible.builtin.apt:
     state: present
     update_cache: true
     pkg:
       - exa
   become: true
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float >= 22.04
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version|float == 22.04
 
 - name: Set facts
   ansible.builtin.set_fact:

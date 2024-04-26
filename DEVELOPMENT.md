@@ -2,19 +2,13 @@
 
 ## Setup development environment
 
-The script execution is based on Python 3 and a virtual environment, so continue to install these dependencies.
+Follow the instructions from [README.md](./README.md#setup-python-and-runtime-dependencies) to setup Python and create a
+virtual environment.
 
-```sh
-sudo apt install python3 python3-pip python3-venv
-```
-
-Setup Python virtual environment and install development dependencies
+Install the development requirements by
 
 ```bash
-# Setup virtual environment
-python3 -m venv venv
-source venv/bin/activate
-pip-sync dev-requirements.txt
+pip-sync requirements.txt dev-requirements.txt
 ```
 
 ## Typical development
@@ -71,7 +65,7 @@ molecule destroy
 
 ```sh
 # Regenerate requirement files
-pip-compile --upgrade --generate-hashes --extra=dev --output-file=dev-requirements.txt pyproject.toml
+pip-compile --upgrade --generate-hashes --extra=dev --output-file=dev-requirements.txt --allow-unsafe pyproject.toml
 pip-compile --upgrade --generate-hashes --output-file=requirements.txt pyproject.toml
 ```
 

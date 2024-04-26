@@ -15,10 +15,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5.1.0
         with:
-          python-version: '3.8'
+          python-version: '3.12'
           cache: 'pip'
-      - run: pip install -r dev-requirements.txt
-      - uses: mfinelli/setup-shfmt@v2
+      - run: pip install -r dev-requirements.txt -r requirements.txt
+      - uses: mfinelli/setup-shfmt@v3
       - id: files
         name: Get changed files
         if: ${{ github.event_name == 'pull_request' }}
