@@ -17,39 +17,60 @@ First, ensure to have an up-to-date system
 sudo apt update && sudo apt dist-upgrade
 ```
 
-A vanilla Ubuntu installation misses `openssh-server`. Therefore install `openssh-server` so that the system can be used
-by Ansible.
+A vanilla Ubuntu installation missing `openssh-server` which is required by Ansible.
 
 ```sh
 sudo apt install openssh-server
-# Check if openssh-server is running
+```
+
+Check if openssh-server is running
+
+```sh
 systemctl status ssh
 ```
 
 Please re-use your existing SSH key if already created or
 [create a new SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
 
-### Setup Python
+### Setup Python and runtime dependencies
 
-The script execution is based on Python 3 and a virtual environment, so continue to install these dependencies.
+The script execution is based on Python 3.12 and a virtual environment, so continue to install these dependencies.
+
+To install Python 3.12 on older systems like Ubuntu 20.04 LTS or 22.04 LTS [pyenv](https://github.com/pyenv/pyenv) is
+used which is a simple Python version management.
 
 ```sh
-sudo apt install python3 python3-pip python3-venv
+curl https://pyenv.run | bash
 ```
 
-Setup Python virtual environment and install runtime dependencies
+If `curl` is missing on your system, please install by
 
 ```sh
-# Setup virtual environment
-python3 -m venv venv
-source venv/bin/activate
-# Install required pkg to sync python dependencies
+sudo apt-get install curl
+```
+
+Install Python 3.12 using pyenv by
+
+```shell
+pyenv install 3.12
+```
+
+Create the virtual environment and activate it
+
+```shell
+pyenv virtualenv 3.12 py312cf
+pyenv activate py312cf
+```
+
+Now you're ready to install runtime dependencies using pip-tools
+
+```sh
 pip install pip-tools
 # Install Python runtime dependencies, see requirements.txt
 pip-sync
 ```
 
-Finally install the script `config-files` to the local virtual environment
+Finally, install the script `config-files` to the local virtual environment
 
 ```sh
 pip install -e .

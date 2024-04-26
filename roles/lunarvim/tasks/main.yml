@@ -8,6 +8,7 @@
       - git
       - python3
       - python3-pip
+      - python3-pynvim
       - ripgrep
       - software-properties-common
       - vim
@@ -49,10 +50,6 @@
     dest: /tmp/install_lunarvim.sh
     mode: "0755"
   register: lunarvim
-
-- name: Install pynvim python package globally
-  ansible.builtin.pip:
-    name: pynvim
 
 - name: Install lunarvim
   ansible.builtin.command: "{{ lunarvim.dest }} --no-install-dependencies"
