@@ -9,11 +9,11 @@ on:
 
 jobs:
   molecule:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.8'
           cache: 'pip'
