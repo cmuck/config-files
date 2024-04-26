@@ -3,7 +3,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v4.5.0
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
@@ -14,12 +14,18 @@ repos:
       - id: debug-statements
   - repo: local
     hooks:
-      - id: black
-        name: black
-        entry: black
+      - id: ruff
+        name: ruff linter
+        entry: ruff
+        args: [ --fix ]
         language: system
         types: [ file, python ]
+      - id: ruff-format
+        name: ruff formatter
+        entry: ruff format
         args: [ --line-length=120 ]
+        language: system
+        types: [ file, python ]
       - id: isort
         name: isort
         entry: isort
@@ -30,7 +36,7 @@ repos:
                 --trailing-comma,
                 --ensure-newline-before-comments,
                 --use-parentheses]
-      - id: mypyp
+      - id: mypy
         name: mypy
         entry: mypy
         args: [ --strict,
@@ -42,7 +48,7 @@ repos:
         description: Checks TOML files for valid syntax.
         entry: tomlcheck
         language: system
-        files: \**/*.toml$
+        files: '.toml$'
       - id: ansible-lint
         name: ansible-lint
         entry: ansible-lint
@@ -60,7 +66,7 @@ repos:
         types: [ file, markdown ]
         args: [--wrap=120]
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.5.1-1
+    rev: v3.8.0-1
     hooks:
       - id: shfmt-docker
         name: shfmt
@@ -68,8 +74,8 @@ repos:
         args: [ -i=2,
                 -ci ]
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.8.0
+    rev: v0.10.0
     hooks:
       - id: shellcheck
-        name: shellheck
+        name: shellcheck
         types: [ file, bash, shell ]
