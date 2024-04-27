@@ -8,6 +8,14 @@
 - name: Download unarchive and install
   when: not jetbrains_toolbox_bin.stat.exists
   block:
+    - name: Install libfuse2 required dependency
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - libfuse2
+      become: true
+
     - name: Download
       ansible.builtin.get_url:
         url: "{{ jetbrains_download_url }}"
