@@ -25,6 +25,39 @@
     backup: true
   changed_when: false
 
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item }}"
+    create: true
+    mode: "0600"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK git"
+    block: |
+      if command -v git >/dev/null; then
+        alias ga='git add'
+        alias gap='git add -p'
+        alias gs='git status'
+        alias gpr='git pull -r'
+        alias gl='git lg'
+        alias glo='git log --oneline'
+        alias gcm='git commit -m'
+        alias pear='git pair '
+        alias gra='git commit --amend --reset-author --no-edit'
+        alias gco='git checkout'
+        alias hangon='git stash save -u'
+        alias gsp='git stash pop'
+        alias grc='git rebase --continue'
+        alias gclean='git clean -df'
+        alias gup='gco main && gpr && gco -'
+        alias unwip='git reset HEAD~'
+        alias unroll='git reset HEAD~ --hard'
+        alias gpfwl='git push --force-with-lease'
+        alias glt='git describe --tags --abbrev=0'
+      fi
+  with_items:
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
+
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:
     scope: global
@@ -38,3 +71,4 @@
     name: 'user.email'
     value: '{{ git_user_email }}'
   changed_when: false
+
