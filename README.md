@@ -55,6 +55,21 @@ Install Python 3.12 using pyenv by
 pyenv install 3.12
 ```
 
+If the Python build fails, install required dependencies by
+
+```shell
+sudo apt-get install --no-install-recommends \
+  curl \
+  libssl-dev \
+  ncurses-dev \
+  libffi-dev \
+  libreadline-dev \
+  sqlite3 libsqlite3-dev \
+  tk-dev \
+  bzip2 libbz2-dev \
+  lzma liblzma-dev
+```
+
 Create the virtual environment and activate it
 
 ```shell
