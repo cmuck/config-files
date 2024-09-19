@@ -5,8 +5,6 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: ubuntu_22_04
-    image: ubuntu:22.04
   - name: ubuntu_24_04
     image: ubuntu:24.04
 #    env:

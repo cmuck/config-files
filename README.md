@@ -17,10 +17,13 @@ First, ensure to have an up-to-date system
 sudo apt update && sudo apt dist-upgrade
 ```
 
-A vanilla Ubuntu installation missing `openssh-server` which is required by Ansible.
+A vanilla Ubuntu installation missing 
+
+* `openssh-server`  which is required by Ansible.
+* `curl` which is required to install pyenv
 
 ```sh
-sudo apt install openssh-server
+sudo apt install openssh-server curl
 ```
 
 Check if openssh-server is running
@@ -43,12 +46,6 @@ used which is a simple Python version management.
 curl https://pyenv.run | bash
 ```
 
-If `curl` is missing on your system, please install by
-
-```sh
-sudo apt-get install curl
-```
-
 Install Python 3.12 using pyenv by
 
 ```shell
@@ -59,6 +56,7 @@ If the Python build fails, install required dependencies by
 
 ```shell
 sudo apt-get install --no-install-recommends \
+  build-essential \
   curl \
   libssl-dev \
   ncurses-dev \
