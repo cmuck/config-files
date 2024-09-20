@@ -15,17 +15,16 @@ repos:
   - repo: local
     hooks:
       - id: ruff
-        name: ruff linter
-        entry: ruff
-        args: [ --fix ]
+        name: ruff check
+        entry: ruff check
         language: system
-        types: [ file, python ]
+        types: [file, python]
       - id: ruff-format
-        name: ruff formatter
+        name: ruff format
         entry: ruff format
-        args: [ --line-length=120 ]
+        args: [--line-length=120]
         language: system
-        types: [ file, python ]
+        types: [file, python]
       - id: isort
         name: isort
         entry: isort
