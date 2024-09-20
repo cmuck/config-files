@@ -90,4 +90,10 @@
     - name: Install hadolint
       role: hadolint
       tags: [hadolint]
+    - name: Install bitwarden
+      role: bitwarden
+      tags: [bitwarden]
+    - name: Install discord
+      role: discord
+      tags: [discord]
   environment: "{{ proxy_environment }}"

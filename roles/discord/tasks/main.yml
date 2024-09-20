@@ -1,0 +1,22 @@
+---
+# yamllint disable rule:line-length
+- name: Install required dependency
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - libc6
+      - libasound2t64
+      - libatomic1
+      - libnotify4
+      - libnspr4
+      - libnss3
+      - libstdc++6
+      - libxss1
+      - libxtst6
+  become: true
+
+- name: Install latest discord deb package
+  ansible.builtin.apt:
+    deb: "https://discord.com/api/download?platform=linux&format=deb"
+  become: true
