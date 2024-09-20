@@ -17,10 +17,10 @@ First, ensure to have an up-to-date system
 sudo apt update && sudo apt dist-upgrade
 ```
 
-A vanilla Ubuntu installation missing 
+A vanilla Ubuntu installation missing
 
-* `openssh-server`  which is required by Ansible.
-* `curl` which is required to install pyenv
+- `openssh-server` which is required by Ansible.
+- `curl` which is required to install pyenv
 
 ```sh
 sudo apt install openssh-server curl
