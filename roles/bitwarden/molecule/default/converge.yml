@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include bitwarden role
+      ansible.builtin.include_role:
+        name: bitwarden
+  environment: "{{ proxy_environment }}"

@@ -1,0 +1,25 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/bitwarden/clients/releases/latest
+  register: bitwarden_latest
+
+- name: Install required dependency
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - libnotify4
+      - libxtst6
+      - libnss3
+      - libsecret-1-0
+      - libxss1
+  become: true
+
+- name: Install latest bitwarden deb package
+  ansible.builtin.apt:
+    deb: "{{ bitwarden_latest.json | community.general.json_query(app_image_query) | first }}"
+  vars:
+    app_image_query: "assets[?ends_with(name,'-amd64.deb')].browser_download_url"
+  become: true
