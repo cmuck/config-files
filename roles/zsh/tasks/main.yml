@@ -22,12 +22,30 @@
         - common-aliases
         - copybuffer
         - copyfile
+        - copypath
+        - dirhistory
+        - docker
+        - docker-compose
+        - direnv
+        - dotenv
         - extract
+        - eza
         - fzf
         - fzf-tab
         - gh
         - git
+        - jsontools
+        - helm
+        - kubectl
+        - nmap
+        - poetry
         - rsync
+        - rust
+        - ssh
+        - sudo
+        - systemd
+        - tmux
+        - uv
         - zsh-autosuggestions
         - zsh-syntax-highlighting
 
@@ -120,7 +138,17 @@
     dest: "{{ ansible_user_dir }}/.zprofile"
     state: link
 
+- name: Ensure ansible user exists in /etc/passwd
+  ansible.builtin.lineinfile:
+    path: /etc/passwd
+    regexp: "^{{ ansible_user_id }}.*"
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: user
+
 - name: Set default shell for users
+  when: user.found
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh
