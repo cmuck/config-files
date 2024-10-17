@@ -9,7 +9,6 @@ exclude_paths:
   - ./roles/delta/molecule/
   - ./roles/docker/molecule/
   - ./roles/ensure_apps/molecule/
-  - ./roles/exa/molecule/
   - ./roles/flameshot/molecule/
   - ./roles/gh/molecule/
   - ./roles/gifgen/molecule/

@@ -66,9 +66,6 @@
     - name: Install delta
       role: delta
       tags: [delta]
-    - name: Install exa
-      role: exa
-      tags: [exa]
     - name: Install gh
       role: gh
       tags: [gh]
