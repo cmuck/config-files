@@ -10,6 +10,7 @@
       - cifs-utils
       - curl
       - dconf-editor
+      - direnv  # Hook required see https://direnv.net/docs/hook.html - set by zsh role plugin
       - gparted
       - gthumb
       - htop
@@ -21,6 +22,7 @@
       - nmap
       - openconnect
       - peek
+      - pipx
       - pitivi
       - preload
       - safe-rm
@@ -38,3 +40,15 @@
     autoclean: true
     autoremove: true
   become: true
+
+- name: Install Python packages
+  vars:
+    pipx_packages:
+      - aws-shell
+      - cookiecutter
+      - poetry
+      - uv
+  community.general.pipx:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ pipx_packages }}"
