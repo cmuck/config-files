@@ -30,6 +30,9 @@
     - name: Install rust
       role: rust
       tags: [rust]
+    - name: Install eza
+      role: eza
+      tags: [eza]
     - name: Install nvim
       role: nvim
       tags: [nvim]

@@ -1,0 +1,47 @@
+---
+# yamllint disable rule:line-length
+- name: Check if cargo is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+  register: cargo_bin
+
+- name: Include rust role
+  when: not cargo_bin.stat.exists
+  ansible.builtin.include_role:
+    name: rust
+
+- name: Install eza Rust package
+  community.general.cargo:
+    name: eza
+    path: "{{ ansible_user_dir }}"
+    executable: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item }}"
+    create: true
+    mode: "0600"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK eza"
+    block: |
+      if command -v eza >/dev/null; then
+        # Changing "ls" to "eza"
+        alias ls='eza -al --color=always --group-directories-first' # my preferred listing
+        alias la='eza -a --color=always --group-directories-first'  # all files and dirs
+        alias ll='eza -l --color=always --group-directories-first'  # long format
+        alias lt='eza -aT --color=always --group-directories-first' # tree listing
+        alias l.='eza -a | egrep "^\."'
+        alias ela='eza -a --group-directories-first --icons'
+      fi
+  with_items:
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
+
+- name: Remove old exa block
+  ansible.builtin.blockinfile:
+    path: "{{ item }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK exa"
+    block: ""
+  with_items:
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"

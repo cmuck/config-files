@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include eza role
+      ansible.builtin.include_role:
+        name: eza
+  environment: "{{ proxy_environment }}"
