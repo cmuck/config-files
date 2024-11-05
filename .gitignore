@@ -3,9 +3,6 @@
 .idea
 .vscode
 
-# Ignore vagrant environment
-.vagrant/
-
 # Python
 __pycache__
 *.pyc
@@ -17,6 +14,7 @@ venv/
 htmlcov/
 *.egg-info
 .python-version
+.ruff_cache/
 
 # Ignore temporary and backup files.
 .DS_Store
