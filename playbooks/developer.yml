@@ -96,4 +96,7 @@
     - name: Install discord
       role: discord
       tags: [discord]
+    - name: Install starship
+      role: starship
+      tags: [starship]
   environment: "{{ proxy_environment }}"

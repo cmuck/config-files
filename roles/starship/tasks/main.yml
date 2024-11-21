@@ -1,0 +1,47 @@
+---
+- name: Download Starship installer
+  ansible.builtin.get_url:
+    url: https://starship.rs/install.sh
+    dest: /tmp/starship-installer.sh
+    mode: '0744'
+  register: download
+  changed_when: false
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - wget
+  become: true
+
+- name: Run Starship install script
+  ansible.builtin.shell: /tmp/starship-installer.sh --yes
+  changed_when: false
+
+- name: Remove the starship-installer.sh
+  ansible.builtin.file:
+    path: /tmp/starship-installer.sh
+    state: absent
+  changed_when: false
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item.file }}"
+    create: true
+    mode: "0600"
+    insertafter: EOF
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK starship"
+    block: |
+      # Always last
+      if command -v starship >/dev/null; then
+          eval "$(starship init {{item.shell}} )"
+      fi
+  with_items:
+    - { file : "{{ ansible_user_dir }}/.zshrc", shell : "zsh" }
+    - { file : "{{ ansible_user_dir }}/.bashrc", shell : "bash" }
+
+
