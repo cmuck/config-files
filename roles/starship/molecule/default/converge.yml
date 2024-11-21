@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include starship role
+      ansible.builtin.include_role:
+        name: starship
+  environment: "{{ proxy_environment }}"
