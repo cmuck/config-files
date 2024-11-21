@@ -12,6 +12,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK bat"
     block: |
       command -v bat >/dev/null && alias bc="bat"

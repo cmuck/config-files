@@ -40,6 +40,8 @@
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
     path: "{{ ansible_user_dir }}/.profile"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_rust_block sourcing"
     block: |
       {{ profile_rust_block.stdout }}

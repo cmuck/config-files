@@ -22,6 +22,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK eza"
     block: |
       if command -v eza >/dev/null; then
