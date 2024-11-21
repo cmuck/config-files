@@ -28,3 +28,4 @@
   with_items:
     - catppuccin-macchiato.sh
     - cobalt-neon.sh
+    - dracula.sh
