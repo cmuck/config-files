@@ -64,6 +64,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK lvim"
     block: |
       command -v lvim >/dev/null && alias vim="lvim" nvim="lvim"

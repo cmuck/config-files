@@ -56,6 +56,7 @@
     dest: "{{ ansible_user_dir }}/.zshrc"
     insertbefore: BOF
     mode: "0600"
+    append_newline: true
     content: "{{ hosts_content }}"
   with_items:
     - "{{ ansible_user_dir }}/.zshrc"
@@ -66,6 +67,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK aliases"
     block: |
       alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -128,6 +131,8 @@
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
     path: "{{ ansible_user_dir }}/.profile"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
     block: |
       {{ profile_block.stdout }}

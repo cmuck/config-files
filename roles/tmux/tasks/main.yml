@@ -20,6 +20,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK tmux"
     block: |
       if command -v tmux >/dev/null; then

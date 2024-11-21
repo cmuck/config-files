@@ -31,6 +31,8 @@
     path: "{{ item }}"
     create: true
     mode: "0600"
+    append_newline: true
+    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK git"
     block: |
       if command -v git >/dev/null; then
