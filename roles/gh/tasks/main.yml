@@ -26,3 +26,6 @@
       - gh
       - git
   become: true
+
+- name: Install gh extension
+  ansible.builtin.command: gh extension install seachicken/gh-poi
