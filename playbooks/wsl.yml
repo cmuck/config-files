@@ -1,0 +1,72 @@
+---
+- name: Setup machine for developing
+  hosts: all
+  vars:
+    default_git_user_name: 'cmuck'
+    default_git_user_email: 'cmuckmuck@gmail.com'
+  vars_prompt:
+    - name: "git_user_name"
+      prompt: "Enter your git user name"
+      default: '{{ default_git_user_name }}'
+    - name: "git_user_email"
+      prompt: "Enter your git user email"
+      default: '{{ default_git_user_email }}'
+  roles:
+    - name: Install zsh
+      role: zsh
+      tags: [zsh]
+    - name: Install ranger
+      role: ranger
+      tags: [ranger]
+    - name: Install lazygit
+      role: lazygit
+      tags: [lazygit]
+    - name: Install rust
+      role: rust
+      tags: [rust]
+    - name: Install eza
+      role: eza
+      tags: [eza]
+    - name: Install nvim
+      role: nvim
+      tags: [nvim]
+    - name: Install lunarvim
+      role: lunarvim
+      tags: [lunarvim]
+    - name: Install gogh
+      role: gogh
+      tags: [gogh]
+    - name: Install git
+      role: git
+      tags: [git]
+    - name: Ensure apps
+      role: ensure_apps
+      tags: [ensure-apps]
+    - name: Install bat
+      role: bat
+      tags: [bat]
+    - name: Install scripts
+      role: scripts
+      tags: [scripts]
+    - name: Install delta
+      role: delta
+      tags: [delta]
+    - name: Install gh
+      role: gh
+      tags: [gh]
+    - name: Install gifgen
+      role: gifgen
+      tags: [gifgen]
+    - name: Install tmux
+      role: tmux
+      tags: [tmux]
+    - name: Install pyenv
+      role: pyenv
+      tags: [pyenv]
+    - name: Install hadolint
+      role: hadolint
+      tags: [hadolint]
+    - name: Install starship
+      role: starship
+      tags: [starship]
+  environment: "{{ proxy_environment }}"
