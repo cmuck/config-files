@@ -41,7 +41,5 @@
           eval "$(starship init {{item.shell}} )"
       fi
   with_items:
-    - { file : "{{ ansible_user_dir }}/.zshrc", shell : "zsh" }
-    - { file : "{{ ansible_user_dir }}/.bashrc", shell : "bash" }
-
-
+    - {file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh"}
+    - {file: "{{ ansible_user_dir }}/.bashrc", shell: "bash"}
