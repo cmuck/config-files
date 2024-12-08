@@ -1,0 +1,20 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest
+  register: obsidian_latest
+
+- name: Create bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Download latest Obsidian AppImage
+  ansible.builtin.get_url:
+    url: "{{ obsidian_latest.json | community.general.json_query(app_image_query) | first }}"
+    dest: "{{ ansible_user_dir }}/bin"
+    mode: "0755"
+  vars:
+    app_image_query: "assets[?ends_with(name,'AppImage') && !contains(name, 'arm64')].browser_download_url"
