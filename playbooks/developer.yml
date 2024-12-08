@@ -96,6 +96,9 @@
     - name: Install discord
       role: discord
       tags: [discord]
+    - name: Install Obsidian
+      role: obsidian
+      tags: [obsidian]
     - name: Install starship
       role: starship
       tags: [starship]
