@@ -13,7 +13,7 @@ Ansible is used to configure the system and requires a SSH connection.
 
 First, ensure to have an up-to-date system
 
-```sh
+```shell
 sudo apt update && sudo apt dist-upgrade
 ```
 
@@ -22,78 +22,52 @@ A vanilla Ubuntu installation missing
 - `openssh-server` which is required by Ansible.
 - `curl` which is required to install pyenv
 
-```sh
+```shell
 sudo apt install openssh-server curl
 ```
 
 Check if openssh-server is running
 
-```sh
+```shell
 systemctl status ssh
 ```
 
 Please re-use your existing SSH key if already created or
 [create a new SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
 
-### Setup Python and runtime dependencies
+### Setup Python and virtual environment using uv
 
-The script execution is based on Python 3.12 and a virtual environment, so continue to install these dependencies.
+The script is based on Python 3.12 and a virtual environment, so install these dependencies.
 
-To install Python 3.12 on older systems like Ubuntu 20.04 LTS or 22.04 LTS [pyenv](https://github.com/pyenv/pyenv) is
-used which is a simple Python version management.
-
-```sh
-curl https://pyenv.run | bash
-```
-
-Install Python 3.12 using pyenv by
+Install [uv](https://docs.astral.sh/uv)
 
 ```shell
-pyenv install 3.12
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-If the Python build fails, install required dependencies by
+Install Python 3.12 by
 
 ```shell
-sudo apt-get install --no-install-recommends \
-  build-essential \
-  curl \
-  libssl-dev \
-  ncurses-dev \
-  libffi-dev \
-  libreadline-dev \
-  sqlite3 libsqlite3-dev \
-  tk-dev \
-  bzip2 libbz2-dev \
-  lzma liblzma-dev
+uv python install 3.12
 ```
 
-Create the virtual environment and activate it
+Create the virtual environment
 
 ```shell
-pyenv virtualenv 3.12 py312cf
-pyenv activate py312cf
+uv sync
 ```
 
-Now you're ready to install runtime dependencies using pip-tools
+Activate the virtual environment
 
-```sh
-pip install pip-tools
-# Install Python runtime dependencies, see requirements.txt
-pip-sync
-```
-
-Finally, install the script `config-files` to the local virtual environment
-
-```sh
-pip install -e .
+```shell
+source .venv/bin/activate
 ```
 
 ## Usage
 
 When installed to the local virtual environment, you can use the script by the command `cf`
 
-```sh
+```shell
 cf -h
 usage: config-files [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
 
@@ -113,31 +87,31 @@ optional arguments:
 
 - Default usage
 
-  ```sh
+  ```shell
   cf developer
   ```
 
 - Syntax-check of the playbook
 
-  ```sh
+  ```shell
   cf -c developer
   ```
 
 - Dry-run of the playbook
 
-  ```sh
+  ```shell
   cf -d developer
   ```
 
 - Execute specific tags of the playbook
 
-  ```sh
+  ```shell
   cf -t zsh git developer
   ```
 
 - Increase verbosity
 
-  ```sh
+  ```shell
   cf -v developer
   ```
 
@@ -145,7 +119,7 @@ optional arguments:
 
 Can be used to check e.g. if config-files and Ansible works properly
 
-```sh
+```shell
 cf helloworld
 cf -v helloworld
 cf -d helloworld

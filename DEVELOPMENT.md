@@ -2,14 +2,8 @@
 
 ## Setup development environment
 
-Follow the instructions from [README.md](./README.md#setup-python-and-runtime-dependencies) to setup Python and create a
-virtual environment.
-
-Install the development requirements by
-
-```bash
-pip-sync requirements.txt dev-requirements.txt
-```
+Follow the instructions from [README.md](./README.md#setup-python-and-virtual-environment-using-uv) to setup Python and
+create a virtual environment.
 
 ## Typical development
 
@@ -43,13 +37,13 @@ But it's recommended to install the automatic git pre-commit hook by `pre-commit
 
 Example execute molecule for all roles
 
-```bash
+```shell
 ./scripts/test-roles.sh
 ```
 
 or use molecule on a single role
 
-```bash
+```shell
 # Execute molecule on a single role
 cd roles/<role>
 molecule test
@@ -61,33 +55,20 @@ molecule converge
 molecule destroy
 ```
 
-## Generate or upgrade Python `[dev-]requirements.txt`
+## Generate or upgrade Python dependencies
 
-```sh
-# Regenerate requirement files
-pip-compile --upgrade --generate-hashes --extra=dev --output-file=dev-requirements.txt --allow-unsafe pyproject.toml
-pip-compile --upgrade --generate-hashes --output-file=requirements.txt pyproject.toml
+```shell
+uv sync
 ```
 
 ## Further development commands
 
-```sh
+```shell
 # Install locally
-pip install -e .
-
-# Build package
-python -m build
+uv sync
 
 # Create test coverage
-coverage run -m pytest && coverage report -m
-coverage run -m pytest && coverage html
-
-# Format code
-black --line-length=120 .
-
-# Run unit tests
-pytest
-
-# Static type checker
-mypy
+ruff format
+ruff check --fix
+mypy .
 ```
