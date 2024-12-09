@@ -10,10 +10,10 @@ __pycache__
 .pytest_cache/
 dist/
 venv/
+.venv/
 .coverage
 htmlcov/
 *.egg-info
-.python-version
 .ruff_cache/
 
 # Ignore temporary and backup files.

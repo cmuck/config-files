@@ -25,16 +25,6 @@ repos:
         args: [--line-length=120]
         language: system
         types: [file, python]
-      - id: isort
-        name: isort
-        entry: isort
-        language: system
-        types: [ file, python ]
-        args: [ --line-length=120,
-                --multi-line=3,
-                --trailing-comma,
-                --ensure-newline-before-comments,
-                --use-parentheses]
       - id: mypy
         name: mypy
         entry: mypy
