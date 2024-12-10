@@ -15,22 +15,22 @@ keywords = ["dotfiles"]
 requires-python = ">= 3.12"
 
 dependencies = [
-    "ansible",
-    "jmespath",
+    "ansible>=11.1.0",
+    "jmespath>=1.0.1",
 ]
 
 [dependency-groups]
 dev = [
-    "ansible-lint",
-    "docker",
-    "mdformat",
-    "molecule-docker",
-    "molecule",
-    "mypy",
-    "ruff",
-    "pre-commit",
-    "tomlcheck",
-    "yamllint",
+    "ansible-lint>=6.8.7",
+    "docker>=7.1.0",
+    "mdformat>=0.7.19",
+    "molecule>=24.12.0",
+    "molecule-docker>=2.1.0",
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.2",
+    "tomlcheck>=0.2.3",
+    "yamllint>=1.35.1",
 ]
 
 [project.urls]
@@ -45,3 +45,4 @@ pythonpath = ["src"]
 
 [tool.uv]
 package = true
+environments = ["platform_system != 'Windows'"]
