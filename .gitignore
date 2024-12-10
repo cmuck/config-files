@@ -9,7 +9,6 @@ __pycache__
 .mypy_cache/
 .pytest_cache/
 dist/
-venv/
 .venv/
 .coverage
 htmlcov/
