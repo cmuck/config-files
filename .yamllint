@@ -6,6 +6,6 @@ rules:
     max: 120
 
 ignore: |
-  venv
-  .pre-commit-config.yaml
   .github/
+  .pre-commit-config.yaml
+  .venv
