@@ -3,7 +3,7 @@ name: CI
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: "0 3 * * *"
   pull_request:
   workflow_dispatch:
 
@@ -34,9 +34,11 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
+          . .venv/bin/activate
           ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
 
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
+          . .venv/bin/activate
           ./scripts/test-roles.sh
