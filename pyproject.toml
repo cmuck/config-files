@@ -8,37 +8,40 @@ license = { file = "LICENSE.md" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
 ]
 keywords = ["dotfiles"]
+
+requires-python = ">= 3.12"
+
 dependencies = [
     "ansible",
     "jmespath",
 ]
-requires-python = ">= 3.12"
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "ansible-lint",
     "docker",
-    "isort",
     "mdformat",
     "molecule-docker",
     "molecule",
     "mypy",
     "ruff",
-    "pip-tools",
     "pre-commit",
     "tomlcheck",
-    "yamllint"
+    "yamllint",
 ]
 
 [project.urls]
 Homepage = "https://github.com/cmuck/config-files"
 
+[project.scripts]
+cf = "config_files.main:main"
+
 [tool.pytest.ini_options]
 minversion = 7.0
 pythonpath = ["src"]
 
-[project.scripts]
-cf = "config_files.main:main"
+[tool.uv]
+package = true
