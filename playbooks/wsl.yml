@@ -60,9 +60,6 @@
     - name: Install tmux
       role: tmux
       tags: [tmux]
-    - name: Install pyenv
-      role: pyenv
-      tags: [pyenv]
     - name: Install hadolint
       role: hadolint
       tags: [hadolint]
