@@ -20,7 +20,6 @@ sudo apt update && sudo apt dist-upgrade
 A vanilla Ubuntu installation missing
 
 - `openssh-server` which is required by Ansible.
-- `curl` which is required to install pyenv
 
 ```shell
 sudo apt install openssh-server curl
