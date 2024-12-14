@@ -25,7 +25,7 @@
 
 - name: Install NvChad from https://nvchad.com/ # noqa latest[git]
   ansible.builtin.git:
-    repo: https://github.com/NvChad/NvChad
+    repo: https://github.com/NvChad/starter
     dest: "{{ ansible_user_dir }}/.config/nvim"
     depth: 1
   changed_when: false
