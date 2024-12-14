@@ -1,0 +1,32 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+  register: nerdfonts_latest
+
+- name: Create fonts directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.fonts"
+    state: directory
+    mode: "0755"
+
+- name: Download latest nerdfonts
+  ansible.builtin.unarchive:
+    src: "{{ nerdfonts_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
+    dest: "{{ ansible_user_dir }}/.fonts"
+    remote_src: true
+  vars:
+    app_image_query: "assets[?ends_with(name,'UbuntuMono.tar.xz') ].browser_download_url"
+
+- name: Install fc-cache
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - fontconfig
+  become: true
+
+- name: Build font information cache files
+  ansible.builtin.command: fc-cache -fv
+  changed_when: false

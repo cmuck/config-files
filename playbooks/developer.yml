@@ -42,6 +42,9 @@
     - name: Install gogh
       role: gogh
       tags: [gogh]
+    - name: Install nerdfonts
+      role: nerdfonts
+      tags: [nerdfonts]
     - name: Install git
       role: git
       tags: [git]
