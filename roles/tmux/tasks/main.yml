@@ -4,6 +4,7 @@
     state: present
     update_cache: true
     pkg:
+      - git
       - tmux
   become: true
 
@@ -42,3 +43,9 @@
   with_items:
     - "{{ ansible_user_dir }}/.zshrc"
     - "{{ ansible_user_dir }}/.bashrc"
+
+- name: Clone Tmux plugin manager - don't forget to execute "prefix + I"  in tmux to install plugins # noqa latest[git]
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    depth: 1
