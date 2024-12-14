@@ -36,9 +36,9 @@
     - name: Install nvim
       role: nvim
       tags: [nvim]
-    - name: Install lunarvim
-      role: lunarvim
-      tags: [lunarvim]
+    - name: Install nvchad
+      role: nvchad
+      tags: [nvchad]
     - name: Install gogh
       role: gogh
       tags: [gogh]
@@ -60,9 +60,6 @@
     - name: Install bat
       role: bat
       tags: [bat]
-    - name: Install terminator
-      role: terminator
-      tags: [terminator]
     - name: Install scripts
       role: scripts
       tags: [scripts]
