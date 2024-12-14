@@ -23,7 +23,7 @@
     - "{{ ansible_user_dir }}/.cache/nvim"
   changed_when: false
 
-- name: Install NvChad from https://nvchad.com/  # noqa latest[git]
+- name: Install NvChad from https://nvchad.com/ # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/NvChad/NvChad
     dest: "{{ ansible_user_dir }}/.config/nvim"

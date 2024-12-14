@@ -23,14 +23,13 @@
 
 - name: Download neovim
   ansible.builtin.unarchive:
-    src: "{{ neovim_latest.json | community.general.json_query(app_image_query) | first }}"
+    src: "{{ neovim_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
     dest: /opt
     remote_src: true
   changed_when: false
   become: true
   vars:
     app_image_query: "assets[?ends_with(name,'linux64.tar.gz')].browser_download_url"
-
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:

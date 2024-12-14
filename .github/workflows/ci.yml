@@ -6,7 +6,6 @@ on:
     - cron: "0 3 * * *"
   pull_request:
   workflow_dispatch:
-
 jobs:
   molecule:
     runs-on: ubuntu-24.04
@@ -24,7 +23,7 @@ jobs:
       - name: Install the project
         run: uv sync
 
-      - uses: mfinelli/setup-shfmt@v3
+      - uses: pre-commit/action@v3.0.1
 
       - id: files
         name: Get changed files

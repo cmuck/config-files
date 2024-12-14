@@ -17,8 +17,7 @@
     repoid_key: "0x6F71F525282841EEDAF851B42F59B5F99B1BE0B4"
     repoid_key_file: /usr/share/keyrings/config_files-nodejs.asc
 
-- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary
-    should use .gpg
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
   block:
     - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
@@ -49,8 +48,7 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://deb.nodesource.com/node_20.x
-          nodistro main
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://deb.nodesource.com/node_20.x nodistro main
         filename: config_files-node
       become: true
 
