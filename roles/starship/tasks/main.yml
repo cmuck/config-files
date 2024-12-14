@@ -3,7 +3,7 @@
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship-installer.sh
-    mode: '0744'
+    mode: "0744"
   register: download
   changed_when: false
 
@@ -38,8 +38,8 @@
     block: |
       # Always last
       if command -v starship >/dev/null; then
-          eval "$(starship init {{item.shell}} )"
+          eval "$(starship init {{ item.shell }} )"
       fi
   with_items:
-    - {file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh"}
-    - {file: "{{ ansible_user_dir }}/.bashrc", shell: "bash"}
+    - { file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh" }
+    - { file: "{{ ansible_user_dir }}/.bashrc", shell: "bash" }

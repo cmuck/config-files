@@ -19,7 +19,7 @@
 
 - name: Install latest bitwarden deb package
   ansible.builtin.apt:
-    deb: "{{ bitwarden_latest.json | community.general.json_query(app_image_query) }}"
+    deb: "{{ bitwarden_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
   vars:
     app_image_query: "assets[?ends_with(name,'-amd64.deb')].browser_download_url"
   become: true

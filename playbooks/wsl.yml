@@ -2,15 +2,15 @@
 - name: Setup machine for developing
   hosts: all
   vars:
-    default_git_user_name: 'cmuck'
-    default_git_user_email: 'cmuckmuck@gmail.com'
+    default_git_user_name: "cmuck"
+    default_git_user_email: "cmuckmuck@gmail.com"
   vars_prompt:
     - name: "git_user_name"
       prompt: "Enter your git user name"
-      default: '{{ default_git_user_name }}'
+      default: "{{ default_git_user_name }}"
     - name: "git_user_email"
       prompt: "Enter your git user email"
-      default: '{{ default_git_user_email }}'
+      default: "{{ default_git_user_email }}"
   roles:
     - name: Install zsh
       role: zsh

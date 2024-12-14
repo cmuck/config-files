@@ -16,7 +16,7 @@
       register: delta_latest_20_04
     - name: Install delta from github release page for Ubuntu 20.04
       ansible.builtin.apt:
-        deb: "{{ delta_latest_20_04.json | community.general.json_query(app_image_query) | first }}"
+        deb: "{{ delta_latest_20_04.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
       become: true
       vars:
         app_image_query: "assets[?name=='git-delta_0.14.0_amd64.deb'].browser_download_url"
@@ -30,7 +30,7 @@
       register: delta_latest
     - name: Install delta from github release page
       ansible.builtin.apt:
-        deb: "{{ delta_latest.json | community.general.json_query(app_image_query) }}"
+        deb: "{{ delta_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
       become: true
       vars:
         app_image_query: "assets[?ends_with(name,'amd64.deb')].browser_download_url | [0]"

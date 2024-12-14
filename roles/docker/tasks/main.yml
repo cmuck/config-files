@@ -17,8 +17,7 @@
     repoid_key: "0x9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
     repoid_key_file: /usr/share/keyrings/config_files-docker.asc
 
-- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary
-    should use .gpg
+- name: Avoid apt_key deprecation warning once it is removed from your distro, armored keys should use .asc extension, binary should use .gpg
   block:
     - name: Install gnupg2 to handle apt key
       ansible.builtin.apt:
@@ -49,8 +48,8 @@
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://download.docker.com/linux/{{
-          ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ repoid_key_file }}] https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename
+          }} stable
         filename: config_files-docker
       become: true
 

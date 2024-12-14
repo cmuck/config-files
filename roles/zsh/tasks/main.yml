@@ -80,7 +80,7 @@
     - "{{ ansible_user_dir }}/.zshrc"
     - "{{ ansible_user_dir }}/.bashrc"
 
-- name: Clone oh-my-zsh  # noqa latest[git]
+- name: Clone oh-my-zsh # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     dest: "{{ zsh_oh_my_zsh_dir }}"
@@ -99,13 +99,13 @@
     dest: "{{ zsh_oh_my_zsh_dir }}/custom/plugins/zsh-syntax-highlighting"
     depth: 1
 
-- name: Clone fzf-tab plugin oh-my-zsh directory  # noqa latest[git]
+- name: Clone fzf-tab plugin oh-my-zsh directory # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/Aloxaf/fzf-tab.git
     dest: "{{ zsh_oh_my_zsh_dir }}/custom/plugins/fzf-tab"
     depth: 1
 
-- name: Clone fzf  # noqa latest[git]
+- name: Clone fzf # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ zsh_fzf_dir }}"

@@ -12,7 +12,7 @@
     update_cache: true
   become: true
 
-- name: Clone gogh directory  # noqa latest[git]
+- name: Clone gogh directory # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/Gogh-Co/Gogh.git
     dest: /tmp/gogh

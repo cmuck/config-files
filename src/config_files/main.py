@@ -33,7 +33,9 @@ class AnsibleFacade:
         if tempdir.exists():
             (tempdir / "roles").symlink_to(self.base_path / "roles")
             (tempdir / "group_vars").symlink_to(self.base_path / "group_vars")
-            (tempdir / "playbook.yml").symlink_to(self.base_path / "playbooks" / (self.args.playbook + ".yml"))
+            (tempdir / "playbook.yml").symlink_to(
+                self.base_path / "playbooks" / (self.args.playbook + ".yml")
+            )
             (tempdir / "inventory").symlink_to(self.base_path / "inventory")
             (tempdir / "ansible.cfg").symlink_to(self.base_path / "ansible.cfg")
 
@@ -62,7 +64,9 @@ class AnsibleFacade:
 
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
-    parser.add_argument("playbook", help='Playbook from playbooks directory, e.g. "helloworld"')
+    parser.add_argument(
+        "playbook", help='Playbook from playbooks directory, e.g. "helloworld"'
+    )
     parser.add_argument(
         "-t",
         "--tag",

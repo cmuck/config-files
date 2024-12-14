@@ -13,7 +13,7 @@
 
 - name: Download latest Obsidian AppImage
   ansible.builtin.get_url:
-    url: "{{ obsidian_latest.json | community.general.json_query(app_image_query) | first }}"
+    url: "{{ obsidian_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
     dest: "{{ ansible_user_dir }}/bin"
     mode: "0755"
   vars:

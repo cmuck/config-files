@@ -10,7 +10,7 @@
       - cifs-utils
       - curl
       - dconf-editor
-      - direnv  # Hook required see https://direnv.net/docs/hook.html - set by zsh role plugin
+      - direnv # Hook required see https://direnv.net/docs/hook.html - set by zsh role plugin
       - gparted
       - gthumb
       - htop
@@ -35,7 +35,7 @@
 - name: Ensure up to date system
   ansible.builtin.apt:
     update_cache: true
-    cache_valid_time: 3600  # Seconds
+    cache_valid_time: 3600 # Seconds
     upgrade: dist
     autoclean: true
     autoremove: true

@@ -38,8 +38,7 @@
 
     - name: Move executable
       ansible.builtin.copy:
-        src: "{{ jetbrains_temporary_install_dir }}/{{ jetbrains_toolbox_install_file }}-{{ jetbrains_toolbox_version }}/{{
-          jetbrains_toolbox_install_file }}"
+        src: "{{ jetbrains_temporary_install_dir }}/{{ jetbrains_toolbox_install_file }}-{{ jetbrains_toolbox_version }}/{{ jetbrains_toolbox_install_file }}"
         dest: "{{ jetbrains_toolbox_install_dir }}/{{ jetbrains_toolbox_install_file }}"
         mode: "0755"
         remote_src: true
