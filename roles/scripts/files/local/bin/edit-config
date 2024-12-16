@@ -7,7 +7,6 @@ i3
 i3blocks
 neovim
 profile
-ranger
 rofi
 terminator
 vim
@@ -44,9 +43,7 @@ case "$choice" in
   profile)
     choice="$HOME/.profile"
     ;;
-  ranger)
-    choice="$HOME/.config/ranger/rc.conf"
-    ;;
+
   rofi)
     choice="$HOME/.config/rofi/config"
     ;;
