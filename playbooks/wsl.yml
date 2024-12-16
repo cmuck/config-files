@@ -63,6 +63,9 @@
     - name: Install hadolint
       role: hadolint
       tags: [hadolint]
+    - name: Install shfmt
+      role: shfmt
+      tags: [shfmt]
     - name: Install starship
       role: starship
       tags: [starship]

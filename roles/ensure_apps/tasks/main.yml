@@ -26,6 +26,7 @@
       - preload
       - ripgrep
       - safe-rm
+      - shellcheck
       - timeshift
       - trash-cli
       - vim
