@@ -21,9 +21,9 @@
     - name: Install zsh
       role: zsh
       tags: [zsh]
-    - name: Install ranger
-      role: ranger
-      tags: [ranger]
+    - name: Install yazi
+      role: yazi
+      tags: [yazi]
     - name: Install lazygit
       role: lazygit
       tags: [lazygit]

@@ -1,0 +1,50 @@
+---
+# yamllint disable rule:line-length
+- name: Check if cargo is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+  register: cargo_bin
+
+- name: Include rust role
+  when: not cargo_bin.stat.exists
+  ansible.builtin.include_role:
+    name: rust
+
+- name: Ensure build deps present
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - build-essential
+  become: true
+
+- name: Install yazi Rust package
+  community.general.cargo:
+    name:
+      - yazi-fm
+      - yazi-cli
+    locked: true
+    path: "{{ ansible_user_dir }}"
+    executable: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item }}"
+    create: true
+    mode: "0600"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK yazi"
+    block: |
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+      }
+  with_items:
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
