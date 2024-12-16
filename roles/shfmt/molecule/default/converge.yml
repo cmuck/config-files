@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include shfmt role
+      ansible.builtin.include_role:
+        name: shfmt
+  environment: "{{ proxy_environment }}"

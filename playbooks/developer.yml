@@ -72,9 +72,6 @@
     - name: Install gh
       role: gh
       tags: [gh]
-    - name: Install rofi
-      role: rofi
-      tags: [rofi]
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
@@ -96,6 +93,9 @@
     - name: Install Obsidian
       role: obsidian
       tags: [obsidian]
+    - name: Install shfmt
+      role: shfmt
+      tags: [shfmt]
     - name: Install starship
       role: starship
       tags: [starship]
