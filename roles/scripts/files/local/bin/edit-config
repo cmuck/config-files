@@ -3,20 +3,13 @@
 declare options=("bashrc
 flameshot
 git
-i3
-i3blocks
-neovim
 profile
-rofi
-terminator
-vim
-xinitrc
 xprofile
 zprofile
 zshrc
 quit")
 
-choice=$(echo -e "${options[@]}" | dmenu -i -l 20 -p "Edit config file:")
+choice=$(echo -e "${options[@]}" | fzf)
 
 case "$choice" in
   quit)
@@ -31,39 +24,19 @@ case "$choice" in
   git)
     choice="$HOME/.gitconfig"
     ;;
-  i3)
-    choice="$HOME/.config/i3/config"
-    ;;
-  i3blocks)
-    choice="$HOME/.config/i3blocks/config"
-    ;;
-  neovim)
-    choice="$HOME/.config/nvim/init.vim"
-    ;;
   profile)
     choice="$HOME/.profile"
-    ;;
-
-  rofi)
-    choice="$HOME/.config/rofi/config"
-    ;;
-  terminator)
-    choice="$HOME/.config/terminator/config"
-    ;;
-  xinitrc)
-    choice="$HOME/.xinitrc"
-    ;;
-  xprofile)
-    choice="$HOME/.xprofile"
     ;;
   zprofile)
     choice="$HOME/.zprofile"
     ;;
   zshrc)
-    choice="$HOME/.config/zsh/.zshrc"
+    choice="$HOME/.zshrc"
     ;;
   *)
     exit 1
     ;;
 esac
-$TERMINAL --execute nvim "$choice"
+
+
+gnome-terminal -- nvim "$choice"

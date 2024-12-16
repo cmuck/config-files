@@ -22,14 +22,24 @@
       - nmap
       - openconnect
       - peek
-      - pipx
       - pitivi
       - preload
+      - ripgrep
       - safe-rm
-      - silversearcher-ag
       - timeshift
       - trash-cli
       - vim
+  become: true
+
+- name: Ensure apps absent
+  ansible.builtin.apt:
+    state: absent
+    pkg:
+      - dmenu
+      - pipx
+      - rofi
+      - silversearcher-ag
+      - terminator
   become: true
 
 - name: Ensure up to date system
@@ -41,14 +51,17 @@
     autoremove: true
   become: true
 
+- name: Check if uv is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.local/bin/uv"
+  register: uv_bin
+
 - name: Install Python packages
-  vars:
-    pipx_packages:
-      - aws-shell
-      - cookiecutter
-      - poetry
-      - uv
-  community.general.pipx:
-    name: "{{ item }}"
-    state: latest
-  with_items: "{{ pipx_packages }}"
+  when: uv_bin.stat.exists
+  ansible.builtin.command: uv tool install {{ item }}
+  with_items:
+    - aws-shell
+    - cookiecutter
+    - poetry
+    - tldr
+  changed_when: false
