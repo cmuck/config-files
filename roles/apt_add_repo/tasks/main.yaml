@@ -1,0 +1,49 @@
+---
+# yamllint disable rule:line-length
+- name: Check mandatory variables
+  ansible.builtin.fail:
+    msg: "Variable '{{ item }}' is not defined"
+  when: item not in vars
+  with_items:
+    - apt_add_repo_key
+    - apt_add_repo_url
+
+- name: Add apt repository
+  when: ansible_parent_role_names is defined
+  block:
+    - name: Set facts
+      ansible.builtin.set_fact:
+        apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.asc"
+
+    # - name: Install gnupg2 to handle apt key
+    #   ansible.builtin.apt:
+    #     state: present
+    #     update_cache: true
+    #     pkg:
+    #       - gnupg2
+    #   become: true
+
+    # - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
+    #   ansible.builtin.apt_key:
+    #     id: "{{ apt_add_repo_key }}"
+    #     state: absent
+    #   become: true
+
+    - name: Download apt key
+      ansible.builtin.get_url:
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ apt_add_repo_key }}
+        dest: "{{ apt_add_repo_key_file }}"
+        mode: "0644"
+      become: true
+      changed_when: false
+
+    - name: Get DEB architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: deb_architecture
+      changed_when: deb_architecture.rc != 0
+
+    - name: Add apt source
+      ansible.builtin.apt_repository:
+        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ apt_add_repo_key_file }}] {{ apt_add_repo_url }}
+        filename: "config_files-{{ ansible_parent_role_names | first }}"
+      become: true
