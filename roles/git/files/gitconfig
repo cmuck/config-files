@@ -1,6 +1,3 @@
-[user]
-    #signingkey = 20BC5291D5B3C267
-    useconfigonly = true
 [alias]
     # More aliases used from https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
     ada = add --all
@@ -61,16 +58,10 @@
     requireForce = false
 [submodule]
     fetchJobs = 4
-[difftool]
-	prompt=false
-[merge]
-    tool = pycharm
-[difftool "pycharm"]
-    cmd = pycharm diff $LOCAL $REMOTE --wait
-[mergetool "intellij"]
-    cmd = pycharm merge $LOCAL $REMOTE $BASE $MERGED --wait
-    trustExitCode = true
 [remote "origin"]
     prune = true
-#[commit]
-#    gpgsign = true
+[merge]
+    tool = mymeld
+    conflictstyle = diff3
+[mergetool "mymeld"]
+    cmd = meld $LOCAL $BASE $REMOTE -o $MERGED --diff $BASE $LOCAL --diff $BASE $REMOTE --auto-merge

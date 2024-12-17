@@ -1,5 +1,12 @@
 ---
 # yamllint disable rule:line-length
+- name: "Install repo {{ ansible_role_name }}"
+  ansible.builtin.include_role:
+    name: apt_add_repo
+  vars:
+    apt_add_repo_key: "0xF911AB184317630C59970973E363C90F8F1B6217" # gitleaks:allow
+    apt_add_repo_url: "https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_lsb.codename }} main"
+
 - name: Ensure git is installed
   ansible.builtin.apt:
     state: present
@@ -18,11 +25,15 @@
     mode: "0755"
 
 - name: Copy OS dependent git config
-  ansible.builtin.copy:
-    src: "gitconfig"
-    dest: "{{ ansible_user_dir }}/.gitconfig"
-    mode: "0644"
+  ansible.builtin.blockinfile:
     backup: true
+    path: "{{ ansible_user_dir }}/.gitconfig"
+    create: true
+    insertbefore: BOF
+    mode: "0644"
+    append_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK git"
+    block: "{{ lookup('ansible.builtin.file', 'gitconfig') }}"
   changed_when: false
 
 - name: Write block in file to rc files
