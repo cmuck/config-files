@@ -5,8 +5,16 @@
     msg: "Variable '{{ item }}' is not defined"
   when: item not in vars
   with_items:
-    - apt_add_repo_key
     - apt_add_repo_url
+
+- name: Check for key or url
+  ansible.builtin.fail:
+    msg: "Only var apt_add_repo_key or apt_add_repo_key_url must be defined"
+  when: checklist | select() | list | length != 1
+  vars:
+    checklist:
+      - "{{ apt_add_repo_key is defined }}"
+      - "{{ apt_add_repo_key_url is defined }}"
 
 - name: Add apt repository
   when: ansible_parent_role_names is defined
@@ -36,6 +44,16 @@
         mode: "0644"
       become: true
       changed_when: false
+      when: apt_add_repo_key is defined
+
+    - name: Download apt key
+      ansible.builtin.get_url:
+        url: "{{ apt_add_repo_key_url }}"
+        dest: "{{ apt_add_repo_key_file }}"
+        mode: "0644"
+      become: true
+      changed_when: false
+      when: apt_add_repo_key_url is defined
 
     - name: Get DEB architecture
       ansible.builtin.command: dpkg --print-architecture
