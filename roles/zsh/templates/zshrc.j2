@@ -40,7 +40,11 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=({{ oh_my_zsh.plugins | join(' ') }})
+plugins=(
+{% for plugin in oh_my_zsh.plugins %}
+  {{ plugin.name }} # {{ plugin.comment }}
+{% endfor %}
+)
 
 # More plugins at https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
 
@@ -84,4 +88,6 @@ autoload -U compinit && compinit
 ### Source
 
 source "${ZSH}/oh-my-zsh.sh"
+
+# Unalis p required for pulumi
 unalias p
