@@ -25,21 +25,34 @@
     state: absent
   changed_when: false
 
-- name: Write block in file to rc files
+# Block set by oh-my-zsh starship plugin
+# Enable again when plugin not used
+# - name: Write block in file to rc files
+#   ansible.builtin.blockinfile:
+#     backup: true
+#     path: "{{ item.file }}"
+#     create: true
+#     mode: "0600"
+#     insertafter: EOF
+#     append_newline: true
+#     prepend_newline: true
+#     marker: "# {mark} ANSIBLE MANAGED BLOCK starship"
+#     block: |
+#       # Always last
+#       if command -v starship >/dev/null; then
+#           eval "$(starship init {{ item.shell }} )"
+#       fi
+#   with_items:
+#     - { file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh" }
+#     - { file: "{{ ansible_user_dir }}/.bashrc", shell: "bash" }
+- name: Remove block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
-    path: "{{ item.file }}"
+    path: "{{ item }}"
     create: true
     mode: "0600"
-    insertafter: EOF
-    append_newline: true
-    prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK starship"
-    block: |
-      # Always last
-      if command -v starship >/dev/null; then
-          eval "$(starship init {{ item.shell }} )"
-      fi
+    block: ""
   with_items:
-    - { file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh" }
-    - { file: "{{ ansible_user_dir }}/.bashrc", shell: "bash" }
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
