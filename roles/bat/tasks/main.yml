@@ -1,5 +1,5 @@
 ---
-- name: Install bat
+- name: Install bat test-trigger
   ansible.builtin.apt:
     name: bat
     state: present
