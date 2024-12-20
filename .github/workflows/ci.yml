@@ -15,6 +15,9 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Set up Python
+        run: uv python install
+
       - name: Install the project
         run: uv sync
 
@@ -28,9 +31,9 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
+          uv run ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
 
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          ./scripts/test-roles.sh
+          uv run ./scripts/test-roles.sh
