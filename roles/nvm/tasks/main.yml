@@ -1,0 +1,43 @@
+---
+- name: Install git
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - git
+    update_cache: true
+  become: true
+
+- name: Write block in file to rc files
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item }}"
+    create: true
+    mode: "0600"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK nvm"
+    block: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  with_items:
+    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_user_dir }}/.bashrc"
+
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
+  register: nvm_latest
+
+- name: Download installer
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest.json | community.general.json_query(tag_query) }}/install.sh" # noqa jinja[invalid]
+    dest: /tmp/nvm-installer.sh
+    mode: "u+rwx"
+  register: download
+  vars:
+    tag_query: "tag_name"
+
+- name: Run the install script
+  ansible.builtin.shell: /tmp/nvm-installer.sh
+  changed_when: download.changed

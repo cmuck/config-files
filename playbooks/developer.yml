@@ -96,6 +96,9 @@
     - name: Install shfmt
       role: shfmt
       tags: [shfmt]
+    - name: Install nvm
+      role: nvm
+      tags: [nvm]
     - name: Install starship
       role: starship
       tags: [starship]
