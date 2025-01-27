@@ -39,9 +39,9 @@ add_changed_role() {
 	done
 }
 
-handle_pip() {
+handle_uv() {
 	local changed_files=("$@")
-	if [[ ${changed_files[*]} =~ (dev-)?requirements\.txt ]]; then
+	if [[ ${changed_files[*]} =~ uv.lock ]]; then
 		echo "python requirements changed, testing all roles..."
 		add_all_roles
 		return 0
@@ -58,7 +58,7 @@ handle_github() {
 	local changed_files=("${@}")
 	if [[ "${GITHUB_EVENT_NAME}" == pull_request ]]; then
 		echo "Pull request run, testing roles ..."
-		if handle_pip "${changed_files[@]}"; then
+		if handle_uv "${changed_files[@]}"; then
 			return 0
 		fi
 		add_changed_role "${changed_files[@]}"
@@ -76,7 +76,7 @@ handle_local_run() {
 	fi
 	echo "Local execution..."
 	mapfile -t changed_files < <(git diff --name-only HEAD..origin/master)
-	if handle_pip "${changed_files[@]}"; then
+	if handle_uv "${changed_files[@]}"; then
 		return 0
 	fi
 	add_changed_role "${changed_files[@]}"
