@@ -23,15 +23,15 @@ jobs:
 
       - uses: pre-commit/action@v3.0.1
 
-      - id: files
-        name: Get changed files
+      - name: Get changed files
+        id: changed-files
         if: ${{ github.event_name == 'pull_request' }}
-        uses: jitterbit/get-changed-files@v1
+        uses: tj-actions/changed-files@v45
 
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          uv run ./scripts/test-roles.sh ${{ steps.files.outputs.all }}
+          uv run ./scripts/test-roles.sh ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
