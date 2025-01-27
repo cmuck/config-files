@@ -28,6 +28,11 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: tj-actions/changed-files@v45
 
+      - name: Run pre-commit
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          uv run pre-commit run --all-files
+
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
