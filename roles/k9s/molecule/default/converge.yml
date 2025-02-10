@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include k9s role
+      ansible.builtin.include_role:
+        name: k9s
+  environment: "{{ proxy_environment }}"

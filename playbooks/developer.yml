@@ -99,6 +99,15 @@
     - name: Install nvm
       role: nvm
       tags: [nvm]
+    - name: Install helm
+      role: helm
+      tags: [helm]
+    - name: Install k9s
+      role: k9s
+      tags: [k9s]
+    - name: Install kubectl
+      role: kubectl
+      tags: [kubectl]
     - name: Install starship
       role: starship
       tags: [starship]

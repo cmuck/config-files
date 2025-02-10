@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include kubectl role
+      ansible.builtin.include_role:
+        name: kubectl
+  environment: "{{ proxy_environment }}"
