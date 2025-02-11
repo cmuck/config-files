@@ -1,0 +1,19 @@
+---
+- name: Create bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Download and unarchive helm
+  ansible.builtin.unarchive:
+    src: https://get.helm.sh/helm-v3.17.0-linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: true
+
+- name: Copy helm binary
+  ansible.builtin.copy:
+    src: /tmp/linux-amd64/helm
+    dest: "{{ ansible_user_dir }}/bin/helm"
+    mode: "0755"
+    remote_src: true
