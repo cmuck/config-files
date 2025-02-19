@@ -82,8 +82,17 @@ handle_local_run() {
 	add_changed_role "${changed_files[@]}"
 }
 
+remove_blacklisted_roles() {
+	local blacklist=("roles/apt_add_repo")
+	for item in "${blacklist[@]}"; do
+		echo "Removing blacklisted role: ${item}"
+		ROLES=("${ROLES[@]/$item}")
+	done
+}
+
 handle_github "${@}"
 handle_local_run
+remove_blacklisted_roles
 
 echo
 echo
