@@ -1,0 +1,15 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/direnv/direnv/releases/latest
+  register: direnv_latest
+
+- name: Install delta from github release page
+  ansible.builtin.get_url:
+    url: "{{ direnv_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
+    dest: /usr/bin/direnv
+    mode: "0755"
+  become: true
+  vars:
+    app_image_query: "assets[?ends_with(name,'linux-amd64')].browser_download_url | [0]"
