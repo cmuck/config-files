@@ -108,6 +108,9 @@
     - name: Install kubectl
       role: kubectl
       tags: [kubectl]
+    - name: Install direnv
+      role: direnv
+      tags: [direnv]
     - name: Install starship
       role: starship
       tags: [starship]

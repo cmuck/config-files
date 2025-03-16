@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include direnv role
+      ansible.builtin.include_role:
+        name: direnv
+  environment: "{{ proxy_environment }}"
