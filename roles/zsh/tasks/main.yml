@@ -89,6 +89,7 @@
       alias e='exit'
       alias free='free -m'
       alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
+      alias gh-create='gh repo create --private --source=. --remote=origin && git push -u --all && gh browse'
   with_items:
     - "{{ ansible_user_dir }}/.zshrc"
     - "{{ ansible_user_dir }}/.bashrc"
