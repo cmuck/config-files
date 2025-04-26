@@ -33,15 +33,15 @@ dev = [
     "yamllint>=1.35.1",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project.urls]
 Homepage = "https://github.com/cmuck/config-files"
 
 [project.scripts]
 cf = "config_files.main:main"
-
-[tool.pytest.ini_options]
-minversion = 7.0
-pythonpath = ["src"]
 
 [tool.uv]
 package = true
