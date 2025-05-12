@@ -13,5 +13,7 @@ platforms:
 #      no_proxy: ${no_proxy}
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
 verifier:
   name: ansible
