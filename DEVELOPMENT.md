@@ -38,7 +38,7 @@ But it's recommended to install the automatic git pre-commit hook by `pre-commit
 Example execute molecule for all roles
 
 ```shell
-./scripts/test-roles.sh
+./scripts/test-roles.py
 ```
 
 or use molecule on a single role
