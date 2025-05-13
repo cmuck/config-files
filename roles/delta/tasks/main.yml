@@ -1,6 +1,6 @@
 ---
 # yamllint disable rule:line-length
-- name: Ensure git is installed
+- name: Ensure git is installed - test
   ansible.builtin.apt:
     name: git
     state: present

@@ -1,5 +1,5 @@
 ---
-- name: Converge
+- name: Converge - test
   hosts: all
   tasks:
     - name: Include bat role
