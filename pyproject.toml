@@ -41,7 +41,8 @@ build-backend = "hatchling.build"
 Homepage = "https://github.com/cmuck/config-files"
 
 [project.scripts]
-cf = "config_files.main:main"
+cf = "config_files.config_files:main"
+cf-molecule = "config_files.config_files_molecule:main"
 
 [tool.uv]
 package = true
