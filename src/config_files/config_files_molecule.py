@@ -81,8 +81,11 @@ def filter_duplicates(roles: List[Path]) -> List[Path]:
     """Remove duplicate roles from the list."""
     unique_roles = set()
     for role in roles:
-        unique_roles.add(f"{role.parts[0]}/{role.parts[1]}")
-    return [Path(role) for role in unique_roles]
+        if "roles" in role.parts:
+            roles_index = role.parts.index("roles")
+            result_path = Path(*role.parts[: (roles_index + 2)])
+            unique_roles.add(result_path)
+    return list(unique_roles)
 
 
 def run_molecule(test_role: Path) -> None:
