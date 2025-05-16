@@ -48,6 +48,9 @@
     - name: Install git
       role: git
       tags: [git]
+    - name: Install git_xargs
+      role: git_xargs
+      tags: [git_xargs]
     - name: Install keepassxc
       role: keepassxc
       tags: [keepassxc]

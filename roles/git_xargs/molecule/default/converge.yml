@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include role
+      ansible.builtin.include_role:
+        name: git_xargs
+  environment: "{{ proxy_environment }}"
