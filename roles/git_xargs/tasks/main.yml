@@ -1,0 +1,15 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/gruntwork-io/git-xargs/releases/latest
+  register: git_xargs_latest
+
+- name: Install latest git_xargs_latest
+  ansible.builtin.get_url:
+    url: "{{ git_xargs_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
+    dest: "/usr/local/bin/git-xargs"
+    mode: "0755"
+  vars:
+    app_image_query: "assets[?ends_with(name,'linux_amd64')].browser_download_url | [0]"
+  become: true
