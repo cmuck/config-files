@@ -6,7 +6,7 @@
     update_cache: true
   become: true
 
-- name: Write block in file to rc files
+- name: Write block in file to rc files - test
   ansible.builtin.blockinfile:
     backup: true
     path: "{{ item }}"
