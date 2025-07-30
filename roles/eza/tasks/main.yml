@@ -3,10 +3,10 @@
 - name: Check if cargo is installed
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.cargo/bin/cargo"
-  register: cargo_bin
+  register: eza_cargo_bin
 
 - name: Include rust role
-  when: not cargo_bin.stat.exists
+  when: not eza_cargo_bin.stat.exists
   ansible.builtin.include_role:
     name: rust
 

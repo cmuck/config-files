@@ -2,10 +2,10 @@
 - name: "Check exist: {{ item }}"
   ansible.builtin.stat:
     path: "{{ item }}"
-  register: dir
+  register: zsh_dir
 
 - name: "Delete home directory: {{ item }}"
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  when: dir.stat.exists and dir.stat.isdir
+  when: zsh_dir.stat.exists and zsh_dir.stat.isdir

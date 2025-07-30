@@ -55,10 +55,10 @@
 - name: Check if uv is installed
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.local/bin/uv"
-  register: uv_bin
+  register: ensure_apps_uv_bin
 
 - name: Install Python packages
-  when: uv_bin.stat.exists
+  when: ensure_apps_uv_bin.stat.exists
   ansible.builtin.command: uv tool install {{ item }}
   with_items:
     - aws-shell
