@@ -4,7 +4,6 @@
     url: https://starship.rs/install.sh
     dest: /tmp/starship-installer.sh
     mode: "0744"
-  register: download
   changed_when: false
 
 - name: Install dependencies

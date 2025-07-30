@@ -19,11 +19,11 @@
 - name: Check latest neovim version
   ansible.builtin.uri:
     url: https://api.github.com/repos/neovim/neovim/releases/latest
-  register: neovim_latest
+  register: nvim_neovim_latest
 
 - name: Download neovim
   ansible.builtin.unarchive:
-    src: "{{ neovim_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
+    src: "{{ nvim_neovim_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
     dest: /opt
     remote_src: true
   changed_when: false

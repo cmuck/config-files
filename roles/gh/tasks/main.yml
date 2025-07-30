@@ -10,12 +10,12 @@
 
 - name: Get DEB architecture
   ansible.builtin.command: dpkg --print-architecture
-  register: deb_architecture
-  changed_when: deb_architecture.rc != 0
+  register: gh_deb_architecture
+  changed_when: gh_deb_architecture.rc != 0
 
 - name: Add repository for gh
   ansible.builtin.apt_repository:
-    repo: deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main
+    repo: deb [arch={{ gh_deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main
     filename: config_files-gh
   become: true
 

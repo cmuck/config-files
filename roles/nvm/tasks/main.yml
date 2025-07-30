@@ -34,10 +34,10 @@
     url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest.json | community.general.json_query(tag_query) }}/install.sh" # noqa jinja[invalid]
     dest: /tmp/nvm-installer.sh
     mode: "u+rwx"
-  register: download
+  register: nvm_download
   vars:
     tag_query: "tag_name"
 
 - name: Run the install script
   ansible.builtin.shell: /tmp/nvm-installer.sh
-  changed_when: download.changed
+  changed_when: nvm_download.changed

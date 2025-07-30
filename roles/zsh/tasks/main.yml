@@ -12,7 +12,7 @@
 
 - name: Generate zshrc content
   ansible.builtin.set_fact:
-    hosts_content: "{{ lookup('template', 'templates/zshrc.j2') }}"
+    zsh_hosts_content: "{{ lookup('template', 'templates/zshrc.j2') }}"
   vars:
     oh_my_zsh:
       theme: bira
@@ -70,7 +70,7 @@
     insertbefore: BOF
     mode: "0600"
     append_newline: true
-    content: "{{ hosts_content }}"
+    content: "{{ zsh_hosts_content }}"
   with_items:
     - "{{ ansible_user_dir }}/.zshrc"
 
@@ -139,7 +139,7 @@
 
 - name: Reading profile_block file and register it into profile_block variable
   ansible.builtin.command: cat /tmp/profile_block
-  register: profile_block
+  register: zsh_profile_block
   changed_when: false
 
 - name: Write block in file to .profile
@@ -149,7 +149,7 @@
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
     block: |
-      {{ profile_block.stdout }}
+      {{ zsh_profile_block.stdout }}
 
 - name: Create symbolic link .zprofile
   ansible.builtin.file:
@@ -164,10 +164,10 @@
     state: absent
   check_mode: true
   changed_when: false
-  register: user
+  register: zsh_user
 
 - name: Set default shell for users
-  when: user.found
+  when: zsh_user.found
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh

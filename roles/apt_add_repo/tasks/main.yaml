@@ -39,11 +39,11 @@
 
     - name: Get DEB architecture
       ansible.builtin.command: dpkg --print-architecture
-      register: deb_architecture
-      changed_when: deb_architecture.rc != 0
+      register: apt_add_repo_deb_architecture
+      changed_when: apt_add_repo_deb_architecture.rc != 0
 
     - name: Add apt source
       ansible.builtin.apt_repository:
-        repo: deb [arch={{ deb_architecture.stdout }} signed-by={{ apt_add_repo_key_file }}] {{ apt_add_repo_url }}
+        repo: deb [arch={{ apt_add_repo_deb_architecture.stdout }} signed-by={{ apt_add_repo_key_file }}] {{ apt_add_repo_url }}
         filename: "config_files-{{ ansible_parent_role_names | first }}"
       become: true
