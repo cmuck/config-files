@@ -15,7 +15,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          activate-environment: true
+          enable-cache: true
 
       - name: Set up Python
         run: uv python install
@@ -36,9 +36,9 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          cf-molecule ${{ steps.changed-files.outputs.all_changed_files }}
+          uv run cf-molecule ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          cf-molecule
+          uv run cf-molecule
