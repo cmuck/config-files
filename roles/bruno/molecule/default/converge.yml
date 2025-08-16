@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include bruno role
+      ansible.builtin.include_role:
+        name: bruno
+  environment: "{{ proxy_environment }}"
