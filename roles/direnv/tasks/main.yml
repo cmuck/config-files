@@ -13,3 +13,29 @@
   become: true
   vars:
     app_image_query: "assets[?ends_with(name,'linux-amd64')].browser_download_url | [0]"
+
+- name: Add layout_uv function to direnvrc
+  ansible.builtin.blockinfile:
+    backup: true
+    create: true
+    mode: "0600"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK layout_uv"
+    path: "{{ ansible_user_dir }}/.config/direnv/direnvrc"
+    block: |
+      layout_uv() {
+          if [[ -d ".venv" ]]; then
+              VIRTUAL_ENV="$(pwd)/.venv"
+          fi
+
+          if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+              log_status "No virtual environment exists. Executing \`uv venv\` to create one."
+              uv venv
+              VIRTUAL_ENV="$(pwd)/.venv"
+          fi
+
+          PATH_add "$VIRTUAL_ENV/bin"
+          export UV_ACTIVE=1  # or VENV_ACTIVE=1
+          export VIRTUAL_ENV
+      }
