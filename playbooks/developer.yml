@@ -114,6 +114,9 @@
     - name: Install direnv
       role: direnv
       tags: [direnv]
+    - name: Install bruno
+      role: bruno
+      tags: [bruno]
     - name: Install starship
       role: starship
       tags: [starship]

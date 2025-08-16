@@ -1,0 +1,20 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/usebruno/bruno/releases/latest
+  register: bruno_latest
+
+- name: Create bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Download latest Bruno AppImage
+  ansible.builtin.get_url:
+    url: "{{ bruno_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
+    dest: "{{ ansible_user_dir }}/bin/Bruno.AppImage"
+    mode: "0755"
+  vars:
+    app_image_query: "assets[?ends_with(name,'x86_64_linux.AppImage')].browser_download_url"
