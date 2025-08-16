@@ -18,3 +18,15 @@
     mode: "0755"
   vars:
     app_image_query: "assets[?ends_with(name,'x86_64_linux.AppImage')].browser_download_url"
+
+- name: Include nvm
+  ansible.builtin.include_role:
+    name: nvm
+
+- name: Install latest Node.js
+  ansible.builtin.command: nvm install Node.js
+  changed_when: false
+
+- name: Install latest Bruno CLI
+  ansible.builtin.command: npm install -g @usebruno/cli
+  changed_when: false
