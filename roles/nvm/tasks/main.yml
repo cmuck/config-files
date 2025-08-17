@@ -41,3 +41,11 @@
 - name: Run the install script
   ansible.builtin.shell: /tmp/nvm-installer.sh
   changed_when: nvm_download.changed
+
+- name: Install nvm dependencies
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - curl
+  become: true
