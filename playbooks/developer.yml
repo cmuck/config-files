@@ -117,6 +117,9 @@
     - name: Install bruno
       role: bruno
       tags: [bruno]
+    - name: Install atuin
+      role: atuin
+      tags: [atuin]
     - name: Install starship
       role: starship
       tags: [starship]

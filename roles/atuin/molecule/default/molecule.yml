@@ -1,0 +1,19 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: docker
+platforms:
+  - name: ubuntu_24_04
+    image: ubuntu:24.04
+#    env:
+#      http_proxy: ${http_proxy}
+#      https_proxy: ${https_proxy}
+#      no_proxy: ${no_proxy}
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+verifier:
+  name: ansible

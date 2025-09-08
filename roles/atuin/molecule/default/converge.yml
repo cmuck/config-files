@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include atuin role
+      ansible.builtin.include_role:
+        name: atuin
+  environment: "{{ proxy_environment }}"
