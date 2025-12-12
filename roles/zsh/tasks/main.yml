@@ -17,179 +17,50 @@
     oh_my_zsh:
       theme: bira
       plugins:
-        - {
-            name: aliases,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aliases",
-          }
-        - {
-            name: ansible,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ansible",
-          }
-        - {
-            name: aws,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aws",
-          }
-        - {
-            name: colored-man-pages,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages",
-          }
-        - {
-            name: command-not-found,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found",
-          }
-        - {
-            name: common-aliases,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases",
-          }
-        - {
-            name: copybuffer,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copybuffer",
-          }
-        - {
-            name: copyfile,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile",
-          }
-        - {
-            name: copypath,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath",
-          }
-        - {
-            name: debian,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/debian",
-          }
-        - {
-            name: direnv,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/direnv",
-          }
-        - {
-            name: dirhistory,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dirhistory",
-          }
-        - {
-            name: docker,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker",
-          }
-        - {
-            name: docker-compose,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose",
-          }
-        - {
-            name: dotenv,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dotenv",
-          }
-        - {
-            name: extract,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/extract",
-          }
-        - {
-            name: eza,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/eza",
-          }
-        - {
-            name: fzf,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf",
-          }
+        - { name: aliases, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aliases" }
+        - { name: ansible, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ansible" }
+        - { name: aws, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aws" }
+        - { name: colored-man-pages, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages" }
+        - { name: command-not-found, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found" }
+        - { name: common-aliases, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases" }
+        - { name: copybuffer, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copybuffer" }
+        - { name: copyfile, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile" }
+        - { name: copypath, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath" }
+        - { name: debian, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/debian" }
+        - { name: direnv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/direnv" }
+        - { name: dirhistory, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dirhistory" }
+        - { name: docker, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker" }
+        - { name: docker-compose, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose" }
+        - { name: dotenv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dotenv" }
+        - { name: extract, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/extract" }
+        - { name: eza, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/eza" }
+        - { name: fzf, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf" }
         - { name: fzf-tab, comment: "" }
-        - {
-            name: gh,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gh",
-          }
-        - {
-            name: git,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git",
-          }
-        - {
-            name: helm,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/helm",
-          }
-        - {
-            name: history,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/history",
-          }
-        - {
-            name: jfrog,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jfrog",
-          }
-        - {
-            name: jsontools,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools",
-          }
-        - {
-            name: kubectl,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl",
-          }
-        - {
-            name: minikube,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/minikube",
-          }
-        - {
-            name: nmap,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nmap",
-          }
-        - {
-            name: pip,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pip",
-          }
-        - {
-            name: poetry,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/poetry",
-          }
-        - {
-            name: pre-commit,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pre-commit",
-          }
-        - {
-            name: rsync,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rsync",
-          }
-        - {
-            name: rust,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rust",
-          }
-        - {
-            name: ssh,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh",
-          }
-        - {
-            name: ssh-agent,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent",
-          }
-        - {
-            name: starship,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/starship",
-          }
-        - {
-            name: sudo,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo",
-          }
-        - {
-            name: systemd,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/systemd",
-          }
-        - {
-            name: tldr,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tldr",
-          }
-        - {
-            name: tmux,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux",
-          }
-        - {
-            name: vscode,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode",
-          }
-        - {
-            name: uv,
-            comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/uv",
-          }
-        - {
-            name: zsh-autosuggestions,
-            comment: "https://github.com/zsh-users/zsh-autosuggestions",
-          }
-        - {
-            name: zsh-syntax-highlighting,
-            comment: "https://github.com/zsh-users/zsh-syntax-highlighting",
-          }
+        - { name: gh, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gh" }
+        - { name: git, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git" }
+        - { name: helm, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/helm" }
+        - { name: history, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/history" }
+        - { name: jfrog, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jfrog" }
+        - { name: jsontools, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools" }
+        - { name: kubectl, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl" }
+        - { name: minikube, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/minikube" }
+        - { name: nmap, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nmap" }
+        - { name: pip, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pip" }
+        - { name: poetry, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/poetry" }
+        - { name: pre-commit, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pre-commit" }
+        - { name: rsync, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rsync" }
+        - { name: rust, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rust" }
+        - { name: ssh, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh" }
+        - { name: ssh-agent, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent" }
+        - { name: starship, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/starship" }
+        - { name: sudo, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo" }
+        - { name: systemd, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/systemd" }
+        - { name: tldr, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tldr" }
+        - { name: tmux, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux" }
+        - { name: vscode, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode" }
+        - { name: uv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/uv" }
+        - { name: zsh-autosuggestions, comment: "https://github.com/zsh-users/zsh-autosuggestions" }
+        - { name: zsh-syntax-highlighting, comment: "https://github.com/zsh-users/zsh-syntax-highlighting" }
 
 - name: Write .zshrc based on template
   ansible.builtin.blockinfile:
