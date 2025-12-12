@@ -1,7 +1,7 @@
 ---
 - name: Create bin directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/bin"
+    path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
 
@@ -14,6 +14,6 @@
 - name: Copy helm binary
   ansible.builtin.copy:
     src: /tmp/linux-amd64/helm
-    dest: "{{ ansible_user_dir }}/bin/helm"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/helm"
     mode: "0755"
     remote_src: true

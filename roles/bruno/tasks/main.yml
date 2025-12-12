@@ -7,14 +7,14 @@
 
 - name: Create bin directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/bin"
+    path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
 
 - name: Download latest Bruno AppImage
   ansible.builtin.get_url:
     url: "{{ bruno_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_user_dir }}/bin/Bruno.AppImage"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/Bruno.AppImage"
     mode: "0755"
   vars:
     app_image_query: "assets[?ends_with(name,'x86_64_linux.AppImage')].browser_download_url"
@@ -24,13 +24,13 @@
     name: nvm
 
 - name: Install latest Node.js
-  ansible.builtin.shell: ". {{ ansible_user_dir }}/.nvm/nvm.sh && nvm install --lts"
+  ansible.builtin.shell: ". {{ ansible_facts['user_dir'] }}/.nvm/nvm.sh && nvm install --lts"
   changed_when: false
   args:
     executable: /bin/bash
 
 - name: Install latest Bruno CLI
-  ansible.builtin.shell: ". {{ ansible_user_dir }}/.nvm/nvm.sh && nvm use --lts && npm install -g @usebruno/cli"
+  ansible.builtin.shell: ". {{ ansible_facts['user_dir'] }}/.nvm/nvm.sh && nvm use --lts && npm install -g @usebruno/cli"
   changed_when: false
   args:
     executable: /bin/bash

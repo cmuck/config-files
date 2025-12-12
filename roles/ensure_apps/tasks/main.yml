@@ -54,7 +54,7 @@
 
 - name: Check if uv is installed
   ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/.local/bin/uv"
+    path: "{{ ansible_facts['user_dir'] }}/.local/bin/uv"
   register: ensure_apps_uv_bin
 
 - name: Install Python packages

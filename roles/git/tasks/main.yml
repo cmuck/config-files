@@ -27,7 +27,7 @@
 - name: Copy OS dependent git config
   ansible.builtin.blockinfile:
     backup: true
-    path: "{{ ansible_user_dir }}/.gitconfig"
+    path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
     create: true
     insertbefore: BOF
     mode: "0644"
@@ -70,8 +70,8 @@
 #         alias glt='git describe --tags --abbrev=0'
 #       fi
 #   with_items:
-#     - "{{ ansible_user_dir }}/.zshrc"
-#     - "{{ ansible_user_dir }}/.bashrc"
+#     - "{{ ansible_facts['user_dir'] }}/.zshrc"
+#     - "{{ ansible_facts['user_dir'] }}/.bashrc"
 - name: Remove block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
@@ -81,8 +81,8 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK git"
     block: ""
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:

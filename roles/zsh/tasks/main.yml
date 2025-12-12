@@ -66,13 +66,13 @@
   ansible.builtin.blockinfile:
     backup: true
     create: true
-    dest: "{{ ansible_user_dir }}/.zshrc"
+    dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
     insertbefore: BOF
     mode: "0600"
     append_newline: true
     content: "{{ zsh_hosts_content }}"
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
@@ -91,8 +91,8 @@
       alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
       alias gh-create='gh repo create --private --source=. --remote=origin && git push -u --all && gh browse'
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
 - name: Clone oh-my-zsh # noqa latest[git]
   ansible.builtin.git:
@@ -144,7 +144,7 @@
 
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
-    path: "{{ ansible_user_dir }}/.profile"
+    path: "{{ ansible_facts['user_dir'] }}/.profile"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
@@ -153,14 +153,14 @@
 
 - name: Create symbolic link .zprofile
   ansible.builtin.file:
-    src: "{{ ansible_user_dir }}/.profile"
-    dest: "{{ ansible_user_dir }}/.zprofile"
+    src: "{{ ansible_facts['user_dir'] }}/.profile"
+    dest: "{{ ansible_facts['user_dir'] }}/.zprofile"
     state: link
 
 - name: Ensure ansible user exists in /etc/passwd
   ansible.builtin.lineinfile:
     path: /etc/passwd
-    regexp: "^{{ ansible_user_id }}.*"
+    regexp: "^{{ ansible_facts['user_id'] }}.*"
     state: absent
   check_mode: true
   changed_when: false
@@ -169,14 +169,14 @@
 - name: Set default shell for users
   when: (zsh_user is defined) and (zsh_user.found | int > 0)
   ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
+    name: "{{ ansible_facts['user_id'] }}"
     shell: /usr/bin/zsh
   become: true
 
 - name: Clean up old installation paths
   ansible.legacy.include_tasks: delete_dir.yml
   with_items:
-    - "{{ ansible_user_dir }}/.fzf"
-    - "{{ ansible_user_dir }}/.oh-my-zsh"
-    - "{{ ansible_user_dir }}/.config/zsh"
-    - "{{ ansible_user_dir }}/.local/share/zsh"
+    - "{{ ansible_facts['user_dir'] }}/.fzf"
+    - "{{ ansible_facts['user_dir'] }}/.oh-my-zsh"
+    - "{{ ansible_facts['user_dir'] }}/.config/zsh"
+    - "{{ ansible_facts['user_dir'] }}/.local/share/zsh"

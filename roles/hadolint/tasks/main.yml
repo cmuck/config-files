@@ -7,14 +7,14 @@
 
 - name: Create bin directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/bin"
+    path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
 
 - name: Download latest
   ansible.builtin.get_url:
     url: "{{ hadolint_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_user_dir }}/bin/hadolint"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/hadolint"
     mode: "0700"
   vars:
     app_image_query: "assets[?ends_with(name,'linux-x86_64')].browser_download_url"

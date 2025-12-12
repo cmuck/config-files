@@ -17,8 +17,8 @@
     name:
       - atuin
     locked: true
-    path: "{{ ansible_user_dir }}"
-    executable: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+    path: "{{ ansible_facts['user_dir'] }}"
+    executable: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
@@ -32,17 +32,17 @@
     block: |
       eval "$(atuin init {{ 'zsh' if item.endswith('.zshrc') else 'bash' }})"
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
 - name: Ensure ansible config directory exists
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.config/ansible"
+    path: "{{ ansible_facts['user_dir'] }}/.config/ansible"
     state: directory
     mode: "0700"
 
 - name: Copy config.toml to ansible config directory
   ansible.builtin.copy:
     src: config.toml
-    dest: "{{ ansible_user_dir }}/.config/ansible/config.toml"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/ansible/config.toml"
     mode: "0600"

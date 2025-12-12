@@ -9,8 +9,8 @@
     - name: Some debug output
       ansible.builtin.debug:
         msg:
-          - "Some more printing: {{ ansible_user_dir }}"
-          - "Some more printing: {{ ansible_user_id }}"
+          - "Some more printing: {{ ansible_facts['user_dir'] }}"
+          - "Some more printing: {{ ansible_facts['user_id'] }}"
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html?highlight=debugger#examples
 # https://blog.codecentric.de/en/2017/06/debug-ansible-playbooks-like-pro/
 # p task.args

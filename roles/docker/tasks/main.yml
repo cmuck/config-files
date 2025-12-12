@@ -31,12 +31,11 @@
     state: present
   become: true
 
-- name: "Add to docker group: {{ ansible_user_id }}"
+- name: "Add to docker group: {{ ansible_facts['user_id'] }}"
   ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
+    name: "{{ ansible_facts['user_id'] }}"
     groups:
       - docker
     append: true
   become: true
-
 # Reboot required to become effective

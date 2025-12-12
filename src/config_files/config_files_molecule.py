@@ -117,9 +117,25 @@ def main() -> None:
 
     logger.info("Unique test roles: %s", unique_test_roles)
 
+    total_roles = len(unique_test_roles)
+    if total_roles == 0:
+        logger.info("No roles to test. Exiting.")
+        return
+
+    logger.info("Will execute %d role(s)", total_roles)
+
+    executed = 0
     for role in unique_test_roles:
-        logger.info("Testing role: %s", role)
+        logger.info("Testing role: %s (%d of %d)", role, executed + 1, total_roles)
         run_molecule(get_root_dir() / role)
+        executed += 1
+        remaining = total_roles - executed
+        logger.info(
+            "Progress: executed=%d, remaining=%d, total=%d",
+            executed,
+            remaining,
+            total_roles,
+        )
 
 
 if __name__ == "__main__":

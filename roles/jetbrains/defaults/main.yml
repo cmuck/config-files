@@ -3,7 +3,7 @@
 jetbrains_toolbox_version: 2.2.1.19765
 jetbrains_toolbox_sha256: 737fd85838e6f48d4c7ad2ae88b6830bf43564101d68fbac52e59f018dc7836b
 jetbrains_toolbox_install_file: jetbrains-toolbox
-jetbrains_toolbox_install_dir: "{{ ansible_user_dir }}/.local/share/JetBrains/Toolbox/bin"
+jetbrains_toolbox_install_dir: "{{ ansible_facts['user_dir'] }}/.local/share/JetBrains/Toolbox/bin"
 
 jetbrains_archive_file_name: "{{ jetbrains_toolbox_install_file }}-{{ jetbrains_toolbox_version }}.tar.gz"
 jetbrains_download_url: https://download.jetbrains.com/toolbox/{{ jetbrains_archive_file_name }}

@@ -7,14 +7,14 @@
 
 - name: Create fonts directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.fonts"
+    path: "{{ ansible_facts['user_dir'] }}/.fonts"
     state: directory
     mode: "0755"
 
 - name: Download latest nerdfonts
   ansible.builtin.unarchive:
     src: "{{ nerdfonts_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_user_dir }}/.fonts"
+    dest: "{{ ansible_facts['user_dir'] }}/.fonts"
     remote_src: true
   vars:
     app_image_query: "assets[?ends_with(name,'UbuntuMono.tar.xz') ].browser_download_url"
