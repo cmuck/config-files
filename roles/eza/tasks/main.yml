@@ -1,12 +1,6 @@
 ---
 # yamllint disable rule:line-length
-- name: Check if cargo is installed
-  ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/.cargo/bin/cargo"
-  register: eza_cargo_bin
-
 - name: Include rust role
-  when: not eza_cargo_bin.stat.exists
   ansible.builtin.include_role:
     name: rust
 
