@@ -17,4 +17,4 @@
     dest: "{{ ansible_user_dir }}/bin/hadolint"
     mode: "0700"
   vars:
-    app_image_query: "assets[?ends_with(name,'Linux-x86_64')].browser_download_url"
+    app_image_query: "assets[?ends_with(name,'linux-x86_64')].browser_download_url"

@@ -17,7 +17,7 @@
     deb: "{{ delta_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
   become: true
   vars:
-    app_image_query: "assets[?ends_with(name,'amd64.deb')].browser_download_url | [0]"
+    app_image_query: "assets[?ends_with(name,'amd64.deb') && !contains(name,'musl')].browser_download_url | [0]"
 
 - name: Write block in file to .gitconfig
   ansible.builtin.blockinfile:
