@@ -1,4 +1,4 @@
 ---
-git_user_dir: "{{ ansible_user_dir }}/.git"
+git_user_dir: "{{ ansible_facts['user_dir'] }}/.git"
 git_user_email: "cmuckmuck@gmail.com"
 git_user_name: "cmuck"

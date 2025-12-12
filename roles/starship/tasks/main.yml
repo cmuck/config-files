@@ -43,8 +43,8 @@
 #           eval "$(starship init {{ item.shell }} )"
 #       fi
 #   with_items:
-#     - { file: "{{ ansible_user_dir }}/.zshrc", shell: "zsh" }
-#     - { file: "{{ ansible_user_dir }}/.bashrc", shell: "bash" }
+#     - { file: "{{ ansible_facts['user_dir'] }}/.zshrc", shell: "zsh" }
+#     - { file: "{{ ansible_facts['user_dir'] }}/.bashrc", shell: "bash" }
 - name: Remove block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
@@ -54,5 +54,5 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK starship"
     block: ""
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"

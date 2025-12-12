@@ -18,8 +18,8 @@
       - yazi-fm
       - yazi-cli
     locked: true
-    path: "{{ ansible_user_dir }}"
-    executable: "{{ ansible_user_dir }}/.cargo/bin/cargo"
+    path: "{{ ansible_facts['user_dir'] }}"
+    executable: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
@@ -40,5 +40,5 @@
         rm -f -- "$tmp"
       }
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"

@@ -9,13 +9,13 @@
 
 - name: Create config dir for flameshot
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.config/Dharkael"
+    path: "{{ ansible_facts['user_dir'] }}/.config/Dharkael"
     state: directory
     mode: "0755"
 
 - name: Write flameshot configuration
   ansible.builtin.template:
     src: flameshot.ini.j2
-    dest: "{{ ansible_user_dir }}/.config/Dharkael/flameshot.ini"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/Dharkael/flameshot.ini"
     backup: true
     mode: "0644"

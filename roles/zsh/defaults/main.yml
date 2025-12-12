@@ -1,4 +1,4 @@
 ---
-zsh_fzf_dir: "{{ ansible_user_dir }}/.local/share/fzf"
+zsh_fzf_dir: "{{ ansible_facts['user_dir'] }}/.local/share/fzf"
 
-zsh_oh_my_zsh_dir: "{{ ansible_user_dir }}/.local/share/oh-my-zsh"
+zsh_oh_my_zsh_dir: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh"

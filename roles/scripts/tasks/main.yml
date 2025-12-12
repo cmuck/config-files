@@ -1,12 +1,12 @@
 ---
 - name: Create local dir
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.local/bin"
+    path: "{{ ansible_facts['user_dir'] }}/.local/bin"
     state: directory
     mode: "0755"
 
 - name: Copy bin scripts
   ansible.builtin.copy:
     src: local/bin
-    dest: "{{ ansible_user_dir }}/.local"
+    dest: "{{ ansible_facts['user_dir'] }}/.local"
     mode: preserve

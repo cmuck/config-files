@@ -1,7 +1,7 @@
 ---
 - name: Create bin directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/bin"
+    path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
 
@@ -14,5 +14,5 @@
 - name: Download kubectl binary
   ansible.builtin.get_url:
     url: "https://dl.k8s.io/release/{{ kubectl_version.content | trim }}/bin/linux/amd64/kubectl"
-    dest: "{{ ansible_user_dir }}/bin/kubectl"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/kubectl"
     mode: "0755"

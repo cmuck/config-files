@@ -7,13 +7,13 @@
 
 - name: Create bin directory
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/bin"
+    path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
 
 # - name: Find Nextcloud wildcard files
 #  find:
-#    paths:  '{{ ansible_user_dir }}/bin'
+#    paths:  '{{ ansible_facts['user_dir'] }}/bin'
 #    patterns: "^Nextcloud.*.AppImage"
 #    use_regex: true
 #  register: wildcard_files_to_delete
@@ -32,7 +32,7 @@
 - name: Download latest Nextcloud AppImage
   ansible.builtin.get_url:
     url: "{{ nextcloud_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_user_dir }}/bin/Nextcloud.AppImage"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/Nextcloud.AppImage"
     mode: "0755"
   vars:
     app_image_query: "assets[?ends_with(name,'AppImage')].browser_download_url"

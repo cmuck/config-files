@@ -23,7 +23,7 @@
   ansible.builtin.blockinfile:
     create: true
     mode: "0644"
-    path: "{{ ansible_user_dir }}/.gitconfig"
+    path: "{{ ansible_facts['user_dir'] }}/.gitconfig"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK delta_gitconfig_block"

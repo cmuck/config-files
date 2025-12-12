@@ -11,7 +11,7 @@
 - name: Copy tmux config
   ansible.builtin.copy:
     src: tmux.conf
-    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    dest: "{{ ansible_facts['user_dir'] }}/.tmux.conf"
     mode: preserve
     backup: true
 
@@ -43,8 +43,8 @@
 #         alias tc='clear; tmux clear-history; clear'
 #       fi
 #   with_items:
-#     - "{{ ansible_user_dir }}/.zshrc"
-#     - "{{ ansible_user_dir }}/.bashrc"
+#     - "{{ ansible_facts['user_dir'] }}/.zshrc"
+#     - "{{ ansible_facts['user_dir'] }}/.bashrc"
 - name: Remove block in file to rc files
   ansible.builtin.blockinfile:
     backup: true
@@ -54,11 +54,11 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK tmux"
     block: ""
   with_items:
-    - "{{ ansible_user_dir }}/.zshrc"
-    - "{{ ansible_user_dir }}/.bashrc"
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
 - name: Clone Tmux plugin manager - don't forget to execute "prefix + I"  in tmux to install plugins # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
-    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+    dest: "{{ ansible_facts['user_dir'] }}/.tmux/plugins/tpm"
     depth: 1
