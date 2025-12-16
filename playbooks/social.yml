@@ -1,0 +1,11 @@
+---
+- name: Setup machine for social
+  hosts: all
+  roles:
+    - name: Install Nextcloud client
+      role: nextcloud
+      tags: [nextcloud]
+    - name: Install discord
+      role: discord
+      tags: [discord]
+  environment: "{{ proxy_environment }}"

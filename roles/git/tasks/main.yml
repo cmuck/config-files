@@ -5,7 +5,7 @@
     name: apt_add_repo
   vars:
     apt_add_repo_key: "0xF911AB184317630C59970973E363C90F8F1B6217" # gitleaks:allow
-    apt_add_repo_url: "https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_lsb.codename }} main"
+    apt_add_repo_url: "https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_facts['lsb']['codename'] }} main"
 
 - name: Ensure git is installed
   ansible.builtin.apt:
@@ -84,12 +84,36 @@
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
     - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
+- name:  Prompt (visible) and store input
+  ansible.builtin.pause:
+    prompt: "Enter your git user name (press Enter for default {{ git_user_name }}): "
+    echo: yes
+    seconds: 10
+  register: git_user_name_input
+- name: Use default when user presses Enter
+  ansible.builtin.set_fact:
+    git_user_name_fact: "{{ (git_user_name_input.user_input | default('') | trim()) or git_user_name }}"
+- ansible.builtin.debug:
+    msg: "Using {{ git_user_name_fact }}"
+
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:
     scope: global
     name: "user.name"
     value: "{{ git_user_name }}"
   changed_when: false
+
+- name:  Prompt (visible) and store input
+  ansible.builtin.pause:
+    prompt: "Enter your git user email (press Enter for default: {{ git_user_email }}): "
+    echo: yes
+    seconds: 10
+  register: git_user_email_input
+- name: Use default when user presses Enter
+  ansible.builtin.set_fact:
+    git_user_email_fact: "{{ (git_user_email_input.user_input | default('') | trim()) or git_user_email }}"
+- ansible.builtin.debug:
+    msg: "Using {{ git_user_email_fact }}"
 
 - name: Configure user.email in ~/.gitconfig
   community.general.git_config:
