@@ -1,12 +1,11 @@
 ---
 # yamllint disable rule:line-length
-- name: Check mandatory variables
+
+ # Fail early if required variables are not provided by the caller.
+- name: Fail when required variables are missing
   ansible.builtin.fail:
-    msg: "Variable '{{ item }}' is not defined"
-  when: item not in vars
-  with_items:
-    - apt_add_repo_key
-    - apt_add_repo_url
+    msg: "Required variables 'apt_add_repo_key' and 'apt_add_repo_url' must be defined"
+  when: apt_add_repo_key is not defined or apt_add_repo_url is not defined
 
 - name: Add apt repository
   when: ansible_parent_role_names is defined

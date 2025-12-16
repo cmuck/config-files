@@ -64,11 +64,6 @@ uv sync
 ## Further development commands
 
 ```shell
-# Install locally
-uv sync
-
-# Create test coverage
 ruff format
 ruff check --fix
-mypy .
 ```

@@ -15,8 +15,7 @@
 - name: Install yazi Rust package
   community.general.cargo:
     name:
-      - yazi-fm
-      - yazi-cli
+      - yazi-build
     locked: true
     path: "{{ ansible_facts['user_dir'] }}"
     executable: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo"

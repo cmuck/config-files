@@ -44,12 +44,6 @@ Install [uv](https://docs.astral.sh/uv)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Install Python 3.12 by
-
-```shell
-uv python install 3.12
-```
-
 Create the virtual environment
 
 ```shell
