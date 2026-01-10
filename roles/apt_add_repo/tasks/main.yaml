@@ -1,7 +1,7 @@
 ---
 # yamllint disable rule:line-length
 
- # Fail early if required variables are not provided by the caller.
+# Fail early if required variables are not provided by the caller.
 - name: Assert that required variables are defined
   ansible.builtin.assert:
     that:
