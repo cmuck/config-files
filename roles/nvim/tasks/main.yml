@@ -41,7 +41,7 @@
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK nvim"
     block: |
-      export PATH="$PATH:/opt/nvim-linux64/bin"
+      export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
       command -v nvim >/dev/null && alias vim='nvim' vimdiff='nvim -d' n='nvim'
   with_items:
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
