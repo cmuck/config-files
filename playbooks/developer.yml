@@ -2,9 +2,6 @@
 - name: Setup machine for developing
   hosts: all
   roles:
-    # - name: Install Jetbrains Toolbox
-    #   role: jetbrains
-    #   tags: [jetbrains]
     - name: Install vscode
       role: vscode
       tags: [vscode]
@@ -41,9 +38,6 @@
     - name: Install git_xargs
       role: git_xargs
       tags: [git_xargs]
-    - name: Install keepassxc
-      role: keepassxc
-      tags: [keepassxc]
     - name: Ensure apps
       role: ensure_apps
       tags: [ensure-apps]

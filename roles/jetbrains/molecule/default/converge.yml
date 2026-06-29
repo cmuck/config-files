@@ -1,8 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: Include jetbrains role
-      ansible.builtin.include_role:
-        name: jetbrains
-  environment: "{{ proxy_environment }}"
