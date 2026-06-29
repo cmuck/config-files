@@ -38,7 +38,7 @@ But it's recommended to install the automatic git pre-commit hook by `pre-commit
 Example execute molecule for all roles
 
 ```shell
-./scripts/test-roles.py
+uv run cf-molecule --all-roles
 ```
 
 or use molecule on a single role
@@ -53,6 +53,42 @@ molecule --debug test
 molecule converge
 # If nothing works anymore, try to destroy running stuff
 molecule destroy
+```
+
+### CI molecule strategy
+
+CI no longer executes all roles for scheduled runs or lock-file changes.
+
+The selector is implemented in [src/config_files/config_files_molecule.py](./src/config_files/config_files_molecule.py)
+and configured in [ci.yml](./.github/workflows/ci.yml).
+
+- pull request strategy (`--strategy pr`)
+  - tests changed roles
+  - if shared infrastructure files changed (`group_vars/`, `inventory/`, `playbooks/`, `ansible.cfg`,
+    `requirements.yml`, `pyproject.toml`) the critical smoke roles are added
+  - if `uv.lock` changed, tests critical smoke roles plus a rotating bucket sample instead of all roles
+  - role count is capped with `--max-roles`
+- schedule and workflow dispatch strategy (`--strategy schedule`)
+  - tests one round-robin bucket per run via `--bucket-count` and `--bucket-index`
+  - gives full-role coverage over multiple days while keeping each run bounded
+
+Critical smoke roles are listed in
+[molecule-critical-roles.txt](./.github/molecule-critical-roles.txt).
+
+Local examples:
+
+```shell
+# Pull request-style selection from changed files
+uv run cf-molecule --strategy pr roles/git/tasks/main.yml roles/zsh/tasks/main.yml
+
+# Simulate lock-file behavior (critical smoke + rotating sample)
+uv run cf-molecule --strategy lock --bucket-count 5 --bucket-index 2
+
+# Simulate scheduled round-robin run
+uv run cf-molecule --strategy schedule --bucket-count 7 --bucket-index 0
+
+# Force full test set (manual only)
+uv run cf-molecule --all-roles
 ```
 
 ## Generate or upgrade Python dependencies

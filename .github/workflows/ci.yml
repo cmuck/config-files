@@ -1,6 +1,10 @@
 ---
 name: CI
 
+concurrency:
+  group: molecule-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   schedule:
     - cron: "0 3 * * *"
@@ -9,6 +13,7 @@ on:
 jobs:
   molecule:
     runs-on: ubuntu-24.04
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
 
@@ -36,9 +41,18 @@ jobs:
       - name: Testing roles - pull-request
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          uv run cf-molecule ${{ steps.changed-files.outputs.all_changed_files }}
+          uv run cf-molecule \
+            --strategy pr \
+            --bucket-count 5 \
+            --max-roles 12 \
+            ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Testing roles - scheduled
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
-          uv run cf-molecule
+          BUCKET_COUNT=7
+          BUCKET_INDEX=$(( (10#$(date -u +%j) - 1) % BUCKET_COUNT ))
+          uv run cf-molecule \
+            --strategy schedule \
+            --bucket-count "${BUCKET_COUNT}" \
+            --bucket-index "${BUCKET_INDEX}"
