@@ -108,7 +108,11 @@ def get_changed_files(root_dir: Path) -> List[str]:
 def get_all_roles(root_dir: Path) -> list[Path]:
     """Get all roles from the roles directory."""
     roles_dir = root_dir / "roles"
-    return [Path("roles") / d.name for d in roles_dir.iterdir() if d.is_dir() and not d.name.startswith(".")]
+    return [
+        Path("roles") / d.name
+        for d in roles_dir.iterdir()
+        if d.is_dir() and not d.name.startswith(".")
+    ]
 
 
 def get_changed_roles(changed_files: List[str]) -> List[Path]:
@@ -144,11 +148,17 @@ def select_bucket_roles(
         return sorted(roles)
 
     selected_bucket = get_bucket_index(bucket_count, bucket_index)
-    effective_seed = seed or os.environ.get("GITHUB_SHA") or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    effective_seed = (
+        seed
+        or os.environ.get("GITHUB_SHA")
+        or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    )
 
     selected: List[Path] = []
     for role in sorted(roles):
-        role_hash = hashlib.sha256(f"{effective_seed}:{role.as_posix()}".encode()).hexdigest()
+        role_hash = hashlib.sha256(
+            f"{effective_seed}:{role.as_posix()}".encode()
+        ).hexdigest()
         role_bucket = int(role_hash, 16) % bucket_count
         if role_bucket == selected_bucket:
             selected.append(role)
