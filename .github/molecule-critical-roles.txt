@@ -1,9 +1,10 @@
 # Critical smoke roles used for dependency and shared-infra changes
-roles/docker
-roles/proxy
-roles/git
-roles/zsh
-roles/nvim
-roles/kubectl
-roles/k9s
 roles/atuin
+roles/direnv
+roles/docker
+roles/gh
+roles/git
+roles/nvim
+roles/starship
+roles/tmux
+roles/zsh

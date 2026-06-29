@@ -4,21 +4,11 @@
   ansible.builtin.include_role:
     name: rust
 
-- name: Ensure build deps present
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    pkg:
-      - build-essential
-  become: true
-
-- name: Install yazi Rust package
-  community.general.cargo:
-    name:
-      - yazi-build
-    locked: true
-    path: "{{ ansible_facts['user_dir'] }}"
-    executable: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo"
+- name: Install yazi via cargo binstall
+  ansible.builtin.command:
+    cmd: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo binstall yazi-fm"
+    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/yazi"
+    chdir: "{{ ansible_facts['user_dir'] }}"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:

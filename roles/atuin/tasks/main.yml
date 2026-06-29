@@ -4,21 +4,11 @@
   ansible.builtin.include_role:
     name: rust
 
-- name: Ensure build deps present
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    pkg:
-      - build-essential
-  become: true
-
-- name: Install Atuin Rust package
-  community.general.cargo:
-    name:
-      - atuin
-    locked: true
-    path: "{{ ansible_facts['user_dir'] }}"
-    executable: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo"
+- name: Install Atuin via cargo binstall
+  ansible.builtin.command:
+    cmd: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo binstall atuin"
+    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/atuin"
+    chdir: "{{ ansible_facts['user_dir'] }}"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
