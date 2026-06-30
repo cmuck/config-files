@@ -20,8 +20,13 @@
   changed_when: rust_rustup.rc != 0
 
 - name: Install cargo-binstall
-  ansible.builtin.shell: |
-    curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh
+    dest: /tmp/install-cargo-binstall.sh
+    mode: "0755"
+
+- name: Run cargo-binstall installer
+  ansible.builtin.command: /bin/bash /tmp/install-cargo-binstall.sh
   args:
     creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo-binstall"
 
