@@ -20,4 +20,5 @@
   ansible.builtin.apt:
     name: code
     state: present
+    update_cache: true
   become: true

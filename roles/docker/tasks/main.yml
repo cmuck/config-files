@@ -23,6 +23,7 @@
   ansible.builtin.apt:
     name: docker-ce
     state: present
+    update_cache: true
   become: true
 
 - name: Ensure group docker exists
