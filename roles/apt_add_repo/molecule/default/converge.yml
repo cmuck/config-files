@@ -1,4 +1,6 @@
 ---
+# yamllint disable rule:line-length
+
 - name: Converge
   hosts: all
   tasks:
@@ -6,6 +8,8 @@
       ansible.builtin.include_role:
         name: apt_add_repo
       vars:
-        apt_add_repo_key: "0xF911AB184317630C59970973E363C90F8F1B6217" # gitleaks:allow
-        apt_add_repo_url: "https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_lsb.codename }} main"
+        apt_add_repo_key_url: >-
+          https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF911AB184317630C59970973E363C90F8F1B6217
+        apt_add_repo_url: >-
+          https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_lsb.codename }} main
   environment: "{{ proxy_environment }}"

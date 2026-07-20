@@ -5,7 +5,7 @@
 - name: Assert that required variables are defined
   ansible.builtin.assert:
     that:
-      - apt_add_repo_key is defined
+      - apt_add_repo_key_url is defined
       - apt_add_repo_url is defined
 
 - name: Add apt repository
@@ -13,7 +13,19 @@
   block:
     - name: Set facts
       ansible.builtin.set_fact:
-        apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.asc"
+        apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ apt_add_repo_key_file_extension | default('asc') }}"
+        apt_add_repo_legacy_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ 'gpg' if apt_add_repo_key_file_extension | default('asc') == 'asc' else 'asc' }}"
+
+    - name: Remove legacy apt key
+      ansible.builtin.file:
+        path: "{{ apt_add_repo_legacy_key_file }}"
+        state: absent
+      become: true
+
+    - name: Check apt key
+      ansible.builtin.stat:
+        path: "{{ apt_add_repo_key_file }}"
+      register: apt_add_repo_key_stat
 
     # - name: Install gnupg2 to handle apt key
     #   ansible.builtin.apt:
@@ -23,18 +35,13 @@
     #       - gnupg2
     #   become: true
 
-    # - name: Remove apt signing key from default keyring trusted.gpg due to deprecation warning
-    #   ansible.builtin.apt_key:
-    #     id: "{{ apt_add_repo_key }}"
-    #     state: absent
-    #   become: true
-
     - name: Download apt key
       ansible.builtin.get_url:
-        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search={{ apt_add_repo_key }}
+        url: "{{ apt_add_repo_key_url }}"
         dest: "{{ apt_add_repo_key_file }}"
         mode: "0644"
       become: true
+      when: not apt_add_repo_key_stat.stat.exists
       changed_when: false
 
     - name: Get DEB architecture
@@ -42,8 +49,19 @@
       register: apt_add_repo_deb_architecture
       changed_when: apt_add_repo_deb_architecture.rc != 0
 
+    - name: Remove legacy apt source
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/config_files-{{ ansible_parent_role_names | first }}.list"
+        state: absent
+      become: true
+
     - name: Add apt source
-      ansible.builtin.apt_repository:
-        repo: deb [arch={{ apt_add_repo_deb_architecture.stdout }} signed-by={{ apt_add_repo_key_file }}] {{ apt_add_repo_url }}
-        filename: "config_files-{{ ansible_parent_role_names | first }}"
+      ansible.builtin.deb822_repository:
+        name: "config_files-{{ ansible_parent_role_names | first }}"
+        types: deb
+        uris: "{{ apt_add_repo_url.split()[0] }}"
+        suites: "{{ apt_add_repo_url.split()[1] }}"
+        components: "{{ apt_add_repo_url.split()[2:] }}"
+        architectures: "{{ apt_add_repo_deb_architecture.stdout }}"
+        signed_by: "{{ apt_add_repo_key_file }}"
       become: true

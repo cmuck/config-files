@@ -13,7 +13,7 @@
   ansible.builtin.include_role:
     name: apt_add_repo
   vars:
-    apt_add_repo_key: "0xBC528686B50D79E339D3721CEB3E94ADBE1229CF" # gitleaks:allow
+    apt_add_repo_key_url: https://packages.microsoft.com/keys/microsoft.asc
     apt_add_repo_url: "https://packages.microsoft.com/repos/vscode stable main"
 
 - name: Install vscode
