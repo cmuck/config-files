@@ -5,15 +5,21 @@ concurrency:
   group: molecule-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-on:
+on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 3 * * *"
   pull_request:
   workflow_dispatch:
 jobs:
   molecule:
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
 
@@ -32,7 +38,11 @@ jobs:
         uses: tj-actions/changed-files@v47
 
       - name: Run pre-commit
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        if: >-
+          ${{
+            github.event_name == 'schedule' ||
+            github.event_name == 'workflow_dispatch'
+          }}
         run: |
           uv run pre-commit run --all-files
 
@@ -46,7 +56,11 @@ jobs:
             ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Testing roles - scheduled
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        if: >-
+          ${{
+            github.event_name == 'schedule' ||
+            github.event_name == 'workflow_dispatch'
+          }}
         run: |
           BUCKET_COUNT=7
           BUCKET_INDEX=$(( (10#$(date -u +%j) - 1) % BUCKET_COUNT ))
