@@ -62,9 +62,9 @@
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
-    - name: Install tmux
-      role: tmux
-      tags: [tmux]
+    - name: Install zellij
+      role: zellij
+      tags: [zellij]
     - name: Install hadolint
       role: hadolint
       tags: [hadolint]

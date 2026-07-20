@@ -6,5 +6,5 @@ roles/gh
 roles/git
 roles/nvim
 roles/starship
-roles/tmux
+roles/zellij
 roles/zsh

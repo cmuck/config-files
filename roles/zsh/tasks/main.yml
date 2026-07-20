@@ -56,7 +56,6 @@
         - { name: sudo, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo" }
         - { name: systemd, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/systemd" }
         - { name: tldr, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tldr" }
-        - { name: tmux, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux" }
         - { name: vscode, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode" }
         - { name: uv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/uv" }
         - { name: zsh-autosuggestions, comment: "https://github.com/zsh-users/zsh-autosuggestions" }
