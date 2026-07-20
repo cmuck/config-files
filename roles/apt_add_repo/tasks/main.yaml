@@ -64,4 +64,5 @@
         components: "{{ apt_add_repo_url.split()[2:] }}"
         architectures: "{{ apt_add_repo_deb_architecture.stdout }}"
         signed_by: "{{ apt_add_repo_key_file }}"
+        install_python_debian: true
       become: true
