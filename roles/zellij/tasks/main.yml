@@ -1,0 +1,104 @@
+---
+# yamllint disable rule:line-length
+- name: Check latest version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/zellij-org/zellij/releases/latest
+  register: zellij_latest
+
+- name: Create bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: Download and unarchive Zellij
+  ansible.builtin.unarchive:
+    src: "{{ zellij_latest.json | community.general.json_query(zellij_archive_query) | first }}" # noqa jinja[invalid]
+    dest: "{{ ansible_facts['user_dir'] }}/bin"
+    remote_src: true
+  vars:
+    zellij_archive_query: "assets[?name=='zellij-no-web-x86_64-unknown-linux-musl.tar.gz'].browser_download_url"
+
+- name: Copy Zellij session picker script
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['user_dir'] }}/bin/z"
+    mode: "0755"
+    content: |
+      #!/usr/bin/env bash
+      ZJ_SESSIONS=$(zellij list-sessions)
+      NO_SESSIONS=$(echo "${ZJ_SESSIONS}" | wc -l)
+
+      if [ "${NO_SESSIONS}" -ge 2 ]; then
+          zellij attach \
+              "$(echo "${ZJ_SESSIONS}" | sk --ansi)"
+      else
+          zellij attach -c
+      fi
+
+- name: Create Zellij config directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.config/zellij"
+    state: directory
+    mode: "0755"
+
+- name: Copy Zellij config
+  ansible.builtin.copy:
+    src: config.kdl
+    dest: "{{ ansible_facts['user_dir'] }}/.config/zellij/config.kdl"
+    mode: "0644"
+
+- name: Create Zellij zsh completion directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh/cache/completions"
+    state: directory
+    mode: "0755"
+
+- name: Generate Zellij zsh completion
+  ansible.builtin.command:
+    argv:
+      - "{{ ansible_facts['user_dir'] }}/bin/zellij"
+      - setup
+      - --generate-completion
+      - zsh
+  register: zellij_zsh_completion
+  changed_when: false
+
+- name: Write Zellij zsh completion
+  ansible.builtin.copy:
+    content: "{{ zellij_zsh_completion.stdout }}\n"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh/cache/completions/_zellij"
+    mode: "0644"
+
+- name: Configure Zellij zsh auto-start
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ item }}"
+    create: true
+    mode: "0600"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK zellij"
+    block: |
+      eval "$(zellij setup --generate-auto-start zsh)"
+  with_items:
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+
+- name: Check latest Skim version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/skim-rs/skim/releases/latest
+  register: zellij_skim_latest
+
+- name: Download and unarchive Skim
+  ansible.builtin.unarchive:
+    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}" # noqa jinja[invalid]
+    dest: /tmp
+    remote_src: true
+  vars:
+    skim_archive_query: "assets[?name=='skim-x86_64-unknown-linux-gnu.tar.xz'].browser_download_url"
+
+- name: Copy Skim binary
+  ansible.builtin.copy:
+    src: /tmp/skim-x86_64-unknown-linux-gnu/sk
+    dest: "{{ ansible_facts['user_dir'] }}/bin/sk"
+    mode: "0755"
+    remote_src: true
