@@ -1,0 +1,62 @@
+---
+# yamllint disable rule:line-length
+- name: Install Krew dependencies
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    pkg:
+      - git
+      - gzip
+      - tar
+  become: true
+
+- name: Set Krew release facts
+  ansible.builtin.set_fact:
+    krew_os: "{{ ansible_system | lower }}"
+    krew_arch: "{{ ({'x86_64': 'amd64', 'aarch64': 'arm64'}.get(ansible_architecture, ansible_architecture)) | regex_replace('^(arm)(64)?.*$', '\\1\\2') }}"
+
+- name: Check Krew installation
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.krew/bin/kubectl-krew"
+  register: krew_installed
+
+- name: Create temporary Krew install directory
+  when: not krew_installed.stat.exists
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: krew
+  register: krew_tmp
+
+- name: Download and unarchive Krew
+  when: not krew_installed.stat.exists
+  ansible.builtin.unarchive:
+    src: "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ krew_os }}_{{ krew_arch }}.tar.gz"
+    dest: "{{ krew_tmp.path }}"
+    remote_src: true
+
+- name: Install Krew
+  when: not krew_installed.stat.exists
+  ansible.builtin.command:
+    cmd: "./krew-{{ krew_os }}_{{ krew_arch }} install krew"
+    chdir: "{{ krew_tmp.path }}"
+    creates: "{{ ansible_facts['user_dir'] }}/.krew/bin/kubectl-krew"
+  environment:
+    HOME: "{{ ansible_facts['user_dir'] }}"
+
+- name: Remove temporary Krew install directory
+  when: not krew_installed.stat.exists
+  ansible.builtin.file:
+    path: "{{ krew_tmp.path }}"
+    state: absent
+
+- name: Configure Krew path for zsh
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+    create: true
+    mode: "0600"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK krew"
+    block: |
+      export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
