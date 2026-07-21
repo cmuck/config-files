@@ -3,8 +3,6 @@
 - name: Include apt_update role
   ansible.builtin.include_role:
     name: apt_update
-  vars:
-    apt_update_force: true
 
 - name: Ensure git is installed
   ansible.builtin.apt:

@@ -4,6 +4,7 @@
     update_cache: true
   become: true
   when: apt_update_force | default(false)
+  changed_when: false
 
 - name: Update apt cache
   ansible.builtin.apt:
@@ -13,7 +14,10 @@
   when:
     - not apt_update_force | default(false)
     - not apt_update_completed | default(false)
+  changed_when: false
 
 - name: Mark apt cache update completed
   ansible.builtin.set_fact:
     apt_update_completed: true
+  when:
+    - apt_update_force | default(false) or not apt_update_completed | default(false)
