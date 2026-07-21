@@ -35,17 +35,21 @@
       when: not brew_binary.stat.exists
       changed_when: true
 
-    - name: Add Homebrew zsh shellenv
+    - name: Add Homebrew shellenv
       ansible.builtin.blockinfile:
         backup: true
-        path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+        path: "{{ item }}"
         create: true
+        insertbefore: BOF
         mode: "0600"
         append_newline: true
         prepend_newline: true
         marker: "# {mark} ANSIBLE MANAGED BLOCK brew"
         block: |
           eval "$({{ homebrew_binary }} shellenv)"
+      with_items:
+        - "{{ ansible_facts['user_dir'] }}/.zshrc"
+        - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
     - name: Disable Homebrew analytics
       ansible.builtin.command:

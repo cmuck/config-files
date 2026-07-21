@@ -52,10 +52,10 @@
     path: "{{ krew_tmp.path }}"
     state: absent
 
-- name: Configure Krew path for zsh
+- name: Configure Krew path
   ansible.builtin.blockinfile:
     backup: true
-    path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+    path: "{{ item }}"
     create: true
     mode: "0600"
     append_newline: true
@@ -63,3 +63,6 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK krew"
     block: |
       export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+  with_items:
+    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - "{{ ansible_facts['user_dir'] }}/.bashrc"

@@ -9,14 +9,19 @@
     name: zoxide
     state: present
 
-- name: Add zoxide zsh init
+- name: Add zoxide shell init
   ansible.builtin.blockinfile:
     backup: true
-    path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+    path: "{{ item.path }}"
     create: true
     mode: "0600"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK zoxide"
     block: |
-      eval "$(zoxide init zsh)"
+      eval "$(zoxide init {{ item.shell }})"
+  with_items:
+    - path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+      shell: zsh
+    - path: "{{ ansible_facts['user_dir'] }}/.bashrc"
+      shell: bash

@@ -1,10 +1,18 @@
 ---
+- name: Force update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  when: apt_update_force | default(false)
+
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
   become: true
-  when: not apt_update_completed | default(false)
+  when:
+    - not apt_update_force | default(false)
+    - not apt_update_completed | default(false)
 
 - name: Mark apt cache update completed
   ansible.builtin.set_fact:
