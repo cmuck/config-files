@@ -5,10 +5,13 @@
     url: https://api.github.com/repos/bitwarden/clients/releases
   register: bitwarden_latest
 
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Install required dependency
   ansible.builtin.apt:
     state: present
-    update_cache: true
     pkg:
       - libnotify4
       - libxtst6

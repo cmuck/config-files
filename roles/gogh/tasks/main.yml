@@ -1,4 +1,8 @@
 ---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Install dependencies
   ansible.builtin.apt:
     state: present
@@ -9,7 +13,6 @@
       - gnome-terminal
       - meld
       - uuid-runtime
-    update_cache: true
   become: true
 
 - name: Clone gogh directory # noqa latest[git]

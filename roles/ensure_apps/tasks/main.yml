@@ -1,8 +1,11 @@
 ---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Ensure apps present
   ansible.builtin.apt:
     state: present
-    update_cache: true
     pkg:
       - autofs
       - baobab
@@ -45,8 +48,6 @@
 
 - name: Ensure up to date system
   ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600 # Seconds
     upgrade: dist
     autoclean: true
     autoremove: true

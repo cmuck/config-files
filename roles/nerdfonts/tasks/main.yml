@@ -19,10 +19,13 @@
   vars:
     app_image_query: "assets[?ends_with(name,'UbuntuMono.tar.xz') ].browser_download_url"
 
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Install fc-cache
   ansible.builtin.apt:
     state: present
-    update_cache: true
     pkg:
       - fontconfig
   become: true
