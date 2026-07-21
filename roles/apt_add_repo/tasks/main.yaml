@@ -14,7 +14,8 @@
     - name: Set facts
       ansible.builtin.set_fact:
         apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ apt_add_repo_key_file_extension | default('asc') }}"
-        apt_add_repo_legacy_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ 'gpg' if apt_add_repo_key_file_extension | default('asc') == 'asc' else 'asc' }}"
+        apt_add_repo_legacy_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ 'gpg' if apt_add_repo_key_file_extension | default('asc')
+          == 'asc' else 'asc' }}"
 
     - name: Remove legacy apt key
       ansible.builtin.file:
