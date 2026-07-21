@@ -1,8 +1,11 @@
 ---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Install rust dependencies
   ansible.builtin.apt:
     state: present
-    update_cache: true
     pkg:
       - build-essential
       - curl

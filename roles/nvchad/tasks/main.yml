@@ -1,4 +1,8 @@
 ---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
 - name: Install ripgrep, git and vim
   ansible.builtin.apt:
     state: present
@@ -6,7 +10,6 @@
       - git
       - vim
       - ripgrep
-    update_cache: true
   become: true
 
 - name: Include nvim

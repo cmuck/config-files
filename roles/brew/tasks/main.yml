@@ -8,11 +8,14 @@
         path: "{{ homebrew_binary }}"
       register: brew_binary
 
+    - name: Include apt_update role
+      ansible.builtin.include_role:
+        name: apt_update
+      when: not brew_binary.stat.exists
+
     - name: Install Homebrew dependencies
       ansible.builtin.apt:
         state: present
-        update_cache: true
-        cache_valid_time: 3600
         pkg:
           - build-essential
           - procps
