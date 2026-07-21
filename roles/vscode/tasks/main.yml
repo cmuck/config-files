@@ -22,6 +22,8 @@
 - name: Include apt_update role
   ansible.builtin.include_role:
     name: apt_update
+  vars:
+    apt_update_force: true
 
 - name: Install vscode
   ansible.builtin.apt:
