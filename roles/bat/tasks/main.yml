@@ -1,10 +1,12 @@
 ---
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
 - name: Install bat
-  ansible.builtin.apt:
+  community.general.homebrew:
     name: bat
     state: present
-    update_cache: true
-  become: true
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:

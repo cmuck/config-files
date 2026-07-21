@@ -1,23 +1,19 @@
 ---
 # yamllint disable rule:line-length
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/zellij-org/zellij/releases/latest
-  register: zellij_latest
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install zellij
+  community.general.homebrew:
+    name: zellij
+    state: present
 
 - name: Create bin directory
   ansible.builtin.file:
     path: "{{ ansible_facts['user_dir'] }}/bin"
     state: directory
     mode: "0755"
-
-- name: Download and unarchive Zellij
-  ansible.builtin.unarchive:
-    src: "{{ zellij_latest.json | community.general.json_query(zellij_archive_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_facts['user_dir'] }}/bin"
-    remote_src: true
-  vars:
-    zellij_archive_query: "assets[?name=='zellij-no-web-x86_64-unknown-linux-musl.tar.gz'].browser_download_url"
 
 - name: Copy Zellij session picker script
   ansible.builtin.copy:
@@ -56,7 +52,7 @@
 - name: Generate Zellij zsh completion
   ansible.builtin.command:
     argv:
-      - "{{ ansible_facts['user_dir'] }}/bin/zellij"
+      - "{{ homebrew_bin_path }}/zellij"
       - setup
       - --generate-completion
       - zsh

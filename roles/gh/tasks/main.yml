@@ -1,18 +1,12 @@
 ---
 # yamllint disable rule:line-length
-
-- name: "Install repo {{ ansible_role_name }}"
+- name: Include brew role
   ansible.builtin.include_role:
-    name: apt_add_repo
-  vars:
-    apt_add_repo_key_url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    apt_add_repo_key_file_extension: gpg
-    apt_add_repo_url: "https://cli.github.com/packages stable main"
+    name: brew
 
 - name: Install gh
-  ansible.builtin.apt:
-    pkg:
+  community.general.homebrew:
+    name:
       - gh
       - git
-    update_cache: true
-  become: true
+    state: present

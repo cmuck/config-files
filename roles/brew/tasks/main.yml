@@ -1,0 +1,57 @@
+---
+# yamllint disable rule:line-length
+- name: Configure Homebrew
+  when: not brew_role_completed | default(false)
+  block:
+    - name: Check if Homebrew is installed
+      ansible.builtin.stat:
+        path: "{{ homebrew_binary }}"
+      register: brew_binary
+
+    - name: Install Homebrew dependencies
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+        pkg:
+          - build-essential
+          - procps
+          - curl
+          - file
+          - git
+      become: true
+      when: not brew_binary.stat.exists
+
+    - name: Install Homebrew
+      ansible.builtin.shell: >-
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        executable: /bin/bash
+      environment:
+        NONINTERACTIVE: "1"
+      when: not brew_binary.stat.exists
+      changed_when: true
+
+    - name: Add Homebrew zsh shellenv
+      ansible.builtin.blockinfile:
+        backup: true
+        path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+        create: true
+        mode: "0600"
+        append_newline: true
+        prepend_newline: true
+        marker: "# {mark} ANSIBLE MANAGED BLOCK brew"
+        block: |
+          eval "$({{ homebrew_binary }} shellenv)"
+
+    - name: Disable Homebrew analytics
+      ansible.builtin.command:
+        argv:
+          - "{{ homebrew_binary }}"
+          - analytics
+          - "off"
+      changed_when: false
+
+    - name: Mark Homebrew role as completed
+      ansible.builtin.set_fact:
+        brew_role_completed: true

@@ -1,29 +1,12 @@
 ---
-- name: Download Starship installer
-  ansible.builtin.get_url:
-    url: https://starship.rs/install.sh
-    dest: /tmp/starship-installer.sh
-    mode: "0744"
-  changed_when: false
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Install dependencies
-  ansible.builtin.apt:
+- name: Install starship
+  community.general.homebrew:
+    name: starship
     state: present
-    update_cache: true
-    pkg:
-      - wget
-  become: true
-
-- name: Run Starship install script
-  ansible.builtin.shell: /tmp/starship-installer.sh --yes
-  changed_when: false
-  become: true
-
-- name: Remove the starship-installer.sh
-  ansible.builtin.file:
-    path: /tmp/starship-installer.sh
-    state: absent
-  changed_when: false
 
 # Block set by oh-my-zsh starship plugin
 # Enable again when plugin not used

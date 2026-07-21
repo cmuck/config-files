@@ -1,11 +1,20 @@
 ---
-- name: Install git
-  ansible.builtin.apt:
-    state: present
-    pkg:
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install nvm
+  community.general.homebrew:
+    name:
       - git
-    update_cache: true
-  become: true
+      - nvm
+    state: present
+
+- name: Create nvm directory
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.nvm"
+    state: directory
+    mode: "0755"
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
@@ -18,34 +27,14 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK nvm"
     block: |
       export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+      NVM_HOMEBREW_PREFIX="{{ homebrew_prefix }}/opt/nvm"
+      if [ -s "$NVM_HOMEBREW_PREFIX/nvm.sh" ]; then
+        \. "$NVM_HOMEBREW_PREFIX/nvm.sh"
+      fi
+      if [ -s "$NVM_HOMEBREW_PREFIX/etc/bash_completion.d/nvm" ]; then
+        \. "$NVM_HOMEBREW_PREFIX/etc/bash_completion.d/nvm"
+      fi
+      unset NVM_HOMEBREW_PREFIX
   with_items:
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
     - "{{ ansible_facts['user_dir'] }}/.bashrc"
-
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
-  register: nvm_latest
-
-- name: Download installer
-  ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest.json | community.general.json_query(tag_query) }}/install.sh" # noqa jinja[invalid]
-    dest: /tmp/nvm-installer.sh
-    mode: "u+rwx"
-  register: nvm_download
-  vars:
-    tag_query: "tag_name"
-
-- name: Run the install script
-  ansible.builtin.shell: /tmp/nvm-installer.sh
-  changed_when: nvm_download.changed
-
-- name: Install nvm dependencies
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    pkg:
-      - curl
-  become: true

@@ -1,18 +1,9 @@
 ---
-- name: Create bin directory
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/bin"
-    state: directory
-    mode: "0755"
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Get stable kubectl version
-  ansible.builtin.uri:
-    url: https://dl.k8s.io/release/stable.txt
-    return_content: true
-  register: kubectl_version
-
-- name: Download kubectl binary
-  ansible.builtin.get_url:
-    url: "https://dl.k8s.io/release/{{ kubectl_version.content | trim }}/bin/linux/amd64/kubectl"
-    dest: "{{ ansible_facts['user_dir'] }}/bin/kubectl"
-    mode: "0755"
+- name: Install kubectl
+  community.general.homebrew:
+    name: kubernetes-cli
+    state: present

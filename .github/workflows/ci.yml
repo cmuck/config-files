@@ -5,7 +5,7 @@ concurrency:
   group: molecule-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 3 * * *"
   pull_request:

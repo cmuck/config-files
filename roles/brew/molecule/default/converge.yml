@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include brew role
+      ansible.builtin.include_role:
+        name: brew
+  environment: "{{ proxy_environment }}"

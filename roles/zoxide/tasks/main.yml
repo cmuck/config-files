@@ -1,16 +1,13 @@
 ---
 # yamllint disable rule:line-length
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest
-  register: zoxide_latest
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Install zoxide from github release page
-  ansible.builtin.apt:
-    deb: "{{ zoxide_latest.json | community.general.json_query(zoxide_deb_query) }}" # noqa jinja[invalid]
-  become: true
-  vars:
-    zoxide_deb_query: "assets[?starts_with(name,'zoxide_') && ends_with(name,'_amd64.deb')].browser_download_url | [0]"
+- name: Install zoxide
+  community.general.homebrew:
+    name: zoxide
+    state: present
 
 - name: Add zoxide zsh init
   ansible.builtin.blockinfile:

@@ -1,14 +1,13 @@
 ---
 # yamllint disable rule:line-length
-- name: Include rust role
+- name: Include brew role
   ansible.builtin.include_role:
-    name: rust
+    name: brew
 
-- name: Install Atuin via cargo binstall
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo binstall atuin"
-    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/atuin"
-    chdir: "{{ ansible_facts['user_dir'] }}"
+- name: Install Atuin
+  community.general.homebrew:
+    name: atuin
+    state: present
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:
@@ -20,7 +19,6 @@
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK atuin"
     block: |
-      . "$HOME/.atuin/bin/env
       eval "$(atuin init {{ 'zsh' if item.endswith('.zshrc') else 'bash' }})"
   with_items:
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
