@@ -60,7 +60,7 @@
 
 - name: Install Python packages
   when: ensure_apps_uv_bin.stat.exists
-  ansible.builtin.command: uv tool install {{ item }}
+  ansible.builtin.command: uv tool install {{ item }} --force
   with_items:
     - aws-shell
     - cookiecutter
