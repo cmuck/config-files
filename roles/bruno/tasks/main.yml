@@ -1,36 +1,10 @@
 ---
 # yamllint disable rule:line-length
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/usebruno/bruno/releases/latest
-  register: bruno_latest
-
-- name: Create bin directory
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/bin"
-    state: directory
-    mode: "0755"
-
-- name: Download latest Bruno AppImage
-  ansible.builtin.get_url:
-    url: "{{ bruno_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
-    dest: "{{ ansible_facts['user_dir'] }}/bin/Bruno.AppImage"
-    mode: "0755"
-  vars:
-    app_image_query: "assets[?ends_with(name,'x86_64_linux.AppImage')].browser_download_url"
-
-- name: Include nvm
+- name: Include brew role
   ansible.builtin.include_role:
-    name: nvm
+    name: brew
 
-- name: Install latest Node.js
-  ansible.builtin.shell: ". {{ ansible_facts['user_dir'] }}/.nvm/nvm.sh && nvm install --lts"
-  changed_when: false
-  args:
-    executable: /bin/bash
-
-- name: Install latest Bruno CLI
-  ansible.builtin.shell: ". {{ ansible_facts['user_dir'] }}/.nvm/nvm.sh && nvm use --lts && npm install -g @usebruno/cli"
-  changed_when: false
-  args:
-    executable: /bin/bash
+- name: Install Bruno
+  community.general.homebrew:
+    name: bruno
+    state: present
