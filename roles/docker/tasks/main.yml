@@ -22,9 +22,11 @@
     apt_add_repo_key_url: "https://download.docker.com/linux/{{ ansible_facts['lsb']['id'] | lower }}/gpg"
     apt_add_repo_url: "https://download.docker.com/linux/{{ ansible_facts['lsb']['id'] | lower }} {{ ansible_facts['lsb']['codename'] }} stable"
 
-- name: Include apt_update role
+- name: Update apt cache for Docker repository
   ansible.builtin.include_role:
     name: apt_update
+  vars:
+    apt_update_force: true
 
 - name: Install docker
   ansible.builtin.apt:

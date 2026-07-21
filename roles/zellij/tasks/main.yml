@@ -65,19 +65,22 @@
     dest: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh/cache/completions/_zellij"
     mode: "0644"
 
-- name: Configure Zellij zsh auto-start
+- name: Configure Zellij auto-start
   ansible.builtin.blockinfile:
     backup: true
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     create: true
     mode: "0600"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK zellij"
     block: |
-      eval "$(zellij setup --generate-auto-start zsh)"
+      eval "$(zellij setup --generate-auto-start {{ item.shell }})"
   with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    - path: "{{ ansible_facts['user_dir'] }}/.zshrc"
+      shell: zsh
+    - path: "{{ ansible_facts['user_dir'] }}/.bashrc"
+      shell: bash
 
 - name: Check latest Skim version
   ansible.builtin.uri:
@@ -86,7 +89,7 @@
 
 - name: Download and unarchive Skim
   ansible.builtin.unarchive:
-    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}" # noqa jinja[invalid]
+    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}"  # noqa jinja[invalid]
     dest: /tmp
     remote_src: true
   vars:
