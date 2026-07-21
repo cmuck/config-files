@@ -53,6 +53,9 @@
     - name: Install zellij
       role: zellij
       tags: [zellij]
+    - name: Install zoxide
+      role: zoxide
+      tags: [zoxide]
     - name: Install hadolint
       role: hadolint
       tags: [hadolint]
