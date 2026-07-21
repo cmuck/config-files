@@ -5,6 +5,9 @@
     - name: Install zsh
       role: zsh
       tags: [zsh]
+    - name: Install brew
+      role: brew
+      tags: [brew]
     - name: Install yazi
       role: yazi
       tags: [yazi]

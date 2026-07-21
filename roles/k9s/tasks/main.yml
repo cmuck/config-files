@@ -1,12 +1,9 @@
 ---
-- name: Check latest k9s version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/derailed/k9s/releases/latest
-  register: k9s_latest
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Install k9s from github release page
-  ansible.builtin.apt:
-    deb: "{{ k9s_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
-  become: true
-  vars:
-    app_image_query: "assets[?ends_with(name,'linux_amd64.deb')].browser_download_url | [0]"
+- name: Install k9s
+  community.general.homebrew:
+    name: k9s
+    state: present

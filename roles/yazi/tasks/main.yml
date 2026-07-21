@@ -1,14 +1,13 @@
 ---
 # yamllint disable rule:line-length
-- name: Include rust role
+- name: Include brew role
   ansible.builtin.include_role:
-    name: rust
+    name: brew
 
-- name: Install yazi via cargo binstall
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo binstall yazi-fm"
-    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/yazi"
-    chdir: "{{ ansible_facts['user_dir'] }}"
+- name: Install yazi
+  community.general.homebrew:
+    name: yazi
+    state: present
 
 - name: Write block in file to rc files
   ansible.builtin.blockinfile:

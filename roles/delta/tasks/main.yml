@@ -1,23 +1,15 @@
 ---
 # yamllint disable rule:line-length
-- name: Ensure git is installed
-  ansible.builtin.apt:
-    name: git
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install delta
+  community.general.homebrew:
+    name:
+      - git
+      - git-delta
     state: present
-    update_cache: true
-  become: true
-
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/dandavison/delta/releases/latest
-  register: delta_latest
-
-- name: Install delta from github release page
-  ansible.builtin.apt:
-    deb: "{{ delta_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
-  become: true
-  vars:
-    app_image_query: "assets[?ends_with(name,'amd64.deb') && !contains(name,'musl')].browser_download_url | [0]"
 
 - name: Write block in file to .gitconfig
   ansible.builtin.blockinfile:

@@ -1,14 +1,13 @@
 ---
 # yamllint disable rule:line-length
-- name: Include rust role
+- name: Include brew role
   ansible.builtin.include_role:
-    name: rust
+    name: brew
 
-- name: Install eza via cargo binstall
-  ansible.builtin.command:
-    cmd: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo binstall eza"
-    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/eza"
-    chdir: "{{ ansible_facts['user_dir'] }}"
+- name: Install eza
+  community.general.homebrew:
+    name: eza
+    state: present
 
 # Alias set by oh-my-zsh eza plugin
 # Enable again when plugin not used
