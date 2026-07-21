@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include zoxide role
+      ansible.builtin.include_role:
+        name: zoxide
+  environment: "{{ proxy_environment }}"
