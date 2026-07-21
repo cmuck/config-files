@@ -89,7 +89,7 @@
 
 - name: Download and unarchive Skim
   ansible.builtin.unarchive:
-    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}"  # noqa jinja[invalid]
+    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}" # noqa jinja[invalid]
     dest: /tmp
     remote_src: true
   vars:

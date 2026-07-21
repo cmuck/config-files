@@ -69,7 +69,7 @@
       become: true
       register: apt_add_repo_source
 
-    - name: Mark apt cache stale  # noqa var-naming[no-role-prefix]
+    - name: Mark apt cache stale # noqa var-naming[no-role-prefix]
       ansible.builtin.set_fact:
         apt_update_completed: false
       when: apt_add_repo_source.changed
