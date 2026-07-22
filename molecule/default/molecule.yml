@@ -1,0 +1,47 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: docker
+platforms:
+  - name: ubuntu_24_04
+    image: ubuntu:24.04
+    network_mode: host
+    buildargs:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${https_proxy}"
+      no_proxy: "${no_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${https_proxy}"
+      NO_PROXY: "${no_proxy}"
+    env:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${https_proxy}"
+      no_proxy: "${no_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${https_proxy}"
+      NO_PROXY: "${no_proxy}"
+  - name: ubuntu_26_04
+    image: ubuntu:26.04
+    network_mode: host
+    buildargs:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${https_proxy}"
+      no_proxy: "${no_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${https_proxy}"
+      NO_PROXY: "${no_proxy}"
+    env:
+      http_proxy: "${http_proxy}"
+      https_proxy: "${https_proxy}"
+      no_proxy: "${no_proxy}"
+      HTTP_PROXY: "${http_proxy}"
+      HTTPS_PROXY: "${https_proxy}"
+      NO_PROXY: "${no_proxy}"
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+verifier:
+  name: ansible

@@ -55,6 +55,17 @@ molecule converge
 molecule destroy
 ```
 
+When running Molecule behind a local proxy, export the usual proxy variables before starting the test:
+
+```shell
+export http_proxy=http://127.0.0.1:<port>
+export https_proxy=http://127.0.0.1:<port>
+export no_proxy=127.0.0.1,localhost,::1
+```
+
+The role scenarios pass these variables as Docker build arguments and container environment variables. They also use
+host networking so proxy URLs bound to localhost on the host are reachable while Molecule builds the Ubuntu test images.
+
 ### CI molecule strategy
 
 CI no longer executes all roles for scheduled runs or lock-file changes.
