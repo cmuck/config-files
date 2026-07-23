@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 
 import argparse
+import contextlib
 import hashlib
+import ipaddress
 import logging
 import os
 import shlex
+import shutil
 import subprocess
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List
+from typing import Any, Generator, List
+from urllib.parse import urlparse
+
+import yaml
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,6 +23,114 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
+
+PROXY_ENV_NAMES = (
+    "http_proxy",
+    "https_proxy",
+    "no_proxy",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+)
+LOCAL_PROXY_HOSTS = {"localhost"}
+
+
+def proxy_environment_value(env: dict[str, str], name: str) -> str | None:
+    """Return a proxy environment value independent of variable casing."""
+    return env.get(name) or env.get(name.upper()) or env.get(name.lower())
+
+
+def is_local_proxy_url(proxy_url: str) -> bool:
+    """Check whether a proxy URL points at the local host."""
+    value = proxy_url.strip()
+    if not value:
+        return False
+
+    parsed_url = urlparse(value)
+    if not parsed_url.hostname and "://" not in value:
+        parsed_url = urlparse(f"http://{value}")
+
+    hostname = parsed_url.hostname
+    if not hostname:
+        return False
+
+    if hostname.lower() in LOCAL_PROXY_HOSTS:
+        return True
+
+    try:
+        return ipaddress.ip_address(hostname).is_loopback
+    except ValueError:
+        return False
+
+
+def has_local_proxy(env: dict[str, str]) -> bool:
+    """Check whether the current environment uses a loopback proxy."""
+    return any(
+        is_local_proxy_url(proxy_url)
+        for proxy_url in (
+            proxy_environment_value(env, "http_proxy"),
+            proxy_environment_value(env, "https_proxy"),
+        )
+        if proxy_url
+    )
+
+
+def normalize_proxy_environment(env: dict[str, str]) -> dict[str, str]:
+    """Set both upper- and lower-case proxy variables for Molecule interpolation."""
+    proxy_env = env.copy()
+    for name in ("http_proxy", "https_proxy", "no_proxy"):
+        value = proxy_environment_value(env, name)
+        if value:
+            proxy_env[name] = value
+            proxy_env[name.upper()] = value
+    return proxy_env
+
+
+def add_proxy_to_molecule_config(config: dict[str, Any]) -> dict[str, Any]:
+    """Add local proxy Docker options to a Molecule config."""
+    proxy_values = {name: f"${{{name}}}" for name in PROXY_ENV_NAMES}
+    for platform in config.get("platforms", []):
+        platform["network_mode"] = "host"
+        platform["buildargs"] = proxy_values
+        platform["env"] = proxy_values
+    return config
+
+
+@contextlib.contextmanager
+def molecule_scenario(
+    test_role: Path, env: dict[str, str]
+) -> Generator[tuple[str, dict[str, str]]]:
+    """Yield a Molecule scenario name and environment for this run."""
+    if not has_local_proxy(env):
+        yield "default", env
+        return
+
+    source_scenario = test_role / "molecule" / "default"
+    generated_scenario = Path(
+        tempfile.mkdtemp(prefix="cf_molecule_", dir=source_scenario.parent)
+    )
+    try:
+        shutil.copytree(
+            source_scenario, generated_scenario, symlinks=True, dirs_exist_ok=True
+        )
+        generated_config_file = generated_scenario / "molecule.yml"
+        molecule_config = yaml.safe_load(generated_config_file.read_text())
+        if generated_config_file.is_symlink():
+            generated_config_file.unlink()
+        generated_config_file.write_text(
+            yaml.safe_dump(
+                add_proxy_to_molecule_config(molecule_config),
+                explicit_start=True,
+                sort_keys=False,
+            ),
+        )
+        logger.info(
+            "Local proxy detected, using generated Molecule scenario: %s",
+            generated_scenario.name,
+        )
+        yield generated_scenario.name, normalize_proxy_environment(env)
+    finally:
+        shutil.rmtree(generated_scenario, ignore_errors=True)
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -31,6 +146,16 @@ def get_parser() -> argparse.ArgumentParser:
         "--all-roles",
         action="store_true",
         help="Test all roles regardless of changed files",
+    )
+    parser.add_argument(
+        "-r",
+        "--role",
+        "--roles",
+        action="append",
+        nargs="+",
+        default=[],
+        dest="roles",
+        help="Role name or path to test. Can be passed multiple times.",
     )
     parser.add_argument(
         "--strategy",
@@ -210,6 +335,30 @@ def limit_roles(roles: List[Path], max_roles: int) -> List[Path]:
     return sorted(roles)[:max_roles]
 
 
+def resolve_requested_roles(
+    root_dir: Path, requested_roles: List[List[str]]
+) -> List[Path]:
+    """Resolve explicitly requested roles to repository-relative role paths."""
+    role_paths: List[Path] = []
+    for role_group in requested_roles:
+        for role in role_group:
+            role_path = Path(role)
+            if len(role_path.parts) == 1:
+                role_path = Path("roles") / role_path
+            role_paths.append(role_path)
+
+    valid_roles = set(get_all_roles(root_dir))
+    resolved_roles = filter_duplicates(role_paths)
+    invalid_roles = [role for role in resolved_roles if role not in valid_roles]
+    if invalid_roles:
+        invalid_role_names = ", ".join(
+            role.as_posix() for role in sorted(invalid_roles)
+        )
+        raise ValueError(f"Unknown role(s): {invalid_role_names}")
+
+    return resolved_roles
+
+
 def select_pr_roles(
     root_dir: Path,
     changed_files: List[str],
@@ -286,18 +435,23 @@ def filter_duplicates(roles: List[Path]) -> List[Path]:
 
 def run_molecule(test_role: Path) -> None:
     """Run the molecule test command for the given role."""
-    molecule_test_cmd = "molecule test"
     env = os.environ.copy()
     # molecule-plugins/docker expects task results to include `invocation`.
     env.setdefault("ANSIBLE_INJECT_INVOCATION", "True")
-    subprocess.run(
-        shlex.split(molecule_test_cmd), check=True, cwd=str(test_role), env=env
-    )
+    with molecule_scenario(test_role, env) as (scenario_name, molecule_env):
+        molecule_test_cmd = f"molecule test --scenario-name {scenario_name}"
+        subprocess.run(
+            shlex.split(molecule_test_cmd),
+            check=True,
+            cwd=str(test_role),
+            env=molecule_env,
+        )
 
 
 def main() -> None:
     """Main function to execute the script."""
-    parsed_arguments = get_parser().parse_args()
+    parser = get_parser()
+    parsed_arguments = parser.parse_args()
     root_dir = get_root_dir()
 
     test_roles: List[Path] = []
@@ -313,7 +467,13 @@ def main() -> None:
     logger.info("Selection strategy: %s", strategy)
     logger.info("Changed files: %s", changed_files)
 
-    if parsed_arguments.all_roles:
+    if parsed_arguments.roles:
+        try:
+            test_roles = resolve_requested_roles(root_dir, parsed_arguments.roles)
+        except ValueError as exc:
+            parser.error(str(exc))
+        logger.info("Explicit roles selected: %s", test_roles)
+    elif parsed_arguments.all_roles:
         logger.info("--all-roles enabled, testing all roles")
         test_roles = get_all_roles(root_dir)
     elif strategy == "schedule":

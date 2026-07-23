@@ -55,7 +55,8 @@ molecule converge
 molecule destroy
 ```
 
-When running Molecule behind a local proxy, export the usual proxy variables before starting the test:
+When running Molecule through `cf-molecule` behind a local proxy, export the usual proxy variables before starting the
+test:
 
 ```shell
 export http_proxy=http://127.0.0.1:<port>
@@ -63,8 +64,11 @@ export https_proxy=http://127.0.0.1:<port>
 export no_proxy=127.0.0.1,localhost,::1
 ```
 
-The role scenarios pass these variables as Docker build arguments and container environment variables. They also use
-host networking so proxy URLs bound to localhost on the host are reachable while Molecule builds the Ubuntu test images.
+`cf-molecule` detects loopback proxy URLs such as `localhost`, `127.0.0.1`, and `::1`. When such a proxy is present, it
+creates a temporary Molecule scenario that passes these variables as Docker build arguments and container environment
+variables, with host networking so proxy URLs bound to localhost on the host are reachable while Molecule builds the
+Ubuntu test images. Without a loopback proxy, the default scenario is used without proxy build arguments or container
+environment variables.
 
 ### CI molecule strategy
 
@@ -89,6 +93,10 @@ Critical smoke roles are listed in
 Local examples:
 
 ```shell
+# Test specific roles by name or path
+uv run cf-molecule --roles git zsh
+uv run cf-molecule --role roles/eza --role roles/krew
+
 # Pull request-style selection from changed files
 uv run cf-molecule --strategy pr roles/git/tasks/main.yml roles/zsh/tasks/main.yml
 
