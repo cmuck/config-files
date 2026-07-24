@@ -24,6 +24,11 @@ repos:
       - id: trailing-whitespace
   - repo: local
     hooks:
+      - id: pyupgrade
+        name: pyupgrade
+        entry: uv run pyupgrade
+        language: system
+        types: [python]
       - id: ruff-format
         name: ruff-format
         entry: uv run ruff format
@@ -39,26 +44,11 @@ repos:
         entry: uv run pyright --warnings
         language: system
         types: [python]
-      - id: pyupgrade
-        name: pyupgrade
-        entry: uv run pyupgrade
-        language: system
-        types: [python]
       - id: shellcheck
         name: shellcheck
         entry: uv run shellcheck
         language: system
         types: [shell]
-      # - id: gitleaks
-      #   name: gitleaks
-      #   entry: gitleaks detect --source . -v
-      #   language: system
-      #   pass_filenames: false
-      # - id: actionlint
-      #   name: actionlint
-      #   entry: actionlint
-      #   language: system
-      #   files: \.github/workflows/.*\.(yml|yaml)$
       - id: mdformat
         name: mdformat
         entry: uv run mdformat
