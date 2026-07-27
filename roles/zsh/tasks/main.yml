@@ -38,7 +38,7 @@
         - { name: extract, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/extract" }
         - { name: eza, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/eza" }
         - { name: fzf, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf" }
-        # - { name: fzf-tab, comment: "" }
+        - { name: fzf-tab, comment: "https://github.com/aloxaf/fzf-tab" }
         - { name: gh, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gh" }
         - { name: git, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git" }
         - { name: helm, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/helm" }
