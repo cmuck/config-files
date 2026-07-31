@@ -17,7 +17,7 @@
 
 - name: Copy Zellij session picker script
   ansible.builtin.copy:
-    dest: "{{ ansible_facts['user_dir'] }}/bin/z"
+    dest: "{{ ansible_facts['user_dir'] }}/bin/zj"
     mode: "0755"
     content: |
       #!/usr/bin/env bash
