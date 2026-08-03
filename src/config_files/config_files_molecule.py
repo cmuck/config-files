@@ -10,9 +10,10 @@ import shlex
 import shutil
 import subprocess
 import tempfile
-from datetime import datetime, timezone
+from collections.abc import Generator
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Generator, List
+from typing import Any
 from urllib.parse import urlparse
 
 import yaml
@@ -209,7 +210,7 @@ def check_github_execution() -> bool:
     return bool(os.environ.get("GITHUB_EVENT_NAME"))
 
 
-def get_changed_files(root_dir: Path) -> List[str]:
+def get_changed_files(root_dir: Path) -> list[str]:
     """Get the list of changed files in the current branch."""
     cmd = "git diff --name-only HEAD..origin/master"
     try:
@@ -240,12 +241,12 @@ def get_all_roles(root_dir: Path) -> list[Path]:
     ]
 
 
-def get_changed_roles(changed_files: List[str]) -> List[Path]:
+def get_changed_roles(changed_files: list[str]) -> list[Path]:
     """Add roles that have changed files."""
     return [Path(f) for f in changed_files if f.startswith("roles/")]
 
 
-def handle_uv(changed_files: List[str]) -> bool:
+def handle_uv(changed_files: list[str]) -> bool:
     """Handle uv.lock files."""
     return any(file.endswith("uv.lock") for file in changed_files)
 
@@ -256,16 +257,16 @@ def get_bucket_index(bucket_count: int, provided: int | None) -> int:
         return 0
     if provided is not None:
         return provided % bucket_count
-    day_of_year = datetime.now(timezone.utc).timetuple().tm_yday
+    day_of_year = datetime.now(UTC).timetuple().tm_yday
     return (day_of_year - 1) % bucket_count
 
 
 def select_bucket_roles(
-    roles: List[Path],
+    roles: list[Path],
     bucket_count: int,
     bucket_index: int | None,
     seed: str | None,
-) -> List[Path]:
+) -> list[Path]:
     """Select roles by deterministic hash bucket."""
     if not roles:
         return []
@@ -274,12 +275,10 @@ def select_bucket_roles(
 
     selected_bucket = get_bucket_index(bucket_count, bucket_index)
     effective_seed = (
-        seed
-        or os.environ.get("GITHUB_SHA")
-        or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        seed or os.environ.get("GITHUB_SHA") or datetime.now(UTC).strftime("%Y-%m-%d")
     )
 
-    selected: List[Path] = []
+    selected: list[Path] = []
     for role in sorted(roles):
         role_hash = hashlib.sha256(
             f"{effective_seed}:{role.as_posix()}".encode()
@@ -290,14 +289,14 @@ def select_bucket_roles(
     return selected
 
 
-def load_critical_roles(root_dir: Path, critical_roles_file: str) -> List[Path]:
+def load_critical_roles(root_dir: Path, critical_roles_file: str) -> list[Path]:
     """Load critical roles from a config file."""
     file_path = root_dir / critical_roles_file
     if not file_path.exists():
         return []
 
     valid_roles = set(get_all_roles(root_dir))
-    critical_roles: List[Path] = []
+    critical_roles: list[Path] = []
     for raw_line in file_path.read_text().splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#"):
@@ -310,7 +309,7 @@ def load_critical_roles(root_dir: Path, critical_roles_file: str) -> List[Path]:
     return critical_roles
 
 
-def has_shared_infra_changes(changed_files: List[str]) -> bool:
+def has_shared_infra_changes(changed_files: list[str]) -> bool:
     """Detect changes that can impact many roles."""
     shared_prefixes = (
         "group_vars/",
@@ -328,7 +327,7 @@ def has_shared_infra_changes(changed_files: List[str]) -> bool:
     )
 
 
-def limit_roles(roles: List[Path], max_roles: int) -> List[Path]:
+def limit_roles(roles: list[Path], max_roles: int) -> list[Path]:
     """Limit amount of tested roles in resource-constrained contexts."""
     if max_roles <= 0:
         return roles
@@ -336,10 +335,10 @@ def limit_roles(roles: List[Path], max_roles: int) -> List[Path]:
 
 
 def resolve_requested_roles(
-    root_dir: Path, requested_roles: List[List[str]]
-) -> List[Path]:
+    root_dir: Path, requested_roles: list[list[str]]
+) -> list[Path]:
     """Resolve explicitly requested roles to repository-relative role paths."""
-    role_paths: List[Path] = []
+    role_paths: list[Path] = []
     for role_group in requested_roles:
         for role in role_group:
             role_path = Path(role)
@@ -361,13 +360,13 @@ def resolve_requested_roles(
 
 def select_pr_roles(
     root_dir: Path,
-    changed_files: List[str],
+    changed_files: list[str],
     bucket_count: int,
     bucket_index: int | None,
     max_roles: int,
     critical_roles_file: str,
     seed: str | None,
-) -> List[Path]:
+) -> list[Path]:
     """Select roles for pull request runs."""
     changed_roles = filter_duplicates(get_changed_roles(changed_files))
     if handle_uv(changed_files):
@@ -394,7 +393,7 @@ def select_schedule_roles(
     bucket_count: int,
     bucket_index: int | None,
     seed: str | None,
-) -> List[Path]:
+) -> list[Path]:
     """Select roles for scheduled/workflow_dispatch runs."""
     return select_bucket_roles(
         get_all_roles(root_dir),
@@ -417,12 +416,12 @@ def determine_strategy(parsed_arguments: argparse.Namespace) -> str:
     return "pr"
 
 
-def handle_local_run(changed_files: List[str]) -> List[Path]:
+def handle_local_run(changed_files: list[str]) -> list[Path]:
     """Handle local execution."""
     return get_changed_roles(changed_files)
 
 
-def filter_duplicates(roles: List[Path]) -> List[Path]:
+def filter_duplicates(roles: list[Path]) -> list[Path]:
     """Remove duplicate roles from the list."""
     unique_roles = set()
     for role in roles:
@@ -454,8 +453,8 @@ def main() -> None:
     parsed_arguments = parser.parse_args()
     root_dir = get_root_dir()
 
-    test_roles: List[Path] = []
-    changed_files: List[str] = []
+    test_roles: list[Path] = []
+    changed_files: list[str] = []
 
     if parsed_arguments.changed_files:
         changed_files = [file for file in parsed_arguments.changed_files if file]
@@ -520,11 +519,9 @@ def main() -> None:
 
     logger.info("Will execute %d role(s)", total_roles)
 
-    executed = 0
-    for role in unique_test_roles:
-        logger.info("Testing role: %s (%d of %d)", role, executed + 1, total_roles)
+    for executed, role in enumerate(unique_test_roles, start=1):
+        logger.info("Testing role: %s (%d of %d)", role, executed, total_roles)
         run_molecule(root_dir / role)
-        executed += 1
         remaining = total_roles - executed
         logger.info(
             "Progress: executed=%d, remaining=%d, total=%d",

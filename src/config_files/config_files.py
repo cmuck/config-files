@@ -57,9 +57,11 @@ class AnsibleFacade:
                 self._print_tree(tempdir)
                 print(f"Ansible is called with: {ansible_args}")
 
-            res = subprocess.run(shlex.split(ansible_args), cwd=str(tempdir))
-            if res.returncode != 0:
-                exit(1)
+            subprocess.run(
+                shlex.split(ansible_args),
+                cwd=str(tempdir),
+                check=True,
+            )
 
 
 def get_parser() -> argparse.ArgumentParser:
