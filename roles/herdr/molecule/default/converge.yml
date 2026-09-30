@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include herdr role
+      ansible.builtin.include_role:
+        name: herdr
+  environment: "{{ proxy_environment }}"

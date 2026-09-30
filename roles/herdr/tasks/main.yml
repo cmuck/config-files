@@ -1,0 +1,10 @@
+---
+# yamllint disable rule:line-length
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install herdr
+  community.general.homebrew:
+    name: herdr
+    state: present

@@ -65,9 +65,9 @@
     - name: Install gifgen
       role: gifgen
       tags: [gifgen]
-    - name: Install zellij
-      role: zellij
-      tags: [zellij]
+    - name: Install herdr
+      role: herdr
+      tags: [herdr]
     - name: Install zoxide
       role: zoxide
       tags: [zoxide]
