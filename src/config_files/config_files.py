@@ -3,6 +3,7 @@
 import argparse
 import shlex
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -57,11 +58,11 @@ class AnsibleFacade:
                 self._print_tree(tempdir)
                 print(f"Ansible is called with: {ansible_args}")
 
-            subprocess.run(
-                shlex.split(ansible_args),
-                cwd=str(tempdir),
-                check=True,
+            res = subprocess.run(
+                shlex.split(ansible_args), cwd=str(tempdir), check=False
             )
+            if res.returncode != 0:
+                sys.exit(1)
 
 
 def get_parser() -> argparse.ArgumentParser:
