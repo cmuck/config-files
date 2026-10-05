@@ -1,0 +1,7 @@
+{
+  // https://docs.renovatebot.com/configuration-options/#schema
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // https://docs.renovatebot.com/configuration-options/#extends
+  "extends": ["github>cmuck/renovate-config:renovate.json5"]
+}
