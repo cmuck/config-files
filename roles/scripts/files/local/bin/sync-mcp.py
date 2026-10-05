@@ -20,12 +20,14 @@ Behavior:
 
 Usage: sync-mcp.py [--dry-run]
 """
+
 import json
 import re
-import sys
 import shutil
+import sys
 import time
 from pathlib import Path
+from typing import Any
 
 CLI_CONFIG = Path.home() / ".copilot" / "mcp-config.json"
 VSCODE_CONFIG = Path.home() / ".config" / "Code" / "User" / "mcp.json"
@@ -37,11 +39,13 @@ def load_jsonc(path: Path):
     """Load JSON that may contain trailing commas (VS Code's jsonc)."""
     text = path.read_text()
     # strip // line comments (not inside strings) - simple heuristic ok for these files
-    text_no_comments = re.sub(r'(?m)^(?:[^"\n]|"(?:\\.|[^"\\])*")*?(//.*)$',
-                               lambda m: m.group(0)[:m.start(1) - m.start(0)] if m.group(1) else m.group(0),
-                               text)
+    text_no_comments = re.sub(
+        r'(?m)^(?:[^"\n]|"(?:\\.|[^"\\])*")*?(//.*)$',
+        lambda m: m.group(0)[: m.start(1) - m.start(0)] if m.group(1) else m.group(0),
+        text,
+    )
     # remove trailing commas before } or ]
-    cleaned = re.sub(r',(\s*[}\]])', r'\1', text_no_comments)
+    cleaned = re.sub(r",(\s*[}\]])", r"\1", text_no_comments)
     return json.loads(cleaned)
 
 
@@ -65,12 +69,14 @@ def cli_to_vscode_server(name, cfg):
                 if is_secret_key(k) and v not in ("", None):
                     input_id = f"{name}-{k.lower()}"
                     headers[k] = f"${{input:{input_id}}}"
-                    inputs.append({
-                        "id": input_id,
-                        "type": "promptString",
-                        "description": f"{k} for {name}",
-                        "password": True,
-                    })
+                    inputs.append(
+                        {
+                            "id": input_id,
+                            "type": "promptString",
+                            "description": f"{k} for {name}",
+                            "password": True,
+                        }
+                    )
                 else:
                     headers[k] = v
             out["headers"] = headers
@@ -86,12 +92,14 @@ def cli_to_vscode_server(name, cfg):
                 if is_secret_key(k) and v not in ("", None):
                     input_id = f"{name}-{k.lower()}"
                     env[k] = f"${{input:{input_id}}}"
-                    inputs.append({
-                        "id": input_id,
-                        "type": "promptString",
-                        "description": f"{k} for {name}",
-                        "password": True,
-                    })
+                    inputs.append(
+                        {
+                            "id": input_id,
+                            "type": "promptString",
+                            "description": f"{k} for {name}",
+                            "password": True,
+                        }
+                    )
                 else:
                     env[k] = v
             out["env"] = env
@@ -100,7 +108,7 @@ def cli_to_vscode_server(name, cfg):
 
 def vscode_to_cli_server(name, cfg):
     """Convert a VS Code servers-style entry to a mcpServers-style entry."""
-    out = {"tools": ["*"]}
+    out: dict[str, Any] = {"tools": ["*"]}
 
     if cfg.get("type") == "http":
         out["type"] = "http"
@@ -108,7 +116,9 @@ def vscode_to_cli_server(name, cfg):
         if "headers" in cfg:
             headers = {}
             for k, v in cfg["headers"].items():
-                headers[k] = "" if isinstance(v, str) and v.startswith("${input:") else v
+                headers[k] = (
+                    "" if isinstance(v, str) and v.startswith("${input:") else v
+                )
             out["headers"] = headers
     else:
         out["type"] = "stdio"
@@ -137,7 +147,11 @@ def main():
     dry_run = "--dry-run" in sys.argv
 
     cli_data = load_jsonc(CLI_CONFIG) if CLI_CONFIG.exists() else {"mcpServers": {}}
-    vsc_data = load_jsonc(VSCODE_CONFIG) if VSCODE_CONFIG.exists() else {"servers": {}, "inputs": []}
+    vsc_data = (
+        load_jsonc(VSCODE_CONFIG)
+        if VSCODE_CONFIG.exists()
+        else {"servers": {}, "inputs": []}
+    )
 
     cli_servers = cli_data.setdefault("mcpServers", {})
     vsc_servers = vsc_data.setdefault("servers", {})
@@ -186,7 +200,7 @@ def main():
         print(f"Updated {VSCODE_CONFIG} (backup: {bak})")
 
     print("\nNOTE: For servers newly added to the CLI config, secret values")
-    print("were set to \"\" placeholders - edit ~/.copilot/mcp-config.json")
+    print('were set to "" placeholders - edit ~/.copilot/mcp-config.json')
     print("to fill in real tokens.")
 
 
