@@ -27,14 +27,18 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK nvm"
     block: |
       export NVM_DIR="$HOME/.nvm"
-      NVM_HOMEBREW_PREFIX="{{ homebrew_prefix }}/opt/nvm"
-      if [ -s "$NVM_HOMEBREW_PREFIX/nvm.sh" ]; then
-        \. "$NVM_HOMEBREW_PREFIX/nvm.sh"
-      fi
-      if [ -s "$NVM_HOMEBREW_PREFIX/etc/bash_completion.d/nvm" ]; then
-        \. "$NVM_HOMEBREW_PREFIX/etc/bash_completion.d/nvm"
-      fi
-      unset NVM_HOMEBREW_PREFIX
+      # Sourcing nvm.sh costs ~1s, so load it on first use of nvm/node/npm/npx
+      _nvm_lazy() {
+        unset -f nvm node npm npx
+        \. "{{ homebrew_prefix }}/opt/nvm/nvm.sh"
+        [ -n "$BASH_VERSION" ] && [ -s "{{ homebrew_prefix }}/opt/nvm/etc/bash_completion.d/nvm" ] \
+          && \. "{{ homebrew_prefix }}/opt/nvm/etc/bash_completion.d/nvm"
+        "$@"
+      }
+      for _nvm_cmd in nvm node npm npx; do
+        eval "$_nvm_cmd() { _nvm_lazy $_nvm_cmd \"\$@\"; }"
+      done
+      unset _nvm_cmd
   with_items:
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
     - "{{ ansible_facts['user_dir'] }}/.bashrc"
