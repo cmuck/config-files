@@ -91,3 +91,7 @@ source "${ZSH}/oh-my-zsh.sh"
 
 # Unalis p required for pulumi
 unalias p
+
+if [ -f "$HOME/.zshrc_bmw" ]; then
+  . "$HOME/.zshrc_bmw"
+fi
