@@ -12,7 +12,7 @@ export FZF_BASE="{{ zsh_fzf_dir }}"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="{{ oh_my_zsh.theme }}"
+ZSH_THEME=""
 #af-magic
 #aussiegeek
 #baboom
@@ -48,32 +48,17 @@ plugins=(
 
 # More plugins at https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
 
-# Required to keep since added by fzf install script
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
-
 ### History
 
 # http://zsh.sourceforge.net/Doc/Release/Options.html#Options
-HISTFILE="${HOME}/.zsh_history" # Where to save history to disk
-HIST_STAMPS="yyyy-mm-dd"      # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HISTSIZE=10000                # How many lines of history to keep in memory
-SAVEHIST=10000                # Number of history entries to save to disk
-setopt append_history         # Append history to the history file (no overwriting)
-setopt extended_history       # Save each command’s beginning timestamp (in seconds since the epoch) and the duration (in seconds) to the history file.
-setopt hist_expire_dups_first # Deletes duplicates first before unique commands in history
-setopt hist_find_no_dups      # When searching for history entries in the line editor, do not display duplicates of a line previously found
 setopt hist_ignore_all_dups   # If a new command line being added to the history list duplicates an older one, the older command is removed from the list
 setopt hist_ignore_space      # Space before command won't add command to history
 setopt hist_reduce_blanks     # `a  b` normalizes to `a b` in history
-setopt inc_append_history     # This option works like APPEND_HISTORY except that new history lines are added to the $HISTFILE incrementally (as soon as they are entered
 setopt share_history           # Share history across terminals
-
 
 ### Common config
 
-setopt auto_pushd             # cd foo; cd bar; popd --> in foo again
 setopt no_beep                # No beep on error
-setopt no_rm_star_silent      # confirm on `rm *` (default, but let's be safe)
 setopt pipe_fail              # fail when the first command in a pipeline fails
 setopt rm_star_wait           # wait after confirmation on `rm *` to allow ^C
 
@@ -81,16 +66,12 @@ setopt rm_star_wait           # wait after confirmation on `rm *` to allow ^C
 autoload -U select-word-style
 select-word-style bash
 
-# Tab-completion
-autoload -U compinit && compinit
-
-
 ### Source
 
 source "${ZSH}/oh-my-zsh.sh"
 
-# Unalis p required for pulumi
-unalias p
+# Unalias p required for pulumi
+unalias p 2>/dev/null
 
 if [ -f "$HOME/.zshrc_bmw" ]; then
   . "$HOME/.zshrc_bmw"

@@ -18,7 +18,6 @@
     zsh_hosts_content: "{{ lookup('template', 'templates/zshrc.j2') }}"
   vars:
     oh_my_zsh:
-      theme: bira
       plugins:
         - { name: aliases, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aliases" }
         # - { name: ansible, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ansible" }
@@ -128,7 +127,7 @@
     depth: 1
 
 - name: Install fzf
-  ansible.builtin.command: ./install --all --xdg
+  ansible.builtin.command: ./install --bin --no-update-rc
   args:
     chdir: "{{ zsh_fzf_dir }}"
   changed_when: false
