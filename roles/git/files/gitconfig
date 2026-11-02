@@ -24,10 +24,20 @@
 [remote "origin"]
     prune = true
 [merge]
-    tool = mymeld
+	tool = vscode
     conflictstyle = diff3
 [mergetool "mymeld"]
     cmd = meld $LOCAL $BASE $REMOTE -o $MERGED --diff $BASE $LOCAL --diff $BASE $REMOTE --auto-merge
+[mergetool "vscode"]
+	cmd = code --wait --merge \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
+[init]
+	defaultBranch = main
+[include]
+    path = ~/.gitconfig_bmw
 
 # Alias set by oh-my-zsh git plugin
 # Enable again when plugin not used
