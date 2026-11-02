@@ -19,6 +19,9 @@
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK atuin"
     block: |
+      if [ -e "$HOME/.atuin/bin/env" ]; then
+        . "$HOME/.atuin/bin/env"
+      fi
       eval "$(atuin init {{ 'zsh' if item.endswith('.zshrc') else 'bash' }})"
   with_items:
     - "{{ ansible_facts['user_dir'] }}/.zshrc"
