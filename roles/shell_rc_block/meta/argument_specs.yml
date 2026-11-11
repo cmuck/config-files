@@ -1,0 +1,35 @@
+---
+argument_specs:
+  main:
+    short_description: Manage a marker-delimited block in the shell rc files
+    description:
+      - Adds or removes one ANSIBLE MANAGED BLOCK in each file of C(shell_rc_block_targets).
+      - >-
+        C(shell_rc_block_content) is the block text. It is deliberately not declared below, because it may reference
+        C(shell_rc_block_target.shell) and is therefore only templatable inside the loop of this role.
+        It is not needed for state C(absent).
+    options:
+      shell_rc_block_name:
+        description: Block name, used in the begin/end markers.
+        type: str
+        required: true
+      shell_rc_block_state:
+        description: Whether the block shall be present or absent.
+        type: str
+        choices: [present, absent]
+      shell_rc_block_insertbefore:
+        description: Passed to blockinfile as C(insertbefore), e.g. C(BOF). Default is to append to the file.
+        type: str
+      shell_rc_block_targets:
+        description: Files to manage together with the shell that sources them.
+        type: list
+        elements: dict
+        options:
+          path:
+            description: Absolute path of the rc file.
+            type: str
+            required: true
+          shell:
+            description: Shell name, e.g. C(zsh) or C(bash).
+            type: str
+            required: true

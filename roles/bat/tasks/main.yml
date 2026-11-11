@@ -8,18 +8,11 @@
     name: bat
     state: present
 
-- name: Write block in file to rc files
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item }}"
-    create: true
-    mode: "0600"
-    append_newline: true
-    prepend_newline: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK bat"
-    block: |
+- name: Add bat alias
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: bat
+    shell_rc_block_content: |
       command -v bat >/dev/null && alias bc="bat"
       command -v batcat >/dev/null && alias bc="batcat"
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"

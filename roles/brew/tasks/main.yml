@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Configure Homebrew
   when: not brew_role_completed | default(false)
   block:
@@ -36,20 +35,13 @@
       changed_when: true
 
     - name: Add Homebrew shellenv
-      ansible.builtin.blockinfile:
-        backup: true
-        path: "{{ item }}"
-        create: true
-        insertbefore: BOF
-        mode: "0600"
-        append_newline: true
-        prepend_newline: true
-        marker: "# {mark} ANSIBLE MANAGED BLOCK brew"
-        block: |
+      ansible.builtin.include_role:
+        name: shell_rc_block
+      vars:
+        shell_rc_block_name: brew
+        shell_rc_block_insertbefore: BOF
+        shell_rc_block_content: |
           eval "$({{ homebrew_binary }} shellenv)"
-      with_items:
-        - "{{ ansible_facts['user_dir'] }}/.zshrc"
-        - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
     - name: Disable Homebrew analytics
       ansible.builtin.command:

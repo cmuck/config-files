@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Include brew role
   ansible.builtin.include_role:
     name: brew
@@ -65,22 +64,13 @@
     dest: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh/cache/completions/_zellij"
     mode: "0644"
 
-- name: Configure Zellij auto-start
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item.path }}"
-    create: true
-    mode: "0600"
-    append_newline: true
-    prepend_newline: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK zellij"
-    block: |
-      eval "$(zellij setup --generate-auto-start {{ item.shell }})"
-  with_items:
-    - path: "{{ ansible_facts['user_dir'] }}/.zshrc"
-      shell: zsh
-    - path: "{{ ansible_facts['user_dir'] }}/.bashrc"
-      shell: bash
+- name: Add Zellij auto-start
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: zellij
+    shell_rc_block_content: |
+      eval "$(zellij setup --generate-auto-start {{ shell_rc_block_target.shell }})"
 
 - name: Check latest Skim version
   ansible.builtin.uri:

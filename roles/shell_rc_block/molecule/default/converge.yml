@@ -1,0 +1,18 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Add a shell-specific block
+      ansible.builtin.include_role:
+        name: shell_rc_block
+      vars:
+        shell_rc_block_name: molecule_shell
+        shell_rc_block_content: echo "{{ shell_rc_block_target.shell }}"
+
+    - name: Remove the stale block
+      ansible.builtin.include_role:
+        name: shell_rc_block
+      vars:
+        shell_rc_block_name: molecule_removed
+        shell_rc_block_state: absent
+  environment: "{{ proxy_environment }}"

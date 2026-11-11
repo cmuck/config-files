@@ -3,10 +3,10 @@ revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'linux2'",
-    "python_full_version == '3.14.*' and sys_platform == 'linux2'",
     "python_full_version >= '3.15' and sys_platform == 'linux'",
-    "python_full_version == '3.14.*' and sys_platform == 'linux'",
     "python_full_version >= '3.15' and sys_platform != 'linux' and sys_platform != 'linux2' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux2'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux'",
     "python_full_version == '3.14.*' and sys_platform != 'linux' and sys_platform != 'linux2' and sys_platform != 'win32'",
     "python_full_version < '3.14' and sys_platform == 'linux2'",
     "python_full_version < '3.14' and sys_platform == 'linux'",
@@ -397,6 +397,7 @@ source = { editable = "." }
 dependencies = [
     { name = "ansible" },
     { name = "jmespath" },
+    { name = "pyyaml" },
 ]
 
 [package.dev-dependencies]
@@ -420,6 +421,7 @@ dev = [
 requires-dist = [
     { name = "ansible", specifier = ">=11.1.0" },
     { name = "jmespath", specifier = ">=1.0.1" },
+    { name = "pyyaml", specifier = ">=6.0" },
 ]
 
 [package.metadata.requires-dev]

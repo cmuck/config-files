@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: "Install repo {{ ansible_role_name }}"
   ansible.builtin.include_role:
     name: apt_add_repo
@@ -21,7 +20,7 @@
       - meld
   become: true
 
-- name: Ensure {{ git_user_dir }}
+- name: "Ensure {{ git_user_dir }}"
   ansible.builtin.file:
     path: "{{ git_user_dir }}"
     state: directory
@@ -39,63 +38,25 @@
     block: "{{ lookup('ansible.builtin.file', 'gitconfig') }}"
   changed_when: false
 
-# Alias set by oh-my-zsh git plugin
-# Enable again when plugin not used
-# - name: Write block in file to rc files
-#   ansible.builtin.blockinfile:
-#     backup: true
-#     path: "{{ item }}"
-#     create: true
-#     mode: "0600"
-#     append_newline: true
-#     prepend_newline: true
-#     marker: "# {mark} ANSIBLE MANAGED BLOCK git"
-#     block: |
-#       if command -v git >/dev/null; then
-#         alias ga='git add'
-#         alias gap='git add -p'
-#         alias gs='git status'
-#         alias gpr='git pull -r'
-#         alias gl='git lg'
-#         alias glo='git log --oneline'
-#         alias gcm='git commit -m'
-#         alias pear='git pair '
-#         alias gra='git commit --amend --reset-author --no-edit'
-#         alias gco='git checkout'
-#         alias hangon='git stash save -u'
-#         alias gsp='git stash pop'
-#         alias grc='git rebase --continue'
-#         alias gclean='git clean -df'
-#         alias gup='gco main && gpr && gco -'
-#         alias unwip='git reset HEAD~'
-#         alias unroll='git reset HEAD~ --hard'
-#         alias gpfwl='git push --force-with-lease'
-#         alias glt='git describe --tags --abbrev=0'
-#       fi
-#   with_items:
-#     - "{{ ansible_facts['user_dir'] }}/.zshrc"
-#     - "{{ ansible_facts['user_dir'] }}/.bashrc"
-- name: Remove block in file to rc files
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item }}"
-    create: true
-    mode: "0600"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK git"
-    block: ""
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"
+# Aliases are set by the oh-my-zsh git plugin, so no rc block is kept.
+- name: Remove git rc block
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: git
+    shell_rc_block_state: absent
 
-- name: Prompt (visible) and store input
+- name: Prompt for git user name
   ansible.builtin.pause:
     prompt: "Enter your git user name (press Enter for default {{ git_user_name }}): "
     echo: true
     seconds: 10
   register: git_user_name_input
-- name: Use default when user presses Enter
+
+- name: Use default git user name when user presses Enter
   ansible.builtin.set_fact:
     git_user_name_fact: "{{ (git_user_name_input.user_input | default('') | trim()) or git_user_name }}"
+
 - name: Debug git user name
   ansible.builtin.debug:
     msg: "Using {{ git_user_name_fact }}"
@@ -104,18 +65,20 @@
   community.general.git_config:
     scope: global
     name: "user.name"
-    value: "{{ git_user_name }}"
+    value: "{{ git_user_name_fact }}"
   changed_when: false
 
-- name: Prompt (visible) and store input
+- name: Prompt for git user email
   ansible.builtin.pause:
-    prompt: "Enter your git user email (press Enter for default: {{ git_user_email }}): "
+    prompt: "Enter your git user email (press Enter for default {{ git_user_email }}): "
     echo: true
     seconds: 10
   register: git_user_email_input
-- name: Use default when user presses Enter
+
+- name: Use default git user email when user presses Enter
   ansible.builtin.set_fact:
     git_user_email_fact: "{{ (git_user_email_input.user_input | default('') | trim()) or git_user_email }}"
+
 - name: Debug git user email
   ansible.builtin.debug:
     msg: "Using {{ git_user_email_fact }}"
@@ -124,5 +87,5 @@
   community.general.git_config:
     scope: global
     name: "user.email"
-    value: "{{ git_user_email }}"
+    value: "{{ git_user_email_fact }}"
   changed_when: false

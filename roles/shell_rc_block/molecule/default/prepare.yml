@@ -1,0 +1,14 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Add a stale block that the role has to remove
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_facts['user_dir'] }}/{{ item }}"
+        create: true
+        mode: "0600"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK molecule_removed"
+        block: echo removed
+      loop:
+        - .zshrc
+        - .bashrc

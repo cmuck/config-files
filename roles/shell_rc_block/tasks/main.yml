@@ -1,0 +1,20 @@
+---
+# Manage one marker-delimited block in every shell rc file.
+# "create: true" is required for state "absent" as well, because blockinfile
+# fails on a missing file even when there is nothing to remove.
+- name: "Manage rc block {{ shell_rc_block_name }}"
+  ansible.builtin.blockinfile:
+    backup: true
+    path: "{{ shell_rc_block_target.path }}"
+    create: true
+    mode: "0600"
+    insertbefore: "{{ shell_rc_block_insertbefore | default(omit) }}"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ shell_rc_block_name }}"
+    block: "{{ shell_rc_block_content | default('') }}"
+    state: "{{ shell_rc_block_state }}"
+  loop: "{{ shell_rc_block_targets }}"
+  loop_control:
+    loop_var: shell_rc_block_target
+    label: "{{ shell_rc_block_target.path }}"

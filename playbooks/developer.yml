@@ -43,7 +43,7 @@
       tags: [git_xargs]
     - name: Ensure apps
       role: ensure_apps
-      tags: [ensure-apps]
+      tags: [ensure_apps]
     - name: Install docker
       role: docker
       tags: [docker]
@@ -77,7 +77,7 @@
     - name: Install bitwarden
       role: bitwarden
       tags: [bitwarden]
-    - name: Install Obsidian
+    - name: Install obsidian
       role: obsidian
       tags: [obsidian]
     - name: Install shfmt

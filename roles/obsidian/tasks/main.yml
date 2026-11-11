@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Check latest version
   ansible.builtin.uri:
     url: https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest

@@ -62,18 +62,18 @@ When installed to the local virtual environment, you can use the script by the c
 
 ```shell
 cf -h
-usage: config-files [-h] [-t TAG [TAG ...]] [-v] [-d] [-c] playbook
+usage: cf [-h] [-t TAG] [-v] [-d] [-c] playbook
 
 positional arguments:
-  playbook              Playbook from playbooks directory, e.g. "helloworld"
+  playbook           Playbook from playbooks directory, e.g. "helloworld"
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -t TAG [TAG ...], --tag TAG [TAG ...]
-                        Only tag from playbook is executed, e.g. --tag zsh git
-  -v, --verbose         Increase verbosity of ansible to level 1
-  -d, --dry-run         Execution with --check option
-  -c, --check           Executes only a syntax-check of the playbook
+options:
+  -h, --help         show this help message and exit
+  -t, --tag TAG      Only these tags of the playbook are executed. Comma separated and/or
+                     repeatable, e.g. --tag zsh,git or -t zsh -t git
+  -v, --verbose      Increase verbosity of ansible to level 1
+  -d, --dry-run      Execution with --check option
+  -c, --check        Executes only a syntax-check of the playbook
 ```
 
 ### Examples
@@ -99,7 +99,7 @@ optional arguments:
 - Execute specific tags of the playbook
 
   ```shell
-  cf -t zsh git developer
+  cf -t zsh,git developer
   ```
 
 - Increase verbosity

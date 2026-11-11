@@ -67,33 +67,24 @@
   ansible.builtin.blockinfile:
     backup: true
     create: true
-    dest: "{{ ansible_facts['user_dir'] }}/.zshrc"
+    path: "{{ ansible_facts['user_dir'] }}/.zshrc"
     insertbefore: BOF
     mode: "0600"
     append_newline: true
-    content: "{{ zsh_hosts_content }}"
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
+    block: "{{ zsh_hosts_content }}"
 
-- name: Write block in file to rc files
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item }}"
-    create: true
-    mode: "0600"
-    append_newline: true
-    prepend_newline: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK aliases"
-    block: |
+- name: Add shell aliases
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: aliases
+    shell_rc_block_content: |
       alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
       alias df='df -h'
       alias e='exit'
       alias free='free -m'
       alias hy='fc -ln 0 | awk "!a[\$0]++" | fzf --tac | xclip -selection clipboard'
       alias gh-create='gh repo create --private --source=. --remote=origin && git push -u --all && gh browse'
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"
 
 - name: Clone oh-my-zsh # noqa latest[git]
   ansible.builtin.git:
@@ -132,25 +123,13 @@
     chdir: "{{ zsh_fzf_dir }}"
   changed_when: false
 
-- name: Copy profile_block
-  ansible.builtin.copy:
-    src: profile_block
-    dest: /tmp/profile_block
-    mode: "0644"
-
-- name: Reading profile_block file and register it into profile_block variable
-  ansible.builtin.command: cat /tmp/profile_block
-  register: zsh_profile_block
-  changed_when: false
-
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['user_dir'] }}/.profile"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_zsh_block sourcing"
-    block: |
-      {{ zsh_profile_block.stdout }}
+    block: "{{ lookup('ansible.builtin.file', 'profile_block') }}"
 
 - name: Create symbolic link .zprofile
   ansible.builtin.file:

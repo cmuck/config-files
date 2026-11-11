@@ -1,0 +1,19 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Read rc files
+      ansible.builtin.slurp:
+        src: "{{ ansible_facts['user_dir'] }}/{{ item }}"
+      register: shell_rc_block_verify_files
+      loop:
+        - .zshrc
+        - .bashrc
+
+    - name: Assert blocks are rendered per shell and removed blocks are gone
+      ansible.builtin.assert:
+        that:
+          - '"echo \"zsh\"" in (shell_rc_block_verify_files.results[0].content | b64decode)'
+          - '"echo \"bash\"" in (shell_rc_block_verify_files.results[1].content | b64decode)'
+          - "'molecule_removed' not in (shell_rc_block_verify_files.results[0].content | b64decode)"
+          - "'molecule_removed' not in (shell_rc_block_verify_files.results[1].content | b64decode)"

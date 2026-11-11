@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Include brew role
   ansible.builtin.include_role:
     name: brew
@@ -9,47 +8,17 @@
     name: eza
     state: present
 
-# Alias set by oh-my-zsh eza plugin
-# Enable again when plugin not used
-# - name: Write block in file to rc files
-#   ansible.builtin.blockinfile:
-#     backup: true
-#     path: "{{ item }}"
-#     create: true
-#     mode: "0600"
-#     append_newline: true
-#     prepend_newline: true
-#     marker: "# {mark} ANSIBLE MANAGED BLOCK eza"
-#     block: |
-#       if command -v eza >/dev/null; then
-#         # Changing "ls" to "eza"
-#         alias ls='eza -al --color=always --group-directories-first' # my preferred listing
-#         alias la='eza -a --color=always --group-directories-first'  # all files and dirs
-#         alias ll='eza -l --color=always --group-directories-first'  # long format
-#         alias lt='eza -aT --color=always --group-directories-first' # tree listing
-#         alias l.='eza -a | egrep "^\."'
-#         alias ela='eza -a --group-directories-first --icons'
-#       fi
-#   with_items:
-#     - "{{ ansible_facts['user_dir'] }}/.zshrc"
-#     - "{{ ansible_facts['user_dir'] }}/.bashrc"
-- name: Remove block in file to rc files
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item }}"
-    create: true
-    mode: "0600"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK eza"
-    block: ""
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"
+# Aliases are set by the oh-my-zsh eza plugin, so no rc block is kept.
+- name: Remove eza rc block
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: eza
+    shell_rc_block_state: absent
 
-- name: Remove old exa block
-  ansible.builtin.blockinfile:
-    path: "{{ item }}"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK exa"
-    block: ""
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"
+- name: Remove old exa rc block
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: exa
+    shell_rc_block_state: absent

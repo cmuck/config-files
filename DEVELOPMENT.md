@@ -13,6 +13,37 @@ Changes shall be developed on feature-branches, tested by molecule and pre-commi
 Setup of git, usage of feature-branches and pushing is not explained in detail here, assumption is that you are familiar
 with this tool.
 
+### Writing roles
+
+- A role installs and configures one tool, named like the tool and tagged with its role name in the playbooks.
+
+- Lines in `~/.zshrc` and `~/.bashrc` are managed through the shared role `shell_rc_block`, never with a hand-written
+  `blockinfile`. The block content may use `{{ shell_rc_block_target.shell }}` for shell specific init commands:
+
+  ```yaml
+  - name: Add zoxide shell init
+    ansible.builtin.include_role:
+      name: shell_rc_block
+    vars:
+      shell_rc_block_name: zoxide
+      shell_rc_block_content: |
+        eval "$(zoxide init {{ shell_rc_block_target.shell }})"
+  ```
+
+  Use `shell_rc_block_state: absent` to remove a block that is no longer managed.
+
+- Role files are read with `lookup('ansible.builtin.file', ...)`, not copied to the target and read back.
+
+### Python modules
+
+| Module | Responsibility |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `config_files/config_files.py` | `cf`: run a playbook in a temporary workspace |
+| `config_files/config_files_molecule.py` | `cf-molecule`: command line and Molecule execution |
+| `config_files/molecule_roles.py` | which roles to test (strategies, buckets, critical) |
+| `config_files/molecule_proxy.py` | loopback proxy detection and generated scenario |
+| `config_files/repository.py` | locating the repository root |
+
 ### Check changes using `pre-commit`
 
 [pre-commit](https://pre-commit.com/) is used for several formatters and linters
@@ -74,7 +105,7 @@ environment variables.
 
 CI no longer executes all roles for scheduled runs or lock-file changes.
 
-The selector is implemented in [src/config_files/config_files_molecule.py](./src/config_files/config_files_molecule.py)
+The selector is implemented in [src/config_files/molecule_roles.py](./src/config_files/molecule_roles.py)
 and configured in [ci.yml](./.github/workflows/ci.yml).
 
 - pull request strategy (`--strategy pr`)

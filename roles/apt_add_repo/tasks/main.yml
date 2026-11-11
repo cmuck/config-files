@@ -48,7 +48,7 @@
     - name: Get DEB architecture
       ansible.builtin.command: dpkg --print-architecture
       register: apt_add_repo_deb_architecture
-      changed_when: apt_add_repo_deb_architecture.rc != 0
+      changed_when: false
 
     - name: Remove legacy apt source
       ansible.builtin.file:

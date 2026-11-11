@@ -35,7 +35,7 @@ VSCODE_CONFIG = Path.home() / ".config" / "Code" / "User" / "mcp.json"
 SECRET_HINTS = ("TOKEN", "SECRET", "PASSWORD", "PASS", "KEY", "PAT", "APIKEY")
 
 
-def load_jsonc(path: Path):
+def load_jsonc(path: Path) -> dict[str, Any]:
     """Load JSON that may contain trailing commas (VS Code's jsonc)."""
     text = path.read_text()
     # strip // line comments (not inside strings) - simple heuristic ok for these files
@@ -54,87 +54,87 @@ def is_secret_key(key: str) -> bool:
     return any(hint in up for hint in SECRET_HINTS)
 
 
-def cli_to_vscode_server(name, cfg):
-    """Convert a mcpServers-style entry to a VS Code servers-style entry.
-    Returns (server_dict, list_of_input_defs)."""
-    out = {}
-    inputs = []
+def is_http(cfg: dict[str, Any]) -> bool:
+    return cfg.get("type") == "http"
 
-    if cfg.get("type") == "http":
-        out["type"] = "http"
-        out["url"] = cfg["url"]
-        if "headers" in cfg:
-            headers = {}
-            for k, v in cfg["headers"].items():
-                if is_secret_key(k) and v not in ("", None):
-                    input_id = f"{name}-{k.lower()}"
-                    headers[k] = f"${{input:{input_id}}}"
-                    inputs.append(
-                        {
-                            "id": input_id,
-                            "type": "promptString",
-                            "description": f"{k} for {name}",
-                            "password": True,
-                        }
-                    )
-                else:
-                    headers[k] = v
-            out["headers"] = headers
-    else:
-        # stdio (or default)
-        if "command" in cfg:
-            out["command"] = cfg["command"]
-        if "args" in cfg:
-            out["args"] = cfg["args"]
-        if "env" in cfg:
-            env = {}
-            for k, v in cfg["env"].items():
-                if is_secret_key(k) and v not in ("", None):
-                    input_id = f"{name}-{k.lower()}"
-                    env[k] = f"${{input:{input_id}}}"
-                    inputs.append(
-                        {
-                            "id": input_id,
-                            "type": "promptString",
-                            "description": f"{k} for {name}",
-                            "password": True,
-                        }
-                    )
-                else:
-                    env[k] = v
-            out["env"] = env
+
+def externalize_secrets(
+    name: str, values: dict[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Replace secret values by "${input:<id>}" references.
+    Returns (new_values, list_of_input_defs)."""
+    out: dict[str, Any] = {}
+    inputs: list[dict[str, Any]] = []
+    for key, value in values.items():
+        if is_secret_key(key) and value not in ("", None):
+            input_id = f"{name}-{key.lower()}"
+            out[key] = f"${{input:{input_id}}}"
+            inputs.append(
+                {
+                    "id": input_id,
+                    "type": "promptString",
+                    "description": f"{key} for {name}",
+                    "password": True,
+                }
+            )
+        else:
+            out[key] = value
     return out, inputs
 
 
-def vscode_to_cli_server(name, cfg):
+def blank_input_references(values: dict[str, Any]) -> dict[str, Any]:
+    """Replace "${input:...}" references by empty placeholders."""
+    return {
+        key: "" if isinstance(value, str) and value.startswith("${input:") else value
+        for key, value in values.items()
+    }
+
+
+def cli_to_vscode_server(
+    name: str, cfg: dict[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Convert a mcpServers-style entry to a VS Code servers-style entry.
+    Returns (server_dict, list_of_input_defs)."""
+    out: dict[str, Any] = {}
+    inputs: list[dict[str, Any]] = []
+
+    if is_http(cfg):
+        out["type"] = "http"
+        out["url"] = cfg["url"]
+        secret_section = "headers"
+    else:
+        # stdio (or default)
+        for key in ("command", "args"):
+            if key in cfg:
+                out[key] = cfg[key]
+        secret_section = "env"
+
+    if secret_section in cfg:
+        out[secret_section], inputs = externalize_secrets(name, cfg[secret_section])
+    return out, inputs
+
+
+def vscode_to_cli_server(cfg: dict[str, Any]) -> dict[str, Any]:
     """Convert a VS Code servers-style entry to a mcpServers-style entry."""
     out: dict[str, Any] = {"tools": ["*"]}
 
-    if cfg.get("type") == "http":
+    if is_http(cfg):
         out["type"] = "http"
         out["url"] = cfg["url"]
-        if "headers" in cfg:
-            headers = {}
-            for k, v in cfg["headers"].items():
-                headers[k] = (
-                    "" if isinstance(v, str) and v.startswith("${input:") else v
-                )
-            out["headers"] = headers
+        blank_section = "headers"
     else:
         out["type"] = "stdio"
-        if "command" in cfg:
-            out["command"] = cfg["command"]
-        if "args" in cfg:
-            out["args"] = cfg["args"]
-        if "env" in cfg:
-            env = {}
-            for k, v in cfg["env"].items():
-                env[k] = "" if isinstance(v, str) and v.startswith("${input:") else v
-            out["env"] = env
+        for key in ("command", "args"):
+            if key in cfg:
+                out[key] = cfg[key]
+        blank_section = "env"
+
+    if blank_section in cfg:
+        out[blank_section] = blank_input_references(cfg[blank_section])
     return out
 
 
-def backup(path: Path):
+def backup(path: Path) -> Path | None:
     if path.exists():
         ts = time.strftime("%Y%m%d-%H%M%S")
         bak = path.with_suffix(path.suffix + f".bak.{ts}")
@@ -143,7 +143,7 @@ def backup(path: Path):
     return None
 
 
-def main():
+def main() -> None:
     dry_run = "--dry-run" in sys.argv
 
     cli_data = load_jsonc(CLI_CONFIG) if CLI_CONFIG.exists() else {"mcpServers": {}}
@@ -175,7 +175,7 @@ def main():
     # VS Code -> CLI (add servers missing in CLI)
     for name, cfg in vsc_servers.items():
         if name not in cli_servers and name not in added_to_vsc:
-            cli_servers[name] = vscode_to_cli_server(name, cfg)
+            cli_servers[name] = vscode_to_cli_server(cfg)
             added_to_cli.append(name)
 
     if not added_to_vsc and not added_to_cli:

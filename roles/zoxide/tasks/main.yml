@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Include brew role
   ansible.builtin.include_role:
     name: brew
@@ -10,18 +9,9 @@
     state: present
 
 - name: Add zoxide shell init
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item.path }}"
-    create: true
-    mode: "0600"
-    append_newline: true
-    prepend_newline: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK zoxide"
-    block: |
-      eval "$(zoxide init {{ item.shell }})"
-  with_items:
-    - path: "{{ ansible_facts['user_dir'] }}/.zshrc"
-      shell: zsh
-    - path: "{{ ansible_facts['user_dir'] }}/.bashrc"
-      shell: bash
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: zoxide
+    shell_rc_block_content: |
+      eval "$(zoxide init {{ shell_rc_block_target.shell }})"

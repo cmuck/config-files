@@ -19,8 +19,8 @@
 
 - name: Install rust and cargo
   ansible.builtin.command: /tmp/sh.rustup.rs -y --no-modify-path
-  register: rust_rustup
-  changed_when: rust_rustup.rc != 0
+  args:
+    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/rustup"
 
 - name: Install cargo-binstall
   ansible.builtin.get_url:
@@ -33,22 +33,10 @@
   args:
     creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo-binstall"
 
-- name: Copy profile_rust_block
-  ansible.builtin.copy:
-    src: profile_rust_block
-    dest: /tmp/profile_rust_block
-    mode: "0644"
-
-- name: Reading profile_rust_block file and register it into profile_rust_block variable
-  ansible.builtin.command: cat /tmp/profile_rust_block
-  register: rust_profile_rust_block
-  changed_when: false
-
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['user_dir'] }}/.profile"
     append_newline: true
     prepend_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK profile_rust_block sourcing"
-    block: |
-      {{ rust_profile_rust_block.stdout }}
+    block: "{{ lookup('ansible.builtin.file', 'profile_rust_block') }}"

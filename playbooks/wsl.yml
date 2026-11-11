@@ -1,5 +1,5 @@
 ---
-- name: Setup machine for developing
+- name: Setup WSL machine for developing
   hosts: all
   roles:
     - name: Install zsh
@@ -37,7 +37,7 @@
       tags: [git]
     - name: Ensure apps
       role: ensure_apps
-      tags: [ensure-apps]
+      tags: [ensure_apps]
     - name: Install bat
       role: bat
       tags: [bat]

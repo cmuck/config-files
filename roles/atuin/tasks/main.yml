@@ -1,5 +1,4 @@
 ---
-# yamllint disable rule:line-length
 - name: Include brew role
   ansible.builtin.include_role:
     name: brew
@@ -9,32 +8,25 @@
     name: atuin
     state: present
 
-- name: Write block in file to rc files
-  ansible.builtin.blockinfile:
-    backup: true
-    path: "{{ item }}"
-    create: true
-    mode: "0600"
-    append_newline: true
-    prepend_newline: true
-    marker: "# {mark} ANSIBLE MANAGED BLOCK atuin"
-    block: |
+- name: Add Atuin shell init
+  ansible.builtin.include_role:
+    name: shell_rc_block
+  vars:
+    shell_rc_block_name: atuin
+    shell_rc_block_content: |
       if [ -e "$HOME/.atuin/bin/env" ]; then
         . "$HOME/.atuin/bin/env"
       fi
-      eval "$(atuin init {{ 'zsh' if item.endswith('.zshrc') else 'bash' }})"
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.zshrc"
-    - "{{ ansible_facts['user_dir'] }}/.bashrc"
+      eval "$(atuin init {{ shell_rc_block_target.shell }})"
 
-- name: Ensure ansible config directory exists
+- name: Ensure Atuin config directory exists
   ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/.config/ansible"
+    path: "{{ ansible_facts['user_dir'] }}/.config/atuin"
     state: directory
     mode: "0700"
 
-- name: Copy config.toml to ansible config directory
+- name: Copy config.toml to Atuin config directory
   ansible.builtin.copy:
     src: config.toml
-    dest: "{{ ansible_facts['user_dir'] }}/.config/ansible/config.toml"
+    dest: "{{ ansible_facts['user_dir'] }}/.config/atuin/config.toml"
     mode: "0600"
