@@ -1,23 +1,16 @@
 ---
-- name: Force update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-  become: true
-  when: apt_update_force | default(false)
-  changed_when: false
-
+# The cache is updated once per play, respecting cache_valid_time.
+# apt_add_repo sets apt_update_stale when a source changed; then the cache is
+# updated regardless of its age, so packages of the new source are found.
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
-    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+    cache_valid_time: "{{ omit if apt_update_stale | default(false) else apt_update_cache_valid_time | default(3600) }}"
   become: true
-  when:
-    - not apt_update_force | default(false)
-    - not apt_update_completed | default(false)
+  when: apt_update_stale | default(false) or not apt_update_completed | default(false)
   changed_when: false
 
 - name: Mark apt cache update completed
   ansible.builtin.set_fact:
     apt_update_completed: true
-  when:
-    - apt_update_force | default(false) or not apt_update_completed | default(false)
+    apt_update_stale: false

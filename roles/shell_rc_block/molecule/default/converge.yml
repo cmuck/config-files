@@ -2,12 +2,12 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Add a shell-specific block
+    - name: Add a block
       ansible.builtin.include_role:
         name: shell_rc_block
       vars:
-        shell_rc_block_name: molecule_shell
-        shell_rc_block_content: echo "{{ shell_rc_block_target.shell }}"
+        shell_rc_block_name: molecule_added
+        shell_rc_block_content: echo "molecule added"
 
     - name: Remove the stale block
       ansible.builtin.include_role:

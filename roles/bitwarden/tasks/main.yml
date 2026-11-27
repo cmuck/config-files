@@ -1,27 +1,17 @@
 ---
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/bitwarden/clients/releases
-  register: bitwarden_latest
-
-- name: Include apt_update role
+- name: Include brew role
   ansible.builtin.include_role:
-    name: apt_update
+    name: brew
 
-- name: Install required dependency
+# Bitwarden used to be installed from the GitHub deb package.
+- name: Remove Bitwarden deb package
   ansible.builtin.apt:
+    name: bitwarden
+    state: absent
+  become: true
+
+- name: Install Bitwarden
+  community.general.homebrew_cask:
+    name: bitwarden
+    path: "{{ homebrew_bin_path }}"
     state: present
-    pkg:
-      - libnotify4
-      - libxtst6
-      - libnss3
-      - libsecret-1-0
-      - libxss1
-  become: true
-
-- name: Install latest bitwarden deb package
-  ansible.builtin.apt:
-    deb: "{{ bitwarden_latest.json | community.general.json_query(app_image_query) }}" # noqa jinja[invalid]
-  vars:
-    app_image_query: "assets[?ends_with(name,'-amd64.deb')].browser_download_url"
-  become: true

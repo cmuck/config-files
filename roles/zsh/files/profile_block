@@ -14,9 +14,3 @@ pathedit()
 pathedit -p "/usr/local/bin"
 pathedit -p "$HOME/bin"
 pathedit -p "$HOME/.local/bin"
-
-# Default programs
-if command -v nvim &>/dev/null; then
-    export EDITOR="nvim"
-    export VISUAL="code"
-fi

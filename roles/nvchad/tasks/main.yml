@@ -16,19 +16,15 @@
   ansible.builtin.include_role:
     name: nvim
 
-- name: Remove config directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - "{{ ansible_facts['user_dir'] }}/.config/nvim"
-    - "{{ ansible_facts['user_dir'] }}/.local/share/nvim"
-    - "{{ ansible_facts['user_dir'] }}/.cache/nvim"
-  changed_when: false
+# An existing nvim config is never touched, so local customizations survive.
+- name: Check nvim config directory
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['user_dir'] }}/.config/nvim"
+  register: nvchad_config_dir
 
 - name: Install NvChad from https://nvchad.com/ # noqa latest[git]
   ansible.builtin.git:
     repo: https://github.com/NvChad/starter
     dest: "{{ ansible_facts['user_dir'] }}/.config/nvim"
     depth: 1
-  changed_when: false
+  when: not nvchad_config_dir.stat.exists

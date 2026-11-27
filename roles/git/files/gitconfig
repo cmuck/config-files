@@ -3,7 +3,13 @@
 [color]
     ui = true
 [credential]
-    helper = store
+    helper = cache --timeout=86400
+[credential "https://github.com"]
+    helper =
+    helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+    helper =
+    helper = !gh auth git-credential
 [core]
     attributesfile = ~/.gitattributes
     autocrlf = input
@@ -15,7 +21,7 @@
 [push]
     default = current
 [rebase]
-    autosqash = true
+    autosquash = true
     autostash = true
 [clean]
     requireForce = false

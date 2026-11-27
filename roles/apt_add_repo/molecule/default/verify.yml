@@ -1,9 +1,24 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
   tasks:
-    - name: Example assertion
+    - name: Check key and source files
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      register: apt_add_repo_verify_files
+      loop:
+        - /usr/share/keyrings/config_files-git-core.asc
+        - /etc/apt/sources.list.d/config_files-git-core.sources
+
+    - name: Assert key and source files exist
       ansible.builtin.assert:
-        that: true
+        that: apt_add_repo_verify_files.results | map(attribute='stat.exists') | min
+
+    - name: Check that apt resolves the repository
+      ansible.builtin.command: apt-cache policy git
+      register: apt_add_repo_verify_policy
+      changed_when: false
+
+    - name: Assert repository is known to apt
+      ansible.builtin.assert:
+        that: "'ppa.launchpadcontent.net/git-core' in apt_add_repo_verify_policy.stdout"

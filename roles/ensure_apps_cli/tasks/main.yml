@@ -3,67 +3,54 @@
   ansible.builtin.include_role:
     name: apt_update
 
-- name: Ensure apps present
+- name: Ensure CLI apps present
   ansible.builtin.apt:
     state: present
     pkg:
       - autofs
-      - baobab
       - build-essential
       - cifs-utils
       - curl
-      - dconf-editor
-      - direnv # Hook required see https://direnv.net/docs/hook.html - set by zsh role plugin
-      - gparted
-      - gthumb
       - htop
       - iftop
       - iotop
       - iperf3
-      - kazam
       - ncdu
       - nmap
       - openconnect
-      - peek
-      - pitivi
-      - preload
       - ripgrep
       - safe-rm
       - shellcheck
-      - timeshift
       - trash-cli
       - vim
   become: true
 
-- name: Ensure apps absent
+- name: Ensure CLI apps absent
   ansible.builtin.apt:
     state: absent
     pkg:
-      - dmenu
+      - direnv # installed by the direnv role via Homebrew
       - pipx
-      - rofi
       - silversearcher-ag
-      - terminator
-  become: true
-
-- name: Ensure up to date system
-  ansible.builtin.apt:
-    upgrade: dist
-    autoclean: true
-    autoremove: true
   become: true
 
 - name: Check if uv is installed
   ansible.builtin.stat:
     path: "{{ ansible_facts['user_dir'] }}/.local/bin/uv"
-  register: ensure_apps_uv_bin
+  register: ensure_apps_cli_uv_bin
 
-- name: Install Python packages
-  when: ensure_apps_uv_bin.stat.exists
-  ansible.builtin.command: uv tool install {{ item }} --force
-  with_items:
+- name: Install Python tools
+  when: ensure_apps_cli_uv_bin.stat.exists
+  ansible.builtin.command:
+    argv:
+      - "{{ ensure_apps_cli_uv_bin.stat.path }}"
+      - tool
+      - install
+      - "{{ item }}"
+  loop:
     - aws-shell
     - cookiecutter
     - poetry
     - tldr
-  changed_when: false
+  register: ensure_apps_cli_uv_install
+  changed_when: "'is already installed' not in ensure_apps_cli_uv_install.stderr"

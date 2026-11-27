@@ -7,69 +7,54 @@
     that:
       - apt_add_repo_key_url is defined
       - apt_add_repo_url is defined
+      - apt_add_repo_name | length > 0
+    fail_msg: apt_add_repo_key_url and apt_add_repo_url are required; apt_add_repo_name is required when not included by a role
 
-- name: Add apt repository
-  when: ansible_parent_role_names is defined
-  block:
-    - name: Set facts
-      ansible.builtin.set_fact:
-        apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ apt_add_repo_key_file_extension | default('asc') }}"
-        apt_add_repo_legacy_key_file: "/usr/share/keyrings/config_files-{{ ansible_parent_role_names | first }}.{{ 'gpg' if apt_add_repo_key_file_extension | default('asc')
-          == 'asc' else 'asc' }}"
+- name: Set facts
+  ansible.builtin.set_fact:
+    apt_add_repo_key_file: "/usr/share/keyrings/config_files-{{ apt_add_repo_name }}.{{ apt_add_repo_key_file_extension | default('asc') }}"
+    apt_add_repo_legacy_key_file: "/usr/share/keyrings/config_files-{{ apt_add_repo_name }}.{{ 'gpg' if apt_add_repo_key_file_extension | default('asc') == 'asc'
+      else 'asc' }}"
 
-    - name: Remove legacy apt key
-      ansible.builtin.file:
-        path: "{{ apt_add_repo_legacy_key_file }}"
-        state: absent
-      become: true
+- name: Remove legacy apt key
+  ansible.builtin.file:
+    path: "{{ apt_add_repo_legacy_key_file }}"
+    state: absent
+  become: true
 
-    - name: Check apt key
-      ansible.builtin.stat:
-        path: "{{ apt_add_repo_key_file }}"
-      register: apt_add_repo_key_stat
+# get_url only downloads when the key file does not exist yet.
+- name: Download apt key
+  ansible.builtin.get_url:
+    url: "{{ apt_add_repo_key_url }}"
+    dest: "{{ apt_add_repo_key_file }}"
+    mode: "0644"
+  become: true
 
-    # - name: Install gnupg2 to handle apt key
-    #   ansible.builtin.apt:
-    #     state: present
-    #     update_cache: true
-    #     pkg:
-    #       - gnupg2
-    #   become: true
+- name: Get DEB architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: apt_add_repo_deb_architecture
+  changed_when: false
 
-    - name: Download apt key
-      ansible.builtin.get_url:
-        url: "{{ apt_add_repo_key_url }}"
-        dest: "{{ apt_add_repo_key_file }}"
-        mode: "0644"
-      become: true
-      when: not apt_add_repo_key_stat.stat.exists
-      changed_when: false
+- name: Remove legacy apt source
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/config_files-{{ apt_add_repo_name }}.list"
+    state: absent
+  become: true
 
-    - name: Get DEB architecture
-      ansible.builtin.command: dpkg --print-architecture
-      register: apt_add_repo_deb_architecture
-      changed_when: false
+- name: Add apt source
+  ansible.builtin.deb822_repository:
+    name: "config_files-{{ apt_add_repo_name }}"
+    types: deb
+    uris: "{{ apt_add_repo_url.split()[0] }}"
+    suites: "{{ apt_add_repo_url.split()[1] }}"
+    components: "{{ apt_add_repo_url.split()[2:] }}"
+    architectures: "{{ apt_add_repo_deb_architecture.stdout }}"
+    signed_by: "{{ apt_add_repo_key_file }}"
+    install_python_debian: true
+  become: true
+  register: apt_add_repo_source
 
-    - name: Remove legacy apt source
-      ansible.builtin.file:
-        path: "/etc/apt/sources.list.d/config_files-{{ ansible_parent_role_names | first }}.list"
-        state: absent
-      become: true
-
-    - name: Add apt source
-      ansible.builtin.deb822_repository:
-        name: "config_files-{{ ansible_parent_role_names | first }}"
-        types: deb
-        uris: "{{ apt_add_repo_url.split()[0] }}"
-        suites: "{{ apt_add_repo_url.split()[1] }}"
-        components: "{{ apt_add_repo_url.split()[2:] }}"
-        architectures: "{{ apt_add_repo_deb_architecture.stdout }}"
-        signed_by: "{{ apt_add_repo_key_file }}"
-        install_python_debian: true
-      become: true
-      register: apt_add_repo_source
-
-    - name: Mark apt cache stale # noqa var-naming[no-role-prefix]
-      ansible.builtin.set_fact:
-        apt_update_completed: false
-      when: apt_add_repo_source.changed
+- name: Mark apt cache stale # noqa var-naming[no-role-prefix]
+  ansible.builtin.set_fact:
+    apt_update_stale: true
+  when: apt_add_repo_source.changed

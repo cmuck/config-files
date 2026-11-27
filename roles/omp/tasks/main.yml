@@ -1,0 +1,9 @@
+---
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install omp
+  community.general.homebrew:
+    name: can1357/tap/omp
+    state: present

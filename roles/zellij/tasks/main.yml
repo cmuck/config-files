@@ -3,9 +3,11 @@
   ansible.builtin.include_role:
     name: brew
 
-- name: Install zellij
+- name: Install zellij and skim
   community.general.homebrew:
-    name: zellij
+    name:
+      - sk # session picker of the zj script
+      - zellij
     state: present
 
 - name: Create bin directory
@@ -70,24 +72,10 @@
   vars:
     shell_rc_block_name: zellij
     shell_rc_block_content: |
-      eval "$(zellij setup --generate-auto-start {{ shell_rc_block_target.shell }})"
+      eval "$(zellij setup --generate-auto-start zsh)"
 
-- name: Check latest Skim version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/skim-rs/skim/releases/latest
-  register: zellij_skim_latest
-
-- name: Download and unarchive Skim
-  ansible.builtin.unarchive:
-    src: "{{ zellij_skim_latest.json | community.general.json_query(skim_archive_query) | first }}" # noqa jinja[invalid]
-    dest: /tmp
-    remote_src: true
-  vars:
-    skim_archive_query: "assets[?name=='skim-x86_64-unknown-linux-gnu.tar.xz'].browser_download_url"
-
-- name: Copy Skim binary
-  ansible.builtin.copy:
-    src: /tmp/skim-x86_64-unknown-linux-gnu/sk
-    dest: "{{ ansible_facts['user_dir'] }}/bin/sk"
-    mode: "0755"
-    remote_src: true
+# Skim used to be downloaded from the GitHub release.
+- name: Remove downloaded Skim binary
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/bin/sk"
+    state: absent

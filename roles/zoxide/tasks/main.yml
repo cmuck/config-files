@@ -14,4 +14,4 @@
   vars:
     shell_rc_block_name: zoxide
     shell_rc_block_content: |
-      eval "$(zoxide init {{ shell_rc_block_target.shell }})"
+      eval "$(zoxide init zsh)"

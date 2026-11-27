@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: all
-  tasks:
-    - name: Include gifgen
-      ansible.builtin.include_role:
-        name: gifgen

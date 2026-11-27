@@ -1,0 +1,26 @@
+---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
+- name: Ensure desktop apps present
+  ansible.builtin.apt:
+    state: present
+    pkg:
+      - baobab
+      - dconf-editor
+      - gparted
+      - gthumb
+      - pitivi
+      - preload
+      - timeshift
+  become: true
+
+- name: Ensure desktop apps absent
+  ansible.builtin.apt:
+    state: absent
+    pkg:
+      - dmenu
+      - rofi
+      - terminator
+  become: true

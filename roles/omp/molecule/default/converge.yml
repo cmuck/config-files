@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Include ensure_apps role
+    - name: Include omp role
       ansible.builtin.include_role:
-        name: ensure_apps
+        name: omp
   environment: "{{ proxy_environment }}"

@@ -5,8 +5,12 @@
     state: directory
     mode: "0755"
 
+# Copied per file, so directories such as __pycache__ are not deployed.
 - name: Copy bin scripts
   ansible.builtin.copy:
-    src: local/bin
-    dest: "{{ ansible_facts['user_dir'] }}/.local"
+    src: "{{ item }}"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/bin/"
     mode: preserve
+  loop: "{{ lookup('ansible.builtin.fileglob', 'local/bin/*', wantlist=True) }}"
+  loop_control:
+    label: "{{ item | basename }}"

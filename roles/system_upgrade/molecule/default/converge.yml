@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include system_upgrade role
+      ansible.builtin.include_role:
+        name: system_upgrade
+  environment: "{{ proxy_environment }}"

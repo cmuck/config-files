@@ -5,9 +5,7 @@
 
 - name: Install delta
   community.general.homebrew:
-    name:
-      - git
-      - git-delta
+    name: git-delta
     state: present
 
 - name: Write block in file to .gitconfig
