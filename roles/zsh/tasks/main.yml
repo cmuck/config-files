@@ -13,56 +13,6 @@
       - zsh
   become: true
 
-- name: Generate zshrc content
-  ansible.builtin.set_fact:
-    zsh_hosts_content: "{{ lookup('template', 'templates/zshrc.j2') }}"
-  vars:
-    oh_my_zsh:
-      plugins:
-        - { name: aliases, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aliases" }
-        # - { name: ansible, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ansible" }
-        # - { name: aws, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/aws" }
-        - { name: colored-man-pages, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages" }
-        # - { name: command-not-found, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/command-not-found" }
-        - { name: common-aliases, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases" }
-        # - { name: copybuffer, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copybuffer" }
-        # - { name: copyfile, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile" }
-        # - { name: copypath, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath" }
-        # - { name: debian, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/debian" }
-        # - { name: direnv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/direnv" }
-        # - { name: dirhistory, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dirhistory" }
-        - { name: docker, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker" }
-        - { name: docker-compose, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker-compose" }
-        # - { name: dotenv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dotenv" }
-        - { name: extract, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/extract" }
-        - { name: eza, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/eza" }
-        - { name: fzf, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf" }
-        - { name: fzf-tab, comment: "https://github.com/aloxaf/fzf-tab" }
-        - { name: gh, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/gh" }
-        - { name: git, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git" }
-        - { name: helm, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/helm" }
-        # - { name: history, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/history" }
-        # - { name: jfrog, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jfrog" }
-        # - { name: jsontools, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools" }
-        - { name: kubectl, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl" }
-        - { name: minikube, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/minikube" }
-        - { name: nmap, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nmap" }
-        # - { name: pip, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pip" }
-        # - { name: poetry, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/poetry" }
-        # - { name: pre-commit, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pre-commit" }
-        - { name: rsync, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rsync" }
-        # - { name: rust, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/rust" }
-        - { name: ssh, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh" }
-        - { name: ssh-agent, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ssh-agent" }
-        - { name: starship, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/starship" }
-        # - { name: sudo, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo" }
-        - { name: systemd, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/systemd" }
-        - { name: tldr, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tldr" }
-        # - { name: vscode, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode" }
-        - { name: uv, comment: "https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/uv" }
-        - { name: zsh-autosuggestions, comment: "https://github.com/zsh-users/zsh-autosuggestions" }
-        - { name: zsh-syntax-highlighting, comment: "https://github.com/zsh-users/zsh-syntax-highlighting" }
-
 - name: Write .zshrc based on template
   ansible.builtin.blockinfile:
     backup: true
@@ -71,7 +21,7 @@
     insertbefore: BOF
     mode: "0600"
     append_newline: true
-    block: "{{ zsh_hosts_content }}"
+    block: "{{ lookup('ansible.builtin.template', 'zshrc.j2') }}"
 
 - name: Add shell aliases
   ansible.builtin.include_role:
@@ -94,7 +44,7 @@
 - name: Clone zsh-autosuggestions plugin to oh-my-zsh directory
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
-    version: v0.7.0
+    version: v0.7.1
     dest: "{{ zsh_oh_my_zsh_dir }}/custom/plugins/zsh-autosuggestions"
     depth: 1
 
@@ -116,12 +66,19 @@
     repo: https://github.com/junegunn/fzf.git
     dest: "{{ zsh_fzf_dir }}"
     depth: 1
+  register: zsh_fzf_clone
+
+- name: Check fzf binary
+  ansible.builtin.stat:
+    path: "{{ zsh_fzf_dir }}/bin/fzf"
+  register: zsh_fzf_bin
 
 - name: Install fzf
   ansible.builtin.command: ./install --bin --no-update-rc
   args:
     chdir: "{{ zsh_fzf_dir }}"
-  changed_when: false
+  when: zsh_fzf_clone.changed or not zsh_fzf_bin.stat.exists
+  changed_when: true
 
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
@@ -137,25 +94,24 @@
     dest: "{{ ansible_facts['user_dir'] }}/.zprofile"
     state: link
 
-- name: Ensure ansible user exists in /etc/passwd
-  ansible.builtin.lineinfile:
-    path: /etc/passwd
-    regexp: "^{{ ansible_facts['user_id'] }}.*"
-    state: absent
-  check_mode: true
-  changed_when: false
-  register: zsh_user
+# Only local users can get their shell changed by the user module, e.g. no LDAP users.
+- name: Look up user in /etc/passwd
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ ansible_facts['user_id'] }}"
+    service: files
+    fail_key: false
 
 - name: Set default shell for users
-  when: (zsh_user is defined) and (zsh_user.found | int > 0)
+  when: ansible_facts['getent_passwd'][ansible_facts['user_id']] is not none
   ansible.builtin.user:
     name: "{{ ansible_facts['user_id'] }}"
     shell: /usr/bin/zsh
   become: true
 
 - name: Clean up old installation paths
-  ansible.legacy.include_tasks: delete_dir.yml
-  with_items:
+  ansible.builtin.include_tasks: delete_dir.yml
+  loop:
     - "{{ ansible_facts['user_dir'] }}/.fzf"
     - "{{ ansible_facts['user_dir'] }}/.oh-my-zsh"
     - "{{ ansible_facts['user_dir'] }}/.config/zsh"

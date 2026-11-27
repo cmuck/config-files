@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Include ensure_apps_desktop role
+      ansible.builtin.include_role:
+        name: ensure_apps_desktop
+  environment: "{{ proxy_environment }}"

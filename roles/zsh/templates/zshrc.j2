@@ -41,7 +41,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-{% for plugin in oh_my_zsh.plugins %}
+{% for plugin in zsh_oh_my_zsh_plugins %}
   {{ plugin.name }} # {{ plugin.comment }}
 {% endfor %}
 )

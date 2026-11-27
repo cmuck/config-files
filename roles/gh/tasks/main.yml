@@ -5,7 +5,5 @@
 
 - name: Install gh
   community.general.homebrew:
-    name:
-      - gh
-      - git
+    name: gh
     state: present

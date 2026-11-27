@@ -5,9 +5,7 @@
 
 - name: Install nvm
   community.general.homebrew:
-    name:
-      - git
-      - nvm
+    name: nvm
     state: present
 
 - name: Create nvm directory
@@ -27,8 +25,6 @@
       _nvm_lazy() {
         unset -f nvm node npm npx
         \. "{{ homebrew_prefix }}/opt/nvm/nvm.sh"
-        [ -n "$BASH_VERSION" ] && [ -s "{{ homebrew_prefix }}/opt/nvm/etc/bash_completion.d/nvm" ] \
-          && \. "{{ homebrew_prefix }}/opt/nvm/etc/bash_completion.d/nvm"
         "$@"
       }
       for _nvm_cmd in nvm node npm npx; do

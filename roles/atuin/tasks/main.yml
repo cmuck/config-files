@@ -14,10 +14,7 @@
   vars:
     shell_rc_block_name: atuin
     shell_rc_block_content: |
-      if [ -e "$HOME/.atuin/bin/env" ]; then
-        . "$HOME/.atuin/bin/env"
-      fi
-      eval "$(atuin init {{ shell_rc_block_target.shell }})"
+      eval "$(atuin init zsh)"
 
 - name: Ensure Atuin config directory exists
   ansible.builtin.file:
@@ -25,8 +22,8 @@
     state: directory
     mode: "0700"
 
-- name: Copy config.toml to Atuin config directory
-  ansible.builtin.copy:
-    src: config.toml
+- name: Write Atuin config
+  ansible.builtin.template:
+    src: config.toml.j2
     dest: "{{ ansible_facts['user_dir'] }}/.config/atuin/config.toml"
     mode: "0600"

@@ -21,14 +21,16 @@
     dest: /tmp/gogh
     depth: 1
 
+# Gogh skips a theme whose terminal profile already exists.
 - name: Install themes
   ansible.builtin.command: ./{{ item }}
   args:
     chdir: /tmp/gogh/installs
-  changed_when: false
+  register: gogh_theme
+  changed_when: "'Profile already exists' not in gogh_theme.stdout"
   environment:
     TERMINAL: gnome-terminal
-  with_items:
+  loop:
     - catppuccin-macchiato.sh
     - cobalt-neon.sh
     - dracula.sh

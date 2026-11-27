@@ -24,8 +24,6 @@
 - name: Update apt cache for Docker repository
   ansible.builtin.include_role:
     name: apt_update
-  vars:
-    apt_update_force: true
 
 - name: Install docker
   ansible.builtin.apt:

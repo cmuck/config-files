@@ -41,9 +41,12 @@
     - name: Install git_xargs
       role: git_xargs
       tags: [git_xargs]
-    - name: Ensure apps
-      role: ensure_apps
-      tags: [ensure_apps]
+    - name: Ensure CLI apps
+      role: ensure_apps_cli
+      tags: [ensure_apps_cli]
+    - name: Ensure desktop apps
+      role: ensure_apps_desktop
+      tags: [ensure_apps_desktop]
     - name: Install docker
       role: docker
       tags: [docker]
@@ -62,9 +65,6 @@
     - name: Install gh
       role: gh
       tags: [gh]
-    - name: Install gifgen
-      role: gifgen
-      tags: [gifgen]
     - name: Install herdr
       role: herdr
       tags: [herdr]
@@ -110,4 +110,10 @@
     - name: Install starship
       role: starship
       tags: [starship]
+    - name: Install omp
+      role: omp
+      tags: [omp]
+    - name: Upgrade system, only run with --tag system_upgrade
+      role: system_upgrade
+      tags: [never, system_upgrade]
   environment: "{{ proxy_environment }}"

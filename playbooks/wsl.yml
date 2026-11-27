@@ -35,9 +35,9 @@
     - name: Install git
       role: git
       tags: [git]
-    - name: Ensure apps
-      role: ensure_apps
-      tags: [ensure_apps]
+    - name: Ensure CLI apps
+      role: ensure_apps_cli
+      tags: [ensure_apps_cli]
     - name: Install bat
       role: bat
       tags: [bat]
@@ -50,9 +50,6 @@
     - name: Install gh
       role: gh
       tags: [gh]
-    - name: Install gifgen
-      role: gifgen
-      tags: [gifgen]
     - name: Install zellij
       role: zellij
       tags: [zellij]
@@ -89,4 +86,10 @@
     - name: Install starship
       role: starship
       tags: [starship]
+    - name: Install omp
+      role: omp
+      tags: [omp]
+    - name: Upgrade system, only run with --tag system_upgrade
+      role: system_upgrade
+      tags: [never, system_upgrade]
   environment: "{{ proxy_environment }}"

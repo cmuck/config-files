@@ -1,23 +1,35 @@
 ---
-- name: "Install repo {{ ansible_role_name }}"
+- name: Include brew role
   ansible.builtin.include_role:
-    name: apt_add_repo
-  vars:
-    apt_add_repo_key_url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF911AB184317630C59970973E363C90F8F1B6217"
-    apt_add_repo_url: "https://ppa.launchpadcontent.net/git-core/ppa/ubuntu {{ ansible_facts['lsb']['codename'] }} main"
+    name: brew
+
+- name: Install git
+  community.general.homebrew:
+    name:
+      - git
+      - git-gui # provides gitk
+      - git-lfs
+    state: present
 
 - name: Include apt_update role
   ansible.builtin.include_role:
     name: apt_update
 
-- name: Ensure git is installed
+- name: Install meld
   ansible.builtin.apt:
     state: present
     pkg:
-      - git
-      - git-lfs
-      - gitk
       - meld
+  become: true
+
+# git used to be installed from the git-core PPA.
+- name: Remove git-core PPA
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/config_files-git.sources
+    - /usr/share/keyrings/config_files-git.asc
   become: true
 
 - name: "Ensure {{ git_user_dir }}"
@@ -33,10 +45,8 @@
     create: true
     insertbefore: BOF
     mode: "0644"
-    append_newline: true
     marker: "# {mark} ANSIBLE MANAGED BLOCK git"
     block: "{{ lookup('ansible.builtin.file', 'gitconfig') }}"
-  changed_when: false
 
 # Aliases are set by the oh-my-zsh git plugin, so no rc block is kept.
 - name: Remove git rc block
@@ -46,27 +56,36 @@
     shell_rc_block_name: git
     shell_rc_block_state: absent
 
+# The user is only asked for name and email when they are not configured yet.
+- name: Read configured git user
+  ansible.builtin.command:
+    argv:
+      - "{{ homebrew_bin_path }}/git"
+      - config
+      - --global
+      - --get
+      - "user.{{ item }}"
+  loop:
+    - name
+    - email
+  register: git_user_configured
+  changed_when: false
+  failed_when: git_user_configured.rc not in [0, 1]
+
 - name: Prompt for git user name
   ansible.builtin.pause:
     prompt: "Enter your git user name (press Enter for default {{ git_user_name }}): "
     echo: true
     seconds: 10
   register: git_user_name_input
-
-- name: Use default git user name when user presses Enter
-  ansible.builtin.set_fact:
-    git_user_name_fact: "{{ (git_user_name_input.user_input | default('') | trim()) or git_user_name }}"
-
-- name: Debug git user name
-  ansible.builtin.debug:
-    msg: "Using {{ git_user_name_fact }}"
+  when: git_user_configured.results[0].stdout | length == 0
 
 - name: Configure user.name in ~/.gitconfig
   community.general.git_config:
     scope: global
-    name: "user.name"
-    value: "{{ git_user_name_fact }}"
-  changed_when: false
+    name: user.name
+    value: "{{ (git_user_name_input.user_input | default('') | trim) or git_user_name }}"
+  when: git_user_configured.results[0].stdout | length == 0
 
 - name: Prompt for git user email
   ansible.builtin.pause:
@@ -74,18 +93,11 @@
     echo: true
     seconds: 10
   register: git_user_email_input
-
-- name: Use default git user email when user presses Enter
-  ansible.builtin.set_fact:
-    git_user_email_fact: "{{ (git_user_email_input.user_input | default('') | trim()) or git_user_email }}"
-
-- name: Debug git user email
-  ansible.builtin.debug:
-    msg: "Using {{ git_user_email_fact }}"
+  when: git_user_configured.results[1].stdout | length == 0
 
 - name: Configure user.email in ~/.gitconfig
   community.general.git_config:
     scope: global
-    name: "user.email"
-    value: "{{ git_user_email_fact }}"
-  changed_when: false
+    name: user.email
+    value: "{{ (git_user_email_input.user_input | default('') | trim) or git_user_email }}"
+  when: git_user_configured.results[1].stdout | length == 0

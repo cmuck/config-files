@@ -8,10 +8,12 @@
     name: neovim
     state: present
 
-- name: Add nvim aliases
+# Absolute path, so sudoedit and crontab -e find nvim without Homebrew in PATH.
+- name: Add nvim editor and aliases
   ansible.builtin.include_role:
     name: shell_rc_block
   vars:
     shell_rc_block_name: nvim
     shell_rc_block_content: |
+      export EDITOR="{{ homebrew_bin_path }}/nvim"
       command -v nvim >/dev/null && alias vim='nvim' vimdiff='nvim -d' n='nvim'

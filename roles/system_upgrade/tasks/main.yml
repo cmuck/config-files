@@ -1,0 +1,11 @@
+---
+- name: Include apt_update role
+  ansible.builtin.include_role:
+    name: apt_update
+
+- name: Ensure up to date system
+  ansible.builtin.apt:
+    upgrade: dist
+    autoclean: true
+    autoremove: true
+  become: true

@@ -1,0 +1,3 @@
+---
+# Used in the key and source file names; defaults to the role including apt_add_repo.
+apt_add_repo_name: "{{ ansible_parent_role_names | default([''], true) | first }}"

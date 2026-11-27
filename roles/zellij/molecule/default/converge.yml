@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Include obsidian role
+    - name: Include zellij role
       ansible.builtin.include_role:
         name: zellij
   environment: "{{ proxy_environment }}"

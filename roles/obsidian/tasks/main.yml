@@ -10,10 +10,12 @@
     state: directory
     mode: "0755"
 
+# Asset names: Obsidian-<version>.AppImage (x86_64) and Obsidian-<version>-arm64.AppImage
 - name: Download latest Obsidian AppImage
   ansible.builtin.get_url:
-    url: "{{ obsidian_latest.json | community.general.json_query(app_image_query) | first }}" # noqa jinja[invalid]
+    url: "{{ obsidian_latest.json.assets | map(attribute='browser_download_url') | select('search', obsidian_appimage_regex) | first }}"
     dest: "{{ ansible_facts['user_dir'] }}/Applications/Obsidian.AppImage"
     mode: "0755"
+    force: true
   vars:
-    app_image_query: "assets[?ends_with(name,'AppImage') && !contains(name, 'arm64')].browser_download_url"
+    obsidian_appimage_regex: "{{ '-arm64\\.AppImage$' if ansible_facts['architecture'] == 'aarch64' else '-[0-9.]+\\.AppImage$' }}"

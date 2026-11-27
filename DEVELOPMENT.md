@@ -17,8 +17,8 @@ with this tool.
 
 - A role installs and configures one tool, named like the tool and tagged with its role name in the playbooks.
 
-- Lines in `~/.zshrc` and `~/.bashrc` are managed through the shared role `shell_rc_block`, never with a hand-written
-  `blockinfile`. The block content may use `{{ shell_rc_block_target.shell }}` for shell specific init commands:
+- Lines in `~/.zshrc` are managed through the shared role `shell_rc_block`, never with a hand-written `blockinfile`.
+  Only zsh is managed; `~/.bashrc` is left untouched:
 
   ```yaml
   - name: Add zoxide shell init
@@ -27,7 +27,7 @@ with this tool.
     vars:
       shell_rc_block_name: zoxide
       shell_rc_block_content: |
-        eval "$(zoxide init {{ shell_rc_block_target.shell }})"
+        eval "$(zoxide init zsh)"
   ```
 
   Use `shell_rc_block_state: absent` to remove a block that is no longer managed.

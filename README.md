@@ -102,6 +102,12 @@ options:
   cf -t zsh,git developer
   ```
 
+- Upgrade the system with `apt dist-upgrade`; the role `system_upgrade` only runs when its tag is given
+
+  ```shell
+  cf -t system_upgrade developer
+  ```
+
 - Increase verbosity
 
   ```shell
