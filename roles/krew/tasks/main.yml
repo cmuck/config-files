@@ -1,57 +1,25 @@
 ---
-- name: Include apt_update role
+- name: Include brew role
   ansible.builtin.include_role:
-    name: apt_update
-
-- name: Install Krew dependencies
-  ansible.builtin.apt:
-    state: present
-    pkg:
-      - git
-      - gzip
-      - tar
-  become: true
-
-- name: Set Krew release facts
-  ansible.builtin.set_fact:
-    krew_os: "{{ ansible_system | lower }}"
-    krew_arch: "{{ ({'x86_64': 'amd64', 'aarch64': 'arm64'}.get(ansible_architecture, ansible_architecture)) | regex_replace('^(arm)(64)?.*$', '\\1\\2') }}"
-
-- name: Check Krew installation
-  ansible.builtin.stat:
-    path: "{{ ansible_facts['user_dir'] }}/.krew/bin/kubectl-krew"
-  register: krew_installed
-
-- name: Create temporary Krew install directory
-  when: not krew_installed.stat.exists
-  ansible.builtin.tempfile:
-    state: directory
-    suffix: krew
-  register: krew_tmp
-
-- name: Download and unarchive Krew
-  when: not krew_installed.stat.exists
-  ansible.builtin.unarchive:
-    src: "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ krew_os }}_{{ krew_arch }}.tar.gz"
-    dest: "{{ krew_tmp.path }}"
-    remote_src: true
+    name: brew
 
 - name: Install Krew
-  when: not krew_installed.stat.exists
-  ansible.builtin.command:
-    cmd: "./krew-{{ krew_os }}_{{ krew_arch }} install krew"
-    chdir: "{{ krew_tmp.path }}"
-    creates: "{{ ansible_facts['user_dir'] }}/.krew/bin/kubectl-krew"
-  environment:
-    HOME: "{{ ansible_facts['user_dir'] }}"
+  community.general.homebrew:
+    name: krew
+    state: present
 
-- name: Remove temporary Krew install directory
-  when: not krew_installed.stat.exists
+# Krew used to install itself as krew plugin into ~/.krew, which would shadow the Homebrew binary.
+- name: Remove self-installed Krew
   ansible.builtin.file:
-    path: "{{ krew_tmp.path }}"
+    path: "{{ ansible_facts['user_dir'] }}/.krew/{{ item }}"
     state: absent
+  loop:
+    - bin/kubectl-krew
+    - receipts/krew.yaml
+    - store/krew
 
-- name: Add Krew to PATH
+# Plugins installed by Krew are still linked into ~/.krew/bin.
+- name: Add Krew plugins to PATH
   ansible.builtin.include_role:
     name: shell_rc_block
   vars:

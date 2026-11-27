@@ -3,18 +3,22 @@
   ansible.builtin.include_role:
     name: apt_update
 
-- name: Install ripgrep, git and vim
+- name: Install git and vim
   ansible.builtin.apt:
     state: present
     pkg:
       - git
       - vim
-      - ripgrep
   become: true
 
 - name: Include nvim
   ansible.builtin.include_role:
     name: nvim
+
+- name: Install ripgrep
+  community.general.homebrew:
+    name: ripgrep
+    state: present
 
 # An existing nvim config is never touched, so local customizations survive.
 - name: Check nvim config directory

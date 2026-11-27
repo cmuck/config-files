@@ -18,9 +18,7 @@
       - ncdu
       - nmap
       - openconnect
-      - ripgrep
       - safe-rm
-      - shellcheck
       - trash-cli
       - vim
   become: true
@@ -30,9 +28,22 @@
     state: absent
     pkg:
       - direnv # installed by the direnv role via Homebrew
+      - ripgrep # installed via Homebrew
+      - shellcheck # installed via Homebrew
       - pipx
       - silversearcher-ag
   become: true
+
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install CLI apps via Homebrew
+  community.general.homebrew:
+    name:
+      - ripgrep
+      - shellcheck
+    state: present
 
 - name: Check if uv is installed
   ansible.builtin.stat:
