@@ -23,6 +23,16 @@
     append_newline: true
     block: "{{ lookup('ansible.builtin.template', 'zshrc.j2') }}"
 
+# Included after the zshrc block, so the brew shellenv block is placed above it.
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
+
+- name: Install fzf
+  community.general.homebrew:
+    name: fzf
+    state: present
+
 - name: Add shell aliases
   ansible.builtin.include_role:
     name: shell_rc_block
@@ -61,25 +71,6 @@
     dest: "{{ zsh_oh_my_zsh_dir }}/custom/plugins/fzf-tab"
     depth: 1
 
-- name: Clone fzf # noqa latest[git]
-  ansible.builtin.git:
-    repo: https://github.com/junegunn/fzf.git
-    dest: "{{ zsh_fzf_dir }}"
-    depth: 1
-  register: zsh_fzf_clone
-
-- name: Check fzf binary
-  ansible.builtin.stat:
-    path: "{{ zsh_fzf_dir }}/bin/fzf"
-  register: zsh_fzf_bin
-
-- name: Install fzf
-  ansible.builtin.command: ./install --bin --no-update-rc
-  args:
-    chdir: "{{ zsh_fzf_dir }}"
-  when: zsh_fzf_clone.changed or not zsh_fzf_bin.stat.exists
-  changed_when: true
-
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:
     path: "{{ ansible_facts['user_dir'] }}/.profile"
@@ -113,6 +104,7 @@
   ansible.builtin.include_tasks: delete_dir.yml
   loop:
     - "{{ ansible_facts['user_dir'] }}/.fzf"
+    - "{{ ansible_facts['user_dir'] }}/.local/share/fzf"
     - "{{ ansible_facts['user_dir'] }}/.oh-my-zsh"
     - "{{ ansible_facts['user_dir'] }}/.config/zsh"
     - "{{ ansible_facts['user_dir'] }}/.local/share/zsh"

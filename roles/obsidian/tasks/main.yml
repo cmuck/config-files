@@ -1,21 +1,28 @@
 ---
-- name: Check latest version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest
-  register: obsidian_latest
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Create Applications directory
+- name: Check Obsidian cask
+  ansible.builtin.command:
+    argv:
+      - "{{ homebrew_binary }}"
+      - list
+      - --cask
+      - obsidian
+  register: obsidian_cask_installed
+  changed_when: false
+  failed_when: false
+
+# The AppImage used to be downloaded to the same path the cask installs to.
+- name: Remove downloaded Obsidian AppImage
   ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/Applications"
-    state: directory
-    mode: "0755"
+    path: "{{ ansible_facts['user_dir'] }}/Applications/Obsidian.AppImage"
+    state: absent
+  when: obsidian_cask_installed.rc != 0
 
-# Asset names: Obsidian-<version>.AppImage (x86_64) and Obsidian-<version>-arm64.AppImage
-- name: Download latest Obsidian AppImage
-  ansible.builtin.get_url:
-    url: "{{ obsidian_latest.json.assets | map(attribute='browser_download_url') | select('search', obsidian_appimage_regex) | first }}"
-    dest: "{{ ansible_facts['user_dir'] }}/Applications/Obsidian.AppImage"
-    mode: "0755"
-    force: true
-  vars:
-    obsidian_appimage_regex: "{{ '-arm64\\.AppImage$' if ansible_facts['architecture'] == 'aarch64' else '-[0-9.]+\\.AppImage$' }}"
+- name: Install Obsidian
+  community.general.homebrew_cask:
+    name: obsidian
+    path: "{{ homebrew_bin_path }}"
+    state: present

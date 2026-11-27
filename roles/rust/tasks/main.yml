@@ -22,16 +22,20 @@
   args:
     creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/rustup"
 
-- name: Install cargo-binstall
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh
-    dest: /tmp/install-cargo-binstall.sh
-    mode: "0755"
+- name: Include brew role
+  ansible.builtin.include_role:
+    name: brew
 
-- name: Run cargo-binstall installer
-  ansible.builtin.command: /bin/bash /tmp/install-cargo-binstall.sh
-  args:
-    creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo-binstall"
+- name: Install cargo-binstall
+  community.general.homebrew:
+    name: cargo-binstall
+    state: present
+
+# cargo-binstall used to be installed by its install script.
+- name: Remove script-installed cargo-binstall
+  ansible.builtin.file:
+    path: "{{ ansible_facts['user_dir'] }}/.cargo/bin/cargo-binstall"
+    state: absent
 
 - name: Write block in file to .profile
   ansible.builtin.blockinfile:

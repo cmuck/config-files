@@ -1,6 +1,6 @@
 ---
 # yamllint disable rule:line-length
-zsh_fzf_dir: "{{ ansible_facts['user_dir'] }}/.local/share/fzf"
+zsh_fzf_dir: "{{ homebrew_prefix }}/opt/fzf"
 
 zsh_oh_my_zsh_dir: "{{ ansible_facts['user_dir'] }}/.local/share/oh-my-zsh"
 
